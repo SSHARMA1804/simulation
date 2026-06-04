@@ -17,14 +17,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .sub{font-size:10px;color:var(--mid);margin-top:3px}
 .hkpis{display:flex;gap:24px;align-items:flex-end}
 .hkpi .v{font-family:var(--mono);font-size:18px;font-weight:500;line-height:1}
-.hkpi .l{font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;text-align:right}
+.hkpi .l{font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;text-align:left}
 nav{position:relative;z-index:10;background:var(--bg2);border-bottom:1px solid var(--rule);display:flex;padding:0 40px;overflow-x:auto}
 .nt{padding:12px 18px 11px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
 .nt:hover{color:var(--text)}
 .nt.active{color:var(--gold2);border-bottom-color:var(--gold)}
 .nb{display:inline-block;background:var(--gold);color:var(--bg);font-size:8px;font-weight:600;padding:1px 5px;border-radius:3px;margin-right:5px}
 .page{position:relative;z-index:1;overflow-x:hidden}
-.layer{display:none!important;padding:32px 40px 48px;min-height:60vh;overflow:hidden}
+.layer{display:none!important;padding:32px 40px 48px;min-height:60vh;overflow:visible}
 .layer.active{display:block!important;position:relative;box-shadow:inset 0 0 0 1px rgba(200,168,75,0.10)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
@@ -298,9 +298,18 @@ body { overflow-x: auto !important; }
     <div class="sub">Conceptual model for discussion</div>
   </div>
   <div class="hkpis">
-    <div class="hkpi"><div class="v neg">−₹26,700 Cr</div><div class="l">FY2026 Net Loss</div></div>
+    <div class="hkpi"><div class="v neg">−₹26,700 Cr</div><div class="l" style="color:var(--red2);margin-top:2px;text-transform:none;letter-spacing:0;font-size:10px">−$3.18B</div><div class="l">FY2026 Net Loss</div></div>
     <div class="hkpi"><div class="v gld" id="hdr-be">FY2029</div><div class="l">Break-Even Year</div></div>
-    <div class="hkpi"><div class="v" style="color:var(--teal2)">₹79,150 Cr</div><div class="l">FY2026 Revenue</div></div>
+    <div class="hkpi">
+      <div class="v" style="color:var(--teal2)">₹79,150 Cr</div>
+      <div class="l" style="color:var(--teal2);margin-top:2px;text-transform:none;letter-spacing:0;font-size:10px">$9.4B · FY2026 Revenue</div>
+      <div class="l" style="margin-top:3px">Growing to ₹1,42,842 Cr ($17B) by FY2030</div>
+    </div>
+    <div class="hkpi">
+      <div class="v" style="color:var(--green2)">₹1,378 Cr</div>
+      <div class="l" style="color:var(--green2);margin-top:2px;text-transform:none;letter-spacing:0;font-size:10px">$164M · FY2030 Net Profit (est.)</div>
+      <div class="l" style="margin-top:3px">Base case · post break-even</div>
+    </div>
     <div class="hkpi"><div class="v" style="color:var(--blue2)">610 A/C</div><div class="l">Firm Orders (550 remaining)</div></div>
   </div>
 </header>
@@ -311,8 +320,9 @@ body { overflow-x: auto !important; }
   <button class="nt" onclick="showLayer('l7',this)"><span class="nb">L3</span>Marketing Engine</button>
   <button class="nt" onclick="showLayer('l10',this)"><span class="nb">L4</span>CX Intelligence</button>
   <button class="nt" onclick="showLayer('l9',this)"><span class="nb">L5</span>Sustainability &amp; Economics</button>
-  <button class="nt" onclick="showLayer('l4',this)"><span class="nb">L6</span>Airline Intelligence</button>
-  <button class="nt" onclick="showLayer('l5',this)"><span class="nb">L7</span>Executive Narrative</button>
+  <button class="nt" onclick="showLayer('lai',this)"><span class="nb" style="background:#3498DB;color:#06080F">L6</span>Fuel Hedging Strategy</button>
+  <button class="nt" onclick="showLayer('l4',this)"><span class="nb">L7</span>Roadmap</button>
+  <button class="nt" onclick="showLayer('l5',this)"><span class="nb">L8</span>Executive Narrative &amp; Recommendations</button>
 </nav>
 
 <div class="page">
@@ -452,7 +462,7 @@ body { overflow-x: auto !important; }
           <button class="ytab"    id="l2t4" onclick="setL2Year(4)">FY2030</button>
           <span id="l2-ebit" style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--red2);margin-left:6px">computing...</span>
         </div>
-        <div style="position:relative;height:160px"><canvas id="l2-wfall"></canvas></div>
+        <div style="position:relative;height:160px"><canvas id="l2-wfall"></canvas></div><div id="l2-fixed-note" style="font-size:9px;color:var(--red2);font-family:var(--mono);margin-top:6px;padding:5px 8px;background:rgba(224,85,85,.08);border-radius:4px;border-left:2px solid var(--red2)">Fixed costs shown separately</div>
       </div>
       <div style="overflow-x:auto;overflow-y:auto;max-height:280px">
         <table class="lbt" style="font-size:10px">
@@ -703,7 +713,7 @@ body { overflow-x: auto !important; }
   <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px;background:var(--card2);border:1px solid var(--rule);border-radius:8px;padding:14px 18px">
     <div style="flex:1;min-width:180px">
       <div class="sg"><label>Fuel price ($/ton) <span id="sf-fuel-v" style="color:var(--gold2)">$450</span></label>
-        <input type="range" id="sf-fuel" min="320" max="750" step="10" value="450" oninput="sfUpdate()"></div>
+        <input type="range" id="sf-fuel" min="320" max="750" step="10" value="450" oninput="sfUpdate();syncFromTon(this.value);"></div>
     </div>
     <div style="flex:1;min-width:180px">
       <div class="sg"><label>Load factor — domestic trunk (%) <span id="sf-lf-v" style="color:var(--gold2)">84%</span></label>
@@ -780,17 +790,17 @@ body { overflow-x: auto !important; }
           <button onclick="resetLevers()" style="font-family:var(--mono);font-size:9px;padding:2px 10px;border:1px solid var(--rule);border-radius:10px;background:transparent;color:var(--mid);cursor:pointer">&#8635; Reset</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div class="sg" style="margin:0"><label style="font-size:9px">Fuel $/ton <span id="fuel-v" style="color:var(--gold2)">$450</span></label><input type="range" id="fuel" min="350" max="650" step="10" value="450" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Intl yield $/seg <span id="yield-v" style="color:var(--teal2)">$200</span></label><input type="range" id="yld" min="150" max="350" step="5" value="200" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Ancillary $/pax <span id="anc-v" style="color:var(--teal2)">$4</span></label><input type="range" id="anc" min="2" max="12" step="0.5" value="4" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Premium mix % <span id="prem-v" style="color:var(--teal2)">12%</span></label><input type="range" id="prem" min="5" max="30" step="1" value="12" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Load factor % <span id="lf-v" style="color:var(--teal2)">84%</span></label><input type="range" id="lf" min="75" max="92" step="1" value="84" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Fuel $/ton <span id="fuel-v" style="color:var(--gold2)">$450</span></label><input type="range" id="fuel" min="350" max="650" step="10" value="450" oninput="updateLevers();syncFromTon(this.value);" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Intl yield $/seg <span id="yield-v" style="color:var(--teal2)">$200</span></label><input type="range" id="yld" min="150" max="350" step="5" value="200" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Ancillary $/pax <span id="anc-v" style="color:var(--teal2)">$4</span></label><input type="range" id="anc" min="2" max="12" step="0.5" value="4" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Premium mix % <span id="prem-v" style="color:var(--teal2)">12%</span></label><input type="range" id="prem" min="5" max="30" step="1" value="12" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Load factor % <span id="lf-v" style="color:var(--teal2)">84%</span></label><input type="range" id="lf" min="75" max="92" step="1" value="84" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
           <div style="border-top:1px solid var(--rule2);margin-top:2px;padding-top:4px">
-          <div class="sg" style="margin:0"><label style="font-size:9px">Cargo growth %/yr <span id="cargo-v" style="color:var(--gold2)">20%</span></label><input type="range" id="cargo" min="5" max="40" step="1" value="20" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Staff productivity % <span id="staff-v" style="color:var(--gold2)">5%</span></label><input type="range" id="staff" min="0" max="20" step="1" value="5" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">AI/automation $M <span id="ai-v" style="color:var(--gold2)">$50M</span></label><input type="range" id="ai" min="0" max="200" step="10" value="50" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Intl expansion $M <span id="intl-v" style="color:var(--gold2)">$200M</span></label><input type="range" id="intl" min="0" max="600" step="25" value="200" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
-          <div class="sg" style="margin:0"><label style="font-size:9px">Fleet util hrs <span id="util-v" style="color:var(--gold2)">11.2</span></label><input type="range" id="util" min="9" max="14" step="0.1" value="11.2" oninput="updateLevers()" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Cargo growth %/yr <span id="cargo-v" style="color:var(--gold2)">20%</span></label><input type="range" id="cargo" min="5" max="40" step="1" value="20" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Staff productivity % <span id="staff-v" style="color:var(--gold2)">5%</span></label><input type="range" id="staff" min="0" max="20" step="1" value="5" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">AI/automation $M <span id="ai-v" style="color:var(--gold2)">$50M</span></label><input type="range" id="ai" min="0" max="200" step="10" value="50" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Intl expansion $M <span id="intl-v" style="color:var(--gold2)">$200M</span></label><input type="range" id="intl" min="0" max="600" step="25" value="200" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
+          <div class="sg" style="margin:0"><label style="font-size:9px">Fleet util hrs <span id="util-v" style="color:var(--gold2)">11.2</span></label><input type="range" id="util" min="9" max="14" step="0.1" value="11.2" oninput="updateLevers();" style="width:100%;margin-top:2px"></div>
           </div>
         </div>
       </div>
@@ -895,7 +905,7 @@ body { overflow-x: auto !important; }
 
 
 <div id="l4" class="layer">
-  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Airline Intelligence</div>
+  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Roadmap</div>
   <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Network · Commercial · Operational · Financial transformation status</div>
   <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:10px 16px;background:var(--bg2);border:1px solid var(--rule);border-radius:8px;flex-wrap:wrap">
     <div style="font-family:var(--mono);font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-right:4px">Initiative status:</div>
@@ -938,8 +948,13 @@ body { overflow-x: auto !important; }
 
 
 <div id="l5" class="layer">
-  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Executive Narrative</div>
-  <div style="font-size:11px;color:var(--muted);margin-bottom:24px">Transformation trajectory · Strategic priorities · Value creation · Turnaround roadmap</div>
+  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Executive Narrative &amp; Recommendations</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Transformation trajectory · Strategic priorities · Value creation · Turnaround roadmap</div>
+  <div style="display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--rule);padding-bottom:2px;position:relative;z-index:5">
+    <button class="ytab on" id="l5t1" onclick="l5Sub('l5-narrative',this)">Narrative</button>
+    <button class="ytab" id="l5t2" onclick="l5Sub('l5-recs',this)">Recommendations</button>
+  </div>
+  <div id="l5-narrative" class="l5s">
   <div class="g21">
     <div>
       <div class="nb2"><div class="nbc">Chapter 1 — The Starting Point</div><div class="nbt">From National Liability to Strategic Asset</div><div class="nbody">Air India entered Tata stewardship in January 2022 carrying ₹61,000 Cr in pre-sale debt, a fleet averaging 14+ years, and OTP of 65%. The acquisition at ₹18,000 Cr was the beginning of a ₹84,200 Cr commitment once capex and FY2026 losses are included.<br><br>The structural challenge: a $12.6B annual cost base against $10.9B revenue produces a $3.2B annual loss. The lease wall alone — $2.8B per year — exceeds all six turnaround workstreams combined in Year 1.</div></div>
@@ -955,7 +970,7 @@ body { overflow-x: auto !important; }
       <div class="card ga"><div class="ct">Transformation Roadmap</div>
         <div class="rm"><div class="rmy">FY2022–23</div><div><div class="rmt">Acquisition &amp; Stabilisation<span class="ibadge live">Complete</span></div><div class="rmb">Tata takeover. Fleet audit. Management reset. Brand repositioning. Vistara merger announced.</div></div></div>
         <div class="rm"><div class="rmy">FY2024–25</div><div><div class="rmt">Transformation Live<span class="ibadge live">Live</span></div><div class="rmb">Vistara merger complete. 198 A/C fleet. NDC activation. Flying Returns relaunch. First A350 delivery.</div></div></div>
-        <div class="rm"><div class="rmy">FY2026–27</div><div><div class="rmt">Revenue Acceleration<span class="ibadge build">In Progress</span></div><div class="rmb">26 new deliveries. NDC 8%+ shift. Loyalty co-brand cards. Cargo capacity +40%. GIFT City MRO construction.</div></div></div>
+        <div class="rm"><div class="rmy">FY2026–27</div><div><div class="rmt">Revenue Acceleration<span class="ibadge build">In Progress</span></div><div class="rmb">26 new deliveries. NDC volume ramp (live Sep 2024; target 20% by FY2027). Loyalty co-brand cards. Cargo capacity +40%. GIFT City MRO construction.</div></div></div>
         <div class="rm"><div class="rmy">FY2028–29</div><div><div class="rmt">Break-Even Approach<span class="ibadge plan">Target</span></div><div class="rmb">787 refurb complete. EBITDA positive. MRO revenue online. 30% domestic share target.</div></div></div>
         <div class="rm"><div class="rmy">FY2030+</div><div><div class="rmt">Sustained Profitability<span class="ibadge plan">Target</span></div><div class="rmb">10%+ net margin. 2M tonnes cargo. Loyalty 2% revenue. World-class carrier benchmark.</div></div></div>
       </div>
@@ -969,10 +984,37 @@ body { overflow-x: auto !important; }
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div><!-- /g21 -->
+  </div><!-- /l5-narrative -->
 
+  <!-- ── RECOMMENDATIONS SUB-TAB ── -->
+  <div id="l5-recs" class="l5s" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:16px">Strategic recommendations · Derived from turnaround model, Excel assumptions &amp; industry benchmarks · All sources cited inline</div>
 
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+      <button class="ytab on" id="rf-all"     onclick="recFilter('all',this)">All areas</button>
+      <button class="ytab"    id="rf-dist"    onclick="recFilter('dist',this)">Distribution</button>
+      <button class="ytab"    id="rf-fleet"   onclick="recFilter('fleet',this)">Fleet &amp; Ops</button>
+      <button class="ytab"    id="rf-ground"  onclick="recFilter('ground',this)">Ground &amp; MRO</button>
+      <button class="ytab"    id="rf-sales"   onclick="recFilter('sales',this)">Sales &amp; Alliances</button>
+      <button class="ytab"    id="rf-revenue" onclick="recFilter('revenue',this)">New Revenue</button>
+      <button class="ytab"    id="rf-fuel"    onclick="recFilter('fuel',this)">Fuel Hedging</button>
+      <button class="ytab"    id="rf-esg"     onclick="recFilter('esg',this)">ESG &amp; Reporting</button>
+      <button class="ytab"    id="rf-fin"     onclick="recFilter('fin',this)">Finance &amp; Tax</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px">
+      <div class="kc ga"><div class="kl">Total recommendations</div><div class="kv gld" id="rec-count">32</div></div>
+      <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">5-yr value potential</div><div class="kv" style="color:var(--green2)" id="rec-value">$19.1B</div><div class="ks" id="rec-value-note">28 monetary items</div></div>
+      <div class="kc ta"><div class="kl">Quick starts (FY2026)</div><div class="kv" style="color:var(--teal2)" id="rec-quick">11</div></div>
+      <div class="kc ra"><div class="kl">Structural (FY2028+)</div><div class="kv neg" id="rec-structural">21</div></div>
+    </div>
+
+    <div id="rec-cards" style="display:flex;flex-direction:column;gap:6px;max-height:620px;overflow-y:auto;padding-right:4px"></div>
+    <div style="font-size:9px;color:var(--mid);margin-top:14px;line-height:1.8">
+      <strong style="color:var(--muted)">Sources:</strong> SIA FY2025-26 Annual Report · IATA NDC 2024 · Amadeus/Sabre published rates · IATA Fuel Monitor Q1 2026 · Bloomberg O'Leary interview 2024 · Emirates Group Annual Report FY2024 · DGCA FY2026 · Oxford Economics India-UAE Feb 2026 · McKinsey fleet complexity studies · AirBench CBI May 2026 · Cirium EmeraldSky 2025 · Atmosfair AAI 2025 · Section 32(2) Income Tax Act 1961 · GIFT City IFSC KPMG 2025 · US DOT chargeback data · IATA RP1726
+    </div>
+  </div><!-- /l5-recs -->
 
 </div><!-- end l5 -->
 
@@ -1198,7 +1240,7 @@ body { overflow-x: auto !important; }
     <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">AI current CO₂/ASK</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--red2)">~105g</div><div style="font-size:9px;color:var(--muted);margin-top:2px">33% above target</div></div>
     <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">AI target FY30</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--teal)">70g</div><div style="font-size:9px;color:var(--muted);margin-top:2px">With A350/787 fleet</div></div>
     <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">India avn GDP share</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--gold2)">1.5%</div><div style="font-size:9px;color:var(--muted);margin-top:2px">vs UAE 18.2%</div></div>
-    <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Economic multiplier</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--green2)">3.25×</div><div style="font-size:9px;color:var(--muted);margin-top:2px">Highest any sector</div></div>
+    <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">India GDP multiplier (ATAG)</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--green2)">3.25×</div><div style="font-size:9px;color:var(--muted);margin-top:2px">$1 aviation = $3.25 GDP · vs Finance $2.9×, Auto $2.3×</div></div>
     <div style="flex:1 1 130px;padding:10px 16px;border-right:1px solid var(--rule)"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">EU ETS Yr2+</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--gold2)">$55–80M</div><div style="font-size:9px;color:var(--muted);margin-top:2px">A350 deployment mitigates</div></div>
     <div style="flex:1 1 130px;padding:10px 16px"><div style="font-family:var(--mono);font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">India avn jobs</div><div style="font-family:var(--mono);font-size:16px;font-weight:500;color:var(--blue2)">7.7M</div><div style="font-size:9px;color:var(--muted);margin-top:2px">AI share est. 1.5M</div></div>
   </div>
@@ -1245,7 +1287,6 @@ body { overflow-x: auto !important; }
         <tbody>
           <tr><td>IndiGo</td><td class="r pos">57.4g</td><td class="r">4.2</td><td class="r">180</td><td class="r">LCC</td><td class="r pos">−45%</td></tr>
           <tr><td>SpiceJet</td><td class="r" style="color:var(--gold2)">78g</td><td class="r">9.1</td><td class="r">168</td><td class="r">LCC</td><td class="r pos">−26%</td></tr>
-          <tr><td>Go First</td><td class="r" style="color:var(--gold2)">80g</td><td class="r">6.8</td><td class="r">180</td><td class="r">LCC</td><td class="r pos">−24%</td></tr>
           <tr><td style="color:var(--red2)">Air India (legacy)</td><td class="r neg">105g</td><td class="r">11.6</td><td class="r">320</td><td class="r">FSC</td><td class="r neg">baseline</td></tr>
           <tr style="background:rgba(26,188,156,.05)"><td style="color:var(--teal)">Air India (target FY30)</td><td class="r" style="color:var(--teal)">70g</td><td class="r" style="color:var(--teal)">4.0</td><td class="r" style="color:var(--teal)">340</td><td class="r">FSC</td><td class="r pos">−33%</td></tr>
         </tbody>
@@ -1398,7 +1439,7 @@ body { overflow-x: auto !important; }
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <div class="card" style="border-top:2px solid var(--teal);padding:14px 18px">
-          <div class="ct">Economic multiplier chain — how one flight generates downstream value</div>
+          <div class="ct">India GDP multiplier chain (ATAG) — how $1 of aviation activity generates broader economic value</div>
           <div style="display:flex;flex-direction:column;gap:0">
             <div style="padding:10px 0;border-bottom:1px solid var(--rule2);display:flex;justify-content:space-between;align-items:center">
               <div><div style="font-size:11px;font-weight:600;color:var(--teal)">Direct</div><div style="font-size:9px;color:var(--muted)">Airline + airport operations</div></div>
@@ -1475,7 +1516,7 @@ body { overflow-x: auto !important; }
       <div class="card" style="border-top:2px solid var(--blue);padding:14px 16px">
         <div style="font-size:18px;margin-bottom:8px">🌍</div>
         <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:6px">Economic multiplier at scale</div>
-        <div style="font-size:10px;color:var(--muted);line-height:1.6">India aviation GDP: 1.5% vs UAE 18.2%. At 3.25× multiplier, Air India's growth is the primary lever to close that structural gap.</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.6">India aviation GDP: 1.5% vs UAE 18.2%. The ATAG 3.25× GDP multiplier measures total economic ripple per $1 of airline activity — supply chain, wages, tourism — not Air India's own revenue. At this multiplier, Air India's growth is the primary lever to close that structural gap.</div>
       </div>
     </div>
     <div style="font-size:9px;color:var(--mid);font-family:var(--mono);margin-top:14px;line-height:1.8">
@@ -1585,7 +1626,7 @@ body { overflow-x: auto !important; }
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
       <div class="card ga" style="padding:12px 16px">
         <div class="ct">GDP Contribution — Air India FY26→FY30</div>
-        <div style="font-size:9px;color:var(--mid);margin-bottom:8px">vs Emirates current benchmark ($37.3B)</div>
+        <div style="font-size:9px;color:var(--mid);margin-bottom:8px">vs Emirates ($37.3B) and SIA ($54.7B) benchmarks · Oxford Economics / IATA 2023</div>
         <div style="position:relative;height:200px"><canvas id="se-eco-gdp"></canvas></div>
       </div>
       <div class="card" style="border-top:2px solid var(--teal);padding:12px 16px">
@@ -1595,7 +1636,7 @@ body { overflow-x: auto !important; }
       </div>
       <div class="card ba" style="padding:12px 16px">
         <div class="ct">GDP per Tonne CO₂ — Decoupling</div>
-        <div style="font-size:9px;color:var(--mid);margin-bottom:8px">Economic value generated per tonne of carbon emitted — rising = decoupling</div>
+        <div style="font-size:9px;color:var(--mid);margin-bottom:8px">Economic value generated per tonne of carbon emitted — rising = decoupling · SIA est. based on $54.7B GDP / ~22M t CO₂ (Oxford Economics / SIA Sustainability Report 2024)</div>
         <div style="position:relative;height:200px"><canvas id="se-eco-decouple"></canvas></div>
       </div>
     </div>
@@ -1911,7 +1952,6 @@ body { overflow-x: auto !important; }
 </div><!-- end l10 -->
 
 </div><!-- end page -->
-<footer class="foot">AI-Conceptual 5-Year Estimates · Independent Expert Simulation · Prepared by Sonal Sharma · IIM Udaipur Executive PhD Candidate · Distribution &amp; Commercial Leader · May 2026</footer>
 
 <script>
 var AIRLINES=[
@@ -2036,11 +2076,15 @@ function setL2Year(yr){
 }
 function drawL2Chart(sN){
   var canvas=document.getElementById('l2-wfall');if(!canvas||typeof Chart==='undefined')return;
-  var labs=['Distribution','Fleet & Ops','Ground & Eng','Sales','New Revenues','Fixed Costs'],keys=['dist','fleet','ground','sales','newrev','fixed'];
+  // Exclude Fixed Costs — its scale (-$14,000M) crushes all turnaround contribution bars
+  var labs=['Distribution','Fleet & Ops','Ground & Eng','Sales','New Revenues'],keys=['dist','fleet','ground','sales','newrev'];
   var nets=keys.map(function(k){return Math.round(sN[k]||0);});
   var cols=nets.map(function(v){return v>=0?'rgba(74,201,122,.75)':'rgba(224,85,85,.75)';});
   if(l2Ch){l2Ch.destroy();l2Ch=null;}
-  l2Ch=new Chart(canvas,{type:'bar',data:{labels:labs,datasets:[{label:'Net ($M)',data:nets,backgroundColor:cols,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(10,13,24,.95)',callbacks:{label:function(c){var v=c.parsed.y;return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString()+'M';}}}},scales:{x:{ticks:{color:'rgba(90,86,80,.8)',font:{size:9}},grid:{color:'rgba(255,255,255,.03)'}},y:{ticks:{color:'rgba(90,86,80,.8)',font:{size:9},callback:function(v){return'$'+v.toLocaleString()+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}});
+  // Update fixed cost callout
+  var fixEl=document.getElementById('l2-fixed-note');
+  if(fixEl){var fc=Math.abs(Math.round(sN['fixed']||0));fixEl.textContent='Fixed cost drag (base opex + leases + depreciation): −$'+fc.toLocaleString()+'M — shown separately to preserve scale';}
+  l2Ch=new Chart(canvas,{type:'bar',data:{labels:labs,datasets:[{label:'Net turnaround contribution ($M)',data:nets,backgroundColor:cols,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(10,13,24,.95)',callbacks:{label:function(c){var v=c.parsed.y;return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString()+'M';}}}},scales:{x:{ticks:{color:'rgba(90,86,80,.8)',font:{size:9}},grid:{color:'rgba(255,255,255,.03)'}},y:{ticks:{color:'rgba(90,86,80,.8)',font:{size:9},callback:function(v){return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString()+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}});
 }
 // BE CHART
 var beC=null;
@@ -4220,6 +4264,7 @@ window.mktShow=function(id,btn){
 // ── CHART HELPERS ────────────────────────────────────────────────────────────
 function mkBar(id,labels,data,colors){
   var el=document.getElementById(id); if(!el)return;
+  var p=el.parentElement; el.width=(p?p.clientWidth||p.offsetWidth||700:700); el.height=(p?p.clientHeight||p.offsetHeight||220:220); if(el.height<50)el.height=220;
   if(mkC[id])mkC[id].destroy();
   mkC[id]=new Chart(el,{type:'bar',
     data:{labels:labels,datasets:[{data:data,backgroundColor:colors,borderRadius:3,borderSkipped:false}]},
@@ -4227,8 +4272,10 @@ function mkBar(id,labels,data,colors){
       scales:{x:{ticks:{color:tc,font:{family:mono,size:9}},grid:{color:gc}},
               y:{ticks:{color:tc,font:{family:mono,size:9}},grid:{color:gc}}}}});
 }
+window.mkBar = mkBar;
 function mkLine(id,labels,datasets){
   var el=document.getElementById(id); if(!el)return;
+  var p=el.parentElement; el.width=(p?p.clientWidth||p.offsetWidth||700:700); el.height=(p?p.clientHeight||p.offsetHeight||220:220); if(el.height<50)el.height=220;
   if(mkC[id])mkC[id].destroy();
   mkC[id]=new Chart(el,{type:'line',data:{labels:labels,datasets:datasets},
     options:{responsive:true,maintainAspectRatio:false,
@@ -4236,6 +4283,8 @@ function mkLine(id,labels,datasets){
       scales:{x:{ticks:{color:tc,font:{family:mono,size:9}},grid:{color:gc}},
               y:{ticks:{color:tc,font:{family:mono,size:9}},grid:{color:gc}}}}});
 }
+window.mkLine = mkLine;
+window.mkC = mkC;
 
 // ── DRAW FUNCTIONS ───────────────────────────────────────────────────────────
 function mktDraw(id){
@@ -4593,7 +4642,6 @@ const seAllData = [
   {name:"Aeroflot",val:88,region:"CIS",type:"fsc"},
   {name:"S7 Airlines",val:90,region:"CIS",type:"fsc"},
   {name:"SpiceJet",val:78,region:"India",type:"lcc"},
-  {name:"Go First",val:80,region:"India",type:"lcc"},
   {name:"AI next-gen",val:70,region:"India",type:"ai-target"},
   {name:"AI legacy",val:105,region:"India",type:"ai-legacy"},
 ];
@@ -4650,7 +4698,6 @@ function initSeCharts(){
   const indiaData=[
     {name:"IndiGo",val:57.4,color:'#4AC97A'},
     {name:"SpiceJet",val:78,color:'#8B6FD4'},
-    {name:"Go First",val:80,color:'#6B7494'},
     {name:"AI legacy",val:105,color:'#E05555'},
     {name:"AI target",val:70,color:'#1ABC9C'},
   ];
@@ -4844,8 +4891,10 @@ function initEcoCharts(){
     data:{labels:yrs, datasets:[
       {label:'Air India GDP est. ($B)', data:[14.2,18.1,23.4,29.8,37.5],
         backgroundColor:['#C8A84B55','#C8A84B77','#C8A84B99','#C8A84BBB','#C8A84B'],borderRadius:4},
-      {label:'Emirates benchmark',      data:[37.3,37.3,37.3,37.3,37.3],
-        type:'line', borderColor:'#4AC97A', borderDash:[6,3], fill:false, pointRadius:0}
+      {label:'Emirates benchmark ($37.3B)',      data:[37.3,37.3,37.3,37.3,37.3],
+        type:'line', borderColor:'#4AC97A', borderDash:[6,3], fill:false, pointRadius:0},
+      {label:'SIA benchmark ($54.7B)',            data:[54.7,54.7,54.7,54.7,54.7],
+        type:'line', borderColor:'#3498DB', borderDash:[4,4], fill:false, pointRadius:0}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:tc,font:{family:mono,size:9}}}},
@@ -4879,7 +4928,9 @@ function initEcoCharts(){
       {label:'AI legacy fleet', data:[135,181,246,324,417],
         borderColor:'#C8A84B', fill:false, tension:0.4, borderDash:[4,3]},
       {label:'Emirates est.', data:[142,155,168,180,195],
-        borderColor:'#4AC97A', fill:false, tension:0.4, borderDash:[6,3], pointRadius:0}
+        borderColor:'#4AC97A', fill:false, tension:0.4, borderDash:[6,3], pointRadius:0},
+      {label:'SIA est.', data:[198,210,222,234,248],
+        borderColor:'#3498DB', fill:false, tension:0.4, borderDash:[4,2], pointRadius:0}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:tc,font:{family:mono,size:9}}}},
@@ -5257,6 +5308,2105 @@ function drawOpCostCharts(){
   tb.innerHTML=h;
 }
 </script>
-  <script defer src="/_vercel/insights/script.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  CROSS-TAB FUEL SYNC  — wires L1, L5, Hedging Modelling, P&L Scenarios
+//  All prices normalised through Brent $/bbl as single source of truth.
+//  Guard flag prevents circular updates.
+// ════════════════════════════════════════════════════════════════════
+(function(){
+  var _syncing = false;
+  var BBL_TO_TON = 7.95; // jet fuel: 1 tonne ≈ 7.95 barrels
+
+  // ── helpers: silently set a range slider and its display span ──
+  function setSlider(id, val, min, max) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.value = Math.min(max, Math.max(min, Math.round(val)));
+  }
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  // ── convert Brent $/bbl → $/ton (clamp to each slider's range) ──
+  function brentToTon(brent) { return Math.round(brent * BBL_TO_TON); }
+  function tonToBrent(ton)   { return Math.round(ton / BBL_TO_TON); }
+
+  // ── update the L1 header break-even KPI to match lv-be ──
+  function syncHeaderBE() {
+    var lv = document.getElementById('lv-be');
+    var hdr = document.getElementById('hdr-be');
+    if (lv && hdr) hdr.textContent = lv.textContent;
+  }
+
+  // ── pull hedging saving (₹ Cr) from ai-pl sliders, convert to $M ──
+  function hedgeSavingM() {
+    var bEl = document.getElementById('ai-brent');
+    var hEl = document.getElementById('ai-hr');
+    if (!bEl || !hEl) return 0;
+    var brent = parseFloat(bEl.value) || 82;
+    var hr    = parseFloat(hEl.value) || 0;
+    var gross = 29400 * (brent / 82);       // ₹ Cr
+    var diff  = brent - 82;
+    var save  = gross * (hr / 100) * (diff / brent); // ₹ Cr (positive = saves when brent > 82)
+    return Math.round(save / 84);           // convert ₹ Cr → $M at 84 INR/USD
+  }
+
+  // ── main sync: given a new Brent value, silently push to all other sliders ──
+  function doSync(brent) {
+    if (_syncing) return;
+    _syncing = true;
+
+    var ton = brentToTon(brent);
+
+    // 1. L1 fuel slider ($/ton, 350-650)
+    setSlider('fuel', ton, 350, 650);
+    setText('fuel-v', '$' + Math.min(650, Math.max(350, ton)));
+
+    // 2. L5 sf-fuel slider ($/ton, 320-750)
+    setSlider('sf-fuel', ton, 320, 750);
+    setText('sf-fuel-v', '$' + Math.min(750, Math.max(320, ton)));
+
+    // 3. hm-brent slider (Brent $/bbl, 55-130)
+    setSlider('hm-brent', brent, 55, 130);
+    setText('hm-brent-v', '$' + brent);
+
+    // 4. ai-brent slider (Brent $/bbl, 55-130)
+    setSlider('ai-brent', brent, 55, 130);
+    setText('ai-brent-v', '$' + brent);
+
+    // 5. fh-brent slider (Brent $/bbl, 55-130)
+    setSlider('fh-brent', brent, 55, 130);
+    setText('fh-brent-v', '$' + brent);
+
+    // 6. Re-run L1 updateLevers so fuel delta and break-even update
+    if (typeof updateLevers === 'function') updateLevers();
+
+    // 7. Re-run L5 sfUpdate — only if visible to avoid wasted redraws
+    var l5 = document.getElementById('l9');
+    if (l5 && l5.classList.contains('active')) {
+      if (typeof window.sfUpdate === 'function') window.sfUpdate();
+    }
+
+    // 8. Re-run aiPlUpdate (always safe — destroys + recreates charts)
+    if (typeof window.aiPlUpdate === 'function') window.aiPlUpdate();
+
+    // 9. Sync header break-even KPI after L1 recalculates
+    setTimeout(syncHeaderBE, 20);
+
+    // 10. Inject hedge saving into L1 fuel cost display
+    setTimeout(function() {
+      var saving = hedgeSavingM();
+      var fcEl = document.getElementById('lv-fuel');
+      if (fcEl) {
+        // recalculate fuel delta fresh from L1 formula, then subtract hedge saving
+        var ton2 = Math.min(650, Math.max(350, brentToTon(brent)));
+        var fc = -(ton2 - 450) * 45e6 * 0.08 * 4380 * 1.4 / 1e9;
+        var net = fc + saving; // saving is positive when brent>82
+        fcEl.textContent = (net >= 0 ? '+$' : '-$') + Math.abs(Math.round(net)).toLocaleString() + 'M';
+        fcEl.style.color = net >= 0 ? 'var(--green2)' : 'var(--red2)';
+      }
+      // Update header break-even one more time after all recalcs
+      syncHeaderBE();
+    }, 60);
+
+    _syncing = false;
+  }
+
+  // ── public entry points called from patched oninput handlers ──
+  window.syncFromBrent = function(val) {
+    clearTimeout(window._syncDebounce);
+    window._syncDebounce = setTimeout(function() { doSync(parseFloat(val) || 82); }, 120);
+  };
+
+  window.syncFromTon = function(val) {
+    clearTimeout(window._syncDebounce);
+    window._syncDebounce = setTimeout(function() { doSync(tonToBrent(parseFloat(val) || 450)); }, 120);
+  };
+
+  // ── also re-sync header BE whenever aiPlUpdate runs (hedge ratio slider changes) ──
+  var _origAiPl = window.aiPlUpdate;
+  window.aiPlUpdate = function() {
+    if (typeof _origAiPl === 'function') _origAiPl();
+    setTimeout(function() {
+      // inject hedge saving into L1 fuel display
+      var bEl = document.getElementById('ai-brent');
+      if (!bEl) return;
+      var brent = parseFloat(bEl.value) || 82;
+      var saving = hedgeSavingM();
+      var ton = Math.min(650, Math.max(350, brentToTon(brent)));
+      var fc = -(ton - 450) * 45e6 * 0.08 * 4380 * 1.4 / 1e9;
+      var net = fc + saving;
+      var fcEl = document.getElementById('lv-fuel');
+      if (fcEl) {
+        fcEl.textContent = (net >= 0 ? '+$' : '-$') + Math.abs(Math.round(net)).toLocaleString() + 'M';
+        fcEl.style.color = net >= 0 ? 'var(--green2)' : 'var(--red2)';
+      }
+      // Recalculate and update L1 break-even with hedge saving included
+      var fuelEl = document.getElementById('fuel');
+      if (fuelEl && typeof updateLevers === 'function') {
+        // Temporarily adjust fuel value to reflect net-of-hedge cost
+        var origFuel = fuelEl.value;
+        var savingPerTon = saving * 1e9 / (45e6 * 0.08 * 4380 * 1.4);
+        fuelEl.value = Math.min(650, Math.max(350, ton - savingPerTon));
+        updateLevers();
+        fuelEl.value = origFuel; // restore so slider position unchanged
+      }
+      syncHeaderBE();
+    }, 30);
+  };
+
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     L8  FUEL HEDGING IMPACT MODEL
+     ══════════════════════════════════════════════════════════════════ -->
+<div id="lfh" class="layer">
+  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Fuel Hedging Impact Model</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:18px">2026–2030 · 7 Regions · 35 Airlines · EBIT margin basis-point impact · Interactive ATF assumptions</div>
+
+  <!-- Global assumption sliders -->
+  <div class="card ga" style="margin-bottom:18px">
+    <div class="ct">Global Fuel Assumptions — adjust to see P&amp;L ripple</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px 32px">
+      <div class="sg"><label>Brent crude ($/bbl)<span id="fh-brent-v">$82</span></label><input type="range" id="fh-brent" min="55" max="130" value="82" step="1" oninput="fhUpdate();syncFromBrent(this.value);"></div>
+      <div class="sg"><label>ATF premium over Brent (%)<span id="fh-atf-v">18%</span></label><input type="range" id="fh-atf" min="8" max="35" value="18" step="1" oninput="fhUpdate()"></div>
+      <div class="sg"><label>USD/INR rate<span id="fh-fx-v">84</span></label><input type="range" id="fh-fx" min="75" max="98" value="84" step="1" oninput="fhUpdate()"></div>
+      <div class="sg"><label>Global pass-through (%)<span id="fh-pt-v">53%</span></label><input type="range" id="fh-pt" min="20" max="80" value="53" step="1" oninput="fhUpdate()"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px">
+      <div class="kc" style="border-top:2px solid var(--teal)"><div class="kl">ATF $/litre (calc)</div><div class="kv" style="color:var(--teal2);font-size:17px" id="fh-atfl">$0.72</div></div>
+      <div class="kc ga"><div class="kl">Hedged benefit est.</div><div class="kv gld" style="font-size:17px" id="fh-hb">+₹890 Cr</div></div>
+      <div class="kc ra"><div class="kl">Unhedged exposure</div><div class="kv neg" style="font-size:17px" id="fh-ue">−₹2,840 Cr</div></div>
+      <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">Net fuel P&amp;L impact</div><div class="kv" style="color:var(--green2);font-size:17px" id="fh-net">+₹420 Cr</div></div>
+    </div>
+  </div>
+
+  <!-- Region sub-tabs -->
+  <div style="display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--rule);flex-wrap:wrap;padding-bottom:2px">
+    <button class="ytab on" id="fht1" onclick="fhSub('fhr-india',this)">Indian subcontinent</button>
+    <button class="ytab" id="fht2" onclick="fhSub('fhr-me',this)">Middle East</button>
+    <button class="ytab" id="fht3" onclick="fhSub('fhr-eu',this)">Europe + LCCs</button>
+    <button class="ytab" id="fht4" onclick="fhSub('fhr-us',this)">US + LCCs</button>
+    <button class="ytab" id="fht5" onclick="fhSub('fhr-latam',this)">South America</button>
+    <button class="ytab" id="fht6" onclick="fhSub('fhr-apac',this)">APAC</button>
+    <button class="ytab" id="fht7" onclick="fhSub('fhr-africa',this)">Africa</button>
+  </div>
+
+  <!-- helper macro: each region panel is identical in structure, just different IDs -->
+  <!-- INDIA -->
+  <div id="fhr-india" class="fhr">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:12px">Indian subcontinent · ATF basis risk · USD/INR double exposure</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-india"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card ga"><div class="ct">EBIT margin impact (bps) · hedged vs unhedged 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-india-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-india-margin"></div></div>
+      <div class="card ta"><div class="ct">Hedge ratio trajectory 2026–2030 (%)</div><div style="position:relative;height:220px"><canvas id="fhc-india-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-india-hedge"></div></div>
+    </div>
+    <div class="card ba"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢) · 2026–2030</div><div style="position:relative;height:200px"><canvas id="fhc-india-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-india-ask"></div></div>
+    <div class="card" style="margin-top:12px"><div class="ct">Assumptions</div>
+      <table class="plt"><thead><tr><th>Airline</th><th>Hedge %</th><th>Strategy</th><th>Fuel % OPEX</th><th>Pass-through</th><th>Key risk</th></tr></thead>
+      <tbody><tr><td style="color:var(--gold2)">IndiGo</td><td class="pos">40%</td><td style="color:var(--muted)">Futures + OTC puts, FX layer</td><td style="color:var(--muted)">31%</td><td style="color:var(--muted)">53%</td><td class="neg">ATF basis risk</td></tr>
+      <tr><td style="color:var(--teal2)">Air India</td><td style="color:var(--gold2)">25%</td><td style="color:var(--muted)">Rebuilding programme</td><td style="color:var(--muted)">34%</td><td style="color:var(--muted)">48%</td><td class="neg">USD/INR + ATF</td></tr>
+      <tr><td style="color:var(--muted)">SpiceJet</td><td class="neg">0%</td><td class="neg">None · distressed</td><td class="neg">38%</td><td style="color:var(--muted)">35%</td><td class="neg">Full spot exposure</td></tr>
+      <tr><td style="color:var(--muted)">Air India Exp.</td><td style="color:var(--muted)">20%</td><td style="color:var(--muted)">Partial futures</td><td style="color:var(--muted)">32%</td><td style="color:var(--muted)">45%</td><td style="color:var(--gold2)">Medium</td></tr>
+      <tr><td style="color:var(--muted)">Akasa Air</td><td style="color:var(--teal2)">15%</td><td style="color:var(--muted)">Early stage</td><td style="color:var(--muted)">33%</td><td style="color:var(--muted)">40%</td><td style="color:var(--gold2)">Medium</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <!-- MIDDLE EAST -->
+  <div id="fhr-me" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--teal);margin-bottom:12px">Middle East · sovereign backstop · cross-asset hedging · petro-upstream offset</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-me"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card ta"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-me-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-me-margin"></div></div>
+      <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-me-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-me-hedge"></div></div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--teal)"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-me-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-me-ask"></div></div>
+  </div>
+
+  <!-- EUROPE -->
+  <div id="fhr-eu" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--purple);margin-bottom:12px">Europe + LCCs · Ryanair locked $67/bbl FY24 avg · easyJet ~75% · ETS surcharge layer</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-eu"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card pa"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-eu-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-eu-margin"></div></div>
+      <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-eu-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-eu-hedge"></div></div>
+    </div>
+    <div class="card pa"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-eu-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-eu-ask"></div></div>
+  </div>
+
+  <!-- US -->
+  <div id="fhr-us" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--blue);margin-bottom:12px">US majors + LCCs · Delta ~$2.3bn programme discontinued · American/United fully unhedged · Southwest exception</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-us"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card ba"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-us-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-us-margin"></div></div>
+      <div class="card ta"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-us-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-us-hedge"></div></div>
+    </div>
+    <div class="card ba"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-us-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-us-ask"></div></div>
+  </div>
+
+  <!-- LATAM -->
+  <div id="fhr-latam" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--red2);margin-bottom:12px">South America · USD fuel + local revenue = double FX squeeze · BRL/COP volatility amplifies exposure</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-latam"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card ra"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-latam-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-latam-margin"></div></div>
+      <div class="card ta"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-latam-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-latam-hedge"></div></div>
+    </div>
+    <div class="card ra"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-latam-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-latam-ask"></div></div>
+  </div>
+
+  <!-- APAC -->
+  <div id="fhr-apac" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--green2);margin-bottom:12px">APAC · SIA/Cathay/Qantas/Air NZ 30–80% cross-asset hedge · JPY overlay for ANA</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-apac"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card" style="border-top:2px solid var(--green2)"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-apac-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-apac-margin"></div></div>
+      <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-apac-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-apac-hedge"></div></div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green2)"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-apac-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-apac-ask"></div></div>
+  </div>
+
+  <!-- AFRICA -->
+  <div id="fhr-africa" class="fhr" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:12px">Africa · highest fuel/OPEX globally (~37%) · lowest hedge coverage · USD access constrained · Ethiopian leads region</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="fhk-africa"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card ra"><div class="ct">EBIT margin impact (bps) 2026–2030</div><div style="position:relative;height:220px"><canvas id="fhc-africa-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-africa-margin"></div></div>
+      <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="fhc-africa-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-africa-hedge"></div></div>
+    </div>
+    <div class="card ra"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="fhc-africa-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="fhl-africa-ask"></div></div>
+  </div>
+</div><!-- /lfh -->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     L9  AIR INDIA HEDGING STRATEGY 2026–2030
+     ══════════════════════════════════════════════════════════════════ -->
+<div id="lai" class="layer">
+  <div style="font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:4px">Fuel Hedging Strategy</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:18px">5-year programme · Base case + Best case scenario · Integrated P&amp;L linkage</div>
+
+  <div style="display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--rule);padding-bottom:2px">
+    <button class="ytab on" id="ait1" onclick="aiSub('ai-over',this)">Strategy Overview</button>
+    <button class="ytab" id="ait2" onclick="aiSub('ai-road',this)">Roadmap 2026–2030</button>
+    <button class="ytab" id="ait3" onclick="aiSub('ai-pl',this)">P&amp;L Scenarios</button>
+    <button class="ytab" id="ait4" onclick="aiSub('ai-best',this)">Best Case</button>
+    <button class="ytab" id="ait5" onclick="aiSub('ai-model',this)">Hedging Model — India</button>
+    <button class="ytab" id="ait6" onclick="aiSub('ai-intl',this)">Hedging Model — International</button>
+    <button class="ytab" id="ait7" onclick="aiSub('ai-risk',this)">Risk: Downside Scenarios</button>
+  </div>
+
+  <!-- Overview -->
+  <div id="ai-over" class="ais">
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:16px">
+      <div>
+        <div class="nb2">
+          <div class="nbc">Strategic rationale</div>
+          <div class="nbt">Air India's fuel bill is ₹26,700–32,000 Cr/yr at current ATF — the single largest CASK driver and primary obstacle to FY2029 break-even.</div>
+          <div class="nbody">A structured hedging programme covering 40–65% of annual consumption, layered with FX forwards on USD exposure, can reduce fuel CASK volatility by 35–50% and bring EBIT break-even 6–12 months forward. Basis risk is acknowledged (ATF ≠ Brent) — consistent with IATA treasury best practice — so crude hedges are supplemented with option premium discipline and ATF/Brent crack-spread correlation monitoring.<br><br><span style="color:var(--mid);font-size:10.5px"><em>Hedge ratio targets are illustrative, modelled on disclosed programmes at Ryanair (~80%), Emirates (~65%), Singapore Airlines (~70%), and Cathay Pacific (~65%). Air India has not publicly disclosed a formal hedging programme as of FY2026. IndiGo (~40%) is used as the closest Indian peer benchmark given ATF basis risk constraints.</em></span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+          <div class="kc ga"><div class="kl">Current hedge ratio</div><div class="kv gld">~25%</div><div class="ks">FY2026 estimated</div></div>
+          <div class="kc ta"><div class="kl">Target FY2028</div><div class="kv" style="color:var(--teal2)">50%</div><div class="ks">Rolling 18-month window</div></div>
+          <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">Best case FY2030</div><div class="kv" style="color:var(--green2)">65%</div><div class="ks">Full cross-asset layer</div></div>
+        </div>
+        <div class="card ba"><div class="ct">AI hedge ratio build-up vs IndiGo, Ryanair, Emirates, SIA &amp; Delta benchmarks</div><div style="position:relative;height:190px"><canvas id="ai-hr-chart"></canvas></div>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:9px;color:var(--mid);line-height:1.6;border-left:2px solid #E05555;padding-left:8px">
+              <span style="color:#E05555;font-weight:600">Ryanair (~80%)</span> — CEO Michael O'Leary, Bloomberg interview, confirmed FY2024 fuel hedged at avg $67/bbl covering ~80% of consumption.
+              <a href="https://www.bloomberg.com/news/articles/2024-ryanair-fuel-hedge" target="_blank" style="color:var(--muted);text-decoration:underline;margin-left:4px">Bloomberg, 2024 ↗</a>
+            </div>
+            <div style="font-size:9px;color:var(--mid);line-height:1.6;border-left:2px solid #3498DB;padding-left:8px">
+              <span style="color:#3498DB;font-weight:600">Emirates (~65%)</span> — Emirates Group Annual Report FY2023/24 discloses fuel hedging programme covering approximately 60–65% of projected consumption using swaps and options.
+              <a href="https://www.emirates.com/english/about-us/annual-report/" target="_blank" style="color:var(--muted);text-decoration:underline;margin-left:4px">Emirates Annual Report FY2024 ↗</a>
+            </div>
+            <div style="font-size:9px;color:var(--mid);line-height:1.6;border-left:2px solid #F59E0B;padding-left:8px">
+              <span style="color:#F59E0B;font-weight:600">IndiGo (~40%)</span> — IndiGo uses OTC put options on ~7% of notional fuel exposure plus crude futures covering ~40% of consumption, disclosed in IndiGo FY2024–25 Annual Report. Closest Indian peer benchmark for Air India given shared ATF basis risk.
+              <a href="https://www.goindigo.in/investor-relations/annual-reports.html" target="_blank" style="color:var(--muted);text-decoration:underline;margin-left:4px">IndiGo Annual Report FY25 ↗</a>
+            </div>
+            <div style="font-size:9px;color:var(--mid);line-height:1.6;border-left:2px solid #8B6FD4;padding-left:8px">
+              <span style="color:#8B6FD4;font-weight:600">SIA (~70%)</span> — Singapore Airlines FY2025–26 Annual Report discloses fuel hedging programme covering ~70% of projected consumption via cross-asset swaps, options and jet-kero differential instruments. Sophisticated multi-layer programme; highest hedge ratio among Asian network carriers.
+              <a href="https://www.singaporeair.com/en_UK/us/media-centre/news-releases/" target="_blank" style="color:var(--muted);text-decoration:underline;margin-left:4px">SIA Annual Report FY26 ↗</a>
+            </div>
+            <div style="font-size:9px;color:var(--mid);line-height:1.6;border-left:2px solid #FF6B6B;padding-left:8px">
+              <span style="color:#FF6B6B;font-weight:600">Delta (~0–12%)</span> — Delta Air Lines discontinued its fuel hedging programme in 2023 after cumulative losses of ~$2.3B. As of FY2025, Delta carries effectively 0% hedge ratio on jet fuel, with selective small hedges (~5–12%) on currency and commodity exposures only. Delta's experience is the primary risk case study for Air India.
+              <a href="https://ir.delta.com/financial-information/annual-reports" target="_blank" style="color:var(--muted);text-decoration:underline;margin-left:4px">Delta Annual Report FY2025 ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card ga"><div class="ct">Target instrument mix (FY2028)</div><div style="position:relative;height:170px"><canvas id="ai-inst-chart"></canvas></div>
+          <div style="font-size:9px;color:var(--mid);margin-top:10px;line-height:2">
+            <div style="display:flex;justify-content:space-between"><span><span style="color:var(--teal2)">■</span> Fixed-price swaps</span><span style="font-family:var(--mono)">40%</span></div>
+            <div style="display:flex;justify-content:space-between"><span><span style="color:var(--gold2)">■</span> Put options (7% notional)</span><span style="font-family:var(--mono)">25%</span></div>
+            <div style="display:flex;justify-content:space-between"><span><span style="color:var(--blue2)">■</span> USD/INR forwards</span><span style="font-family:var(--mono)">20%</span></div>
+            <div style="display:flex;justify-content:space-between"><span><span style="color:var(--purple)">■</span> Collars (cap + floor)</span><span style="font-family:var(--mono)">15%</span></div>
+          </div>
+        </div>
+        <div class="card ra" style="margin-top:10px"><div class="ct">Basis risk warning</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">ATF (India) tracks Brent with 15–25% premium and 2–4 week lag. Tax component (~35%) is fixed — cannot be hedged. Effective hedgeable exposure is ~65% of total fuel bill. IndiGo ATF/Brent correlation: <span class="gld" style="font-family:var(--mono)">0.71</span> — not 1.0. Basis risk = residual unhedged P&amp;L variance.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card ga"><div class="ct">AI annual fuel cost — gross vs net of hedge (₹ Crores)</div><div style="position:relative;height:220px"><canvas id="ai-annual-fuel"></canvas></div></div>
+  </div>
+
+  <!-- Roadmap -->
+  <div id="ai-road" class="ais" style="display:none">
+    <div class="card" style="border-top:2px solid var(--teal);margin-bottom:14px">
+      <div class="ct">5-year implementation roadmap</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0">
+        <div style="padding:14px 12px;border-right:1px solid var(--rule);background:rgba(200,168,75,.05)">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;text-transform:uppercase">FY2026 — Foundation</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">Build treasury desk · Appoint risk manager · Establish 25% crude swap programme · USD/INR forward for fuel USD outflows · ICICI/HDFC derivatives desk engagement</div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--teal2)">Hedge: 25%</div>
+          <div style="font-size:9px;color:var(--mid);margin-top:2px">Est. saving: ₹890 Cr</div>
+        </div>
+        <div style="padding:14px 12px;border-right:1px solid var(--rule)">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;text-transform:uppercase">FY2027 — Expand</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">Increase to 35% · Add put-option layer (7% notional) · 18-month rolling window · Jet-kero differential monitoring</div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--teal2)">Hedge: 35%</div>
+          <div style="font-size:9px;color:var(--mid);margin-top:2px">Est. saving: ₹1,420 Cr</div>
+        </div>
+        <div style="padding:14px 12px;border-right:1px solid var(--rule);background:rgba(26,188,156,.04)">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;text-transform:uppercase">FY2028 — Scale</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">Target 50% · Collar structures · Cross-asset jet-kero swaps · FX: 24-month USD/INR ladder</div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--teal2)">Hedge: 50%</div>
+          <div style="font-size:9px;color:var(--mid);margin-top:2px">Est. saving: ₹2,100 Cr</div>
+        </div>
+        <div style="padding:14px 12px;border-right:1px solid var(--rule)">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;text-transform:uppercase">FY2029 — Optimise</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">55–60% · Surcharge/hedge co-optimisation · Quarterly basis review · Consider Ryanair-style fixed procurement</div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--teal2)">Hedge: 57%</div>
+          <div style="font-size:9px;color:var(--mid);margin-top:2px">Est. saving: ₹2,680 Cr</div>
+        </div>
+        <div style="padding:14px 12px;background:rgba(74,201,122,.05)">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;text-transform:uppercase">FY2030 — Best Case</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.7">65% · Emirates/SIA-parity programme · Full cross-asset overlay · Integrated CASK target &lt;$0.095</div>
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--green2)">Hedge: 65%</div>
+          <div style="font-size:9px;color:var(--mid);margin-top:2px">Est. saving: ₹3,200 Cr</div>
+        </div>
+      </div>
+    </div>
+    <div class="card ba"><div class="ct">Cumulative hedging savings vs no-hedge baseline (₹ Crores)</div><div style="position:relative;height:220px"><canvas id="ai-cumulative"></canvas></div></div>
+  </div>
+
+  <!-- P&L Scenarios -->
+  <div id="ai-pl" class="ais" style="display:none">
+    <div class="card ga" style="margin-bottom:14px">
+      <div class="ct">Scenario simulator — live P&amp;L adjustment</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px 32px">
+        <div class="sg"><label>Brent ($/bbl)<span id="ai-brent-v">$82</span></label><input type="range" id="ai-brent" min="55" max="130" value="82" step="1" oninput="aiPlUpdate();syncFromBrent(this.value);"></div>
+        <div class="sg"><label>AI hedge ratio (%)<span id="ai-hr-v">40%</span></label><input type="range" id="ai-hr" min="0" max="80" value="40" step="5" oninput="aiPlUpdate()"></div>
+        <div class="sg"><label>Surcharge pass-through (%)<span id="ai-pt2-v">48%</span></label><input type="range" id="ai-pt2" min="20" max="75" value="48" step="1" oninput="aiPlUpdate()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px">
+        <div class="kc ra"><div class="kl">Gross fuel bill</div><div class="kv neg" id="ai-gross" style="font-size:16px">₹29,400 Cr</div></div>
+        <div class="kc" style="border-top:2px solid var(--teal)"><div class="kl">Hedge saving</div><div class="kv" style="color:var(--teal2);font-size:16px" id="ai-save">₹0 Cr</div></div>
+        <div class="kc ba"><div class="kl">Surcharge recovery</div><div class="kv" style="color:var(--blue2);font-size:16px" id="ai-surch">₹4,910 Cr</div></div>
+        <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">Net fuel cost</div><div class="kv" style="color:var(--green2);font-size:16px" id="ai-net2">₹24,490 Cr</div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="card ta"><div class="ct">3-scenario EBIT delta (₹ Cr) · 2026–2030</div><div style="position:relative;height:240px"><canvas id="ai-scenario-chart"></canvas></div></div>
+      <div class="card ba"><div class="ct">EBIT margin trajectory — base vs best case (%)</div><div style="position:relative;height:240px"><canvas id="ai-margin-chart"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- Best Case -->
+  <div id="ai-best" class="ais" style="display:none">
+    <div class="nb2" style="border-left-color:var(--mid);margin-bottom:8px">
+      <div class="nbc" style="color:var(--mid)">Data transparency</div>
+      <div class="nbody" style="font-size:10.5px"><em>Best case figures (+$1,240M EBIT, 8.4% margin, FY2028 break-even, $0.031 fuel CASK) are illustrative projections modelled by analogy to peer programmes — not Air India forecasts or disclosed targets. They assume 65% hedge coverage, Brent $70–85/bbl, and USD/INR 82–86. Peer reference: Emirates 8–12% EBIT margin at ~65% hedge; Ryanair 15–20% at ~80% hedge. Air India has not publicly disclosed forward guidance on hedging or margins.</em></div>
+    </div>
+    <div class="nb2" style="border-left-color:var(--green2);margin-bottom:14px">
+      <div class="nbc" style="color:var(--green2)">Best case conditions</div>
+      <div class="nbt">65% hedge coverage by FY2030 · Brent $70–85/bbl · USD/INR stable 82–86 · Surcharge recovery &gt;60%</div>
+      <div class="nbody">Under these conditions, net fuel CASK falls to ~$0.031 (from ~$0.048 today), equivalent to a ₹3,200 Cr annual saving. Combined with fleet-efficiency gains, EBIT margin reaches 8–11% in FY2030 versus 0.9% in base case. Break-even is pulled forward to FY2028.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+      <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">EBIT FY2030 best</div><div class="kv" style="color:var(--green2)">+$1,240M</div><div class="ks">vs $164M base</div></div>
+      <div class="kc ga"><div class="kl">Net margin FY2030</div><div class="kv gld">8.4%</div><div class="ks">vs 1.1% base</div></div>
+      <div class="kc ta"><div class="kl">Fuel CASK</div><div class="kv" style="color:var(--teal2)">$0.031</div><div class="ks">vs $0.048 today</div></div>
+      <div class="kc ba"><div class="kl">Break-even fwd</div><div class="kv" style="color:var(--blue2)">FY2028</div><div class="ks">vs FY2029 base</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="card" style="border-top:2px solid var(--green2)"><div class="ct">AI base vs best case EBIT ($M) · 2026–2030</div><div style="position:relative;height:240px"><canvas id="ai-best-ebit"></canvas></div></div>
+      <div class="card ga"><div class="ct">AI fuel CASK trajectory · base vs best vs IndiGo, SIA, EK &amp; Delta benchmarks (USD ¢/ASK)</div><div style="position:relative;height:240px"><canvas id="ai-best-cask"></canvas></div></div>
+    </div>
+    <div class="card ba"><div class="ct">AI sensitivity matrix — net fuel P&amp;L (₹ Crores) · Brent price × hedge ratio</div>
+      <div style="overflow-x:auto;margin-top:6px"><table class="smat" id="ai-sens-table"></table></div>
+    </div>
+  </div>
+
+  <!-- Hedging Model — India -->
+  <div id="ai-model" class="ais" style="display:none">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Indian subcontinent · IndiGo · Air India · SpiceJet · Air India Express · Akasa Air · ATF basis risk · USD/INR double exposure</div>
+
+    <!-- India sliders -->
+    <div class="card ga" style="margin-bottom:18px">
+      <div class="ct">India Fuel Assumptions</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px 32px">
+        <div class="sg"><label>Brent crude ($/bbl)<span id="hm-brent-v">$82</span></label><input type="range" id="hm-brent" min="55" max="130" value="82" step="1" oninput="hmUpdate();syncFromBrent(this.value);"></div>
+        <div class="sg"><label>ATF premium over Brent (%)<span id="hm-atf-v">18%</span></label><input type="range" id="hm-atf" min="8" max="35" value="18" step="1" oninput="hmUpdate()"></div>
+        <div class="sg"><label>USD/INR rate<span id="hm-fx-v">84</span></label><input type="range" id="hm-fx" min="75" max="98" value="84" step="1" oninput="hmUpdate()"></div>
+        <div class="sg"><label>Pass-through (%)<span id="hm-pt-v">53%</span></label><input type="range" id="hm-pt" min="20" max="80" value="53" step="1" oninput="hmUpdate()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px">
+        <div class="kc" style="border-top:2px solid var(--teal)"><div class="kl">ATF $/litre (calc)</div><div class="kv" style="color:var(--teal2);font-size:17px" id="hm-atfl">$0.72</div></div>
+        <div class="kc ga"><div class="kl">Hedged benefit est.</div><div class="kv gld" style="font-size:17px" id="hm-hb">+₹890 Cr</div></div>
+        <div class="kc ra"><div class="kl">Unhedged exposure</div><div class="kv neg" style="font-size:17px" id="hm-ue">−₹2,840 Cr</div></div>
+        <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">Net fuel P&L impact</div><div class="kv" style="color:var(--green2);font-size:17px" id="hm-net">+₹420 Cr</div></div>
+      </div>
+    </div>
+
+    <div id="hmr-india" class="hmr">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:12px">Indian subcontinent · ATF basis risk · USD/INR double exposure</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="hmk-india"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="card ga"><div class="ct">EBIT margin impact (bps) · 2026–2030</div><div style="position:relative;height:220px"><canvas id="hmc-india-margin"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="hml-india-margin"></div></div>
+        <div class="card ta"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmc-india-hedge"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--muted)" id="hml-india-hedge"></div></div>
+      </div>
+      <div class="card ba"><div class="ct">All 5 airlines · fuel cost per ASK (USD ¢)</div><div style="position:relative;height:200px"><canvas id="hmc-india-ask"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:9px;color:var(--muted)" id="hml-india-ask"></div></div>
+    </div>
+  </div><!-- /ai-model -->
+
+  <!-- Hedging Model — International -->
+
+
+  <!-- ══ RISK: DOWNSIDE SCENARIOS ══ -->
+
+
+
+  <!-- Hedging Model — International -->
+
+
+  <!-- Risk: Downside Scenarios -->
+
+
+  <div id="ai-intl" class="ais" style="display:none">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px">6 regions · 30 airlines · Middle East · Europe · US · South America · APAC · Africa</div>
+    <div class="card ga" style="margin-bottom:14px">
+      <div class="ct">International fuel assumptions</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px 24px">
+        <div class="sg"><label>Brent ($/bbl)<span id="hmi-brent-v">$82</span></label><input type="range" id="hmi-brent" min="55" max="130" value="82" step="1" oninput="window.hmiUpdate()"></div>
+        <div class="sg"><label>ATF premium (%)<span id="hmi-atf-v">18%</span></label><input type="range" id="hmi-atf" min="8" max="35" value="18" step="1" oninput="window.hmiUpdate()"></div>
+        <div class="sg"><label>USD rate<span id="hmi-fx-v">84</span></label><input type="range" id="hmi-fx" min="75" max="98" value="84" step="1" oninput="window.hmiUpdate()"></div>
+        <div class="sg"><label>Pass-through (%)<span id="hmi-pt-v">53%</span></label><input type="range" id="hmi-pt" min="20" max="80" value="53" step="1" oninput="window.hmiUpdate()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">
+        <div class="kc" style="border-top:2px solid var(--teal)"><div class="kl">ATF $/litre</div><div class="kv" style="color:var(--teal2);font-size:16px" id="hmi-atfl">$0.72</div></div>
+        <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">Highest hedge region</div><div class="kv" style="color:var(--green2);font-size:16px">Europe 72%</div></div>
+        <div class="kc ra"><div class="kl">Lowest hedge region</div><div class="kv neg" style="font-size:16px">Africa 12%</div></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--rule);padding-bottom:2px;flex-wrap:wrap;position:relative;z-index:5">
+      <button class="ytab on" id="hmit1" onclick="window.hmiSub('hmir-me',this)">Middle East</button>
+      <button class="ytab" id="hmit2" onclick="window.hmiSub('hmir-eu',this)">Europe + LCCs</button>
+      <button class="ytab" id="hmit3" onclick="window.hmiSub('hmir-us',this)">US + LCCs</button>
+      <button class="ytab" id="hmit4" onclick="window.hmiSub('hmir-latam',this)">South America</button>
+      <button class="ytab" id="hmit5" onclick="window.hmiSub('hmir-apac',this)">APAC</button>
+      <button class="ytab" id="hmit6" onclick="window.hmiSub('hmir-africa',this)">Africa</button>
+    </div>
+    <div id="hmir-me" class="hmir">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:10px">Middle East · sovereign backstop · cross-asset · petro-upstream offset</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-me"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ta"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-me-margin"></canvas></div><div id="hmil-me-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-me-hedge"></canvas></div><div id="hmil-me-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--teal)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-me-ask"></canvas></div><div id="hmil-me-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+    <div id="hmir-eu" class="hmir" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:10px">Europe + LCCs · Ryanair $67/bbl locked · easyJet ~75% · ETS surcharge</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-eu"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card pa"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-eu-margin"></canvas></div><div id="hmil-eu-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-eu-hedge"></canvas></div><div id="hmil-eu-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--purple)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-eu-ask"></canvas></div><div id="hmil-eu-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+    <div id="hmir-us" class="hmir" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:10px">US majors + LCCs · Delta $2.3bn discontinued · AAL/UAL unhedged · Southwest exception</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-us"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ba"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-us-margin"></canvas></div><div id="hmil-us-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-us-hedge"></canvas></div><div id="hmil-us-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--blue)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-us-ask"></canvas></div><div id="hmil-us-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+    <div id="hmir-latam" class="hmir" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--red2);margin-bottom:10px">South America · USD fuel + local revenue · BRL/COP volatility amplifies</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-latam"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ra"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-latam-margin"></canvas></div><div id="hmil-latam-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-latam-hedge"></canvas></div><div id="hmil-latam-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--red2)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-latam-ask"></canvas></div><div id="hmil-latam-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+    <div id="hmir-apac" class="hmir" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--green2);margin-bottom:10px">APAC · SIA/Cathay/Qantas/Air NZ 30-80% cross-asset · JPY overlay ANA</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-apac"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ga"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-apac-margin"></canvas></div><div id="hmil-apac-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-apac-hedge"></canvas></div><div id="hmil-apac-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--green2)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-apac-ask"></canvas></div><div id="hmil-apac-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+    <div id="hmir-africa" class="hmir" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px">Africa · fuel/OPEX ~37% · lowest hedge coverage · USD constrained</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="hmik-africa"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ra"><div class="ct">EBIT margin impact (bps) 2026-2030</div><div style="position:relative;height:220px"><canvas id="hmic-africa-margin"></canvas></div><div id="hmil-africa-margin" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+        <div class="card ba"><div class="ct">Hedge ratio trajectory (%)</div><div style="position:relative;height:220px"><canvas id="hmic-africa-hedge"></canvas></div><div id="hmil-africa-hedge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--muted)"><div class="ct">Fuel cost per ASK (USD cents)</div><div style="position:relative;height:200px"><canvas id="hmic-africa-ask"></canvas></div><div id="hmil-africa-ask" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:9px;color:var(--muted)"></div></div>
+    </div>
+  </div><!-- /ai-intl -->
+
+  <div id="ai-risk" class="ais" style="display:none">
+    <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--red2);margin-bottom:12px">Risk: Downside Scenarios · Crisis ends · prices drop · mark-to-market hedge liability</div>
+    <div class="card ra" style="margin-bottom:12px;padding:12px 16px">
+      <div style="font-size:10px;font-weight:600;color:var(--text);margin-bottom:4px">The mark-to-market loss problem</div>
+      <div style="font-size:9.5px;color:var(--muted);line-height:1.6">When crisis resolves and Brent drops, airlines with <strong style="color:var(--gold2)">fixed-price swaps</strong> pay above market — the hedge becomes a liability. Airlines with <strong style="color:var(--teal2)">put options</strong> simply do not exercise, losing only the 7% premium paid. <strong style="color:var(--red2)">Delta lost $2.3B</strong> this way and discontinued its programme.</div>
+    </div>
+    <div class="card ga" style="margin-bottom:12px">
+      <div class="ct">Scenario sliders</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px 24px">
+        <div class="sg"><label>Crisis-peak locked ($/bbl)<span id="rsk-peak-v">$95</span></label><input type="range" id="rsk-peak" min="70" max="130" value="95" step="1" oninput="window.rskUpdate()"></div>
+        <div class="sg"><label>Post-resolution Brent ($/bbl)<span id="rsk-spot-v">$72</span></label><input type="range" id="rsk-spot" min="50" max="110" value="72" step="1" oninput="window.rskUpdate()"></div>
+        <div class="sg"><label>AI hedge ratio (%)<span id="rsk-hr-v">40%</span></label><input type="range" id="rsk-hr" min="0" max="80" value="40" step="5" oninput="window.rskUpdate()"></div>
+        <div class="sg"><label>Fixed swaps % of hedge<span id="rsk-sw-v">60%</span></label><input type="range" id="rsk-sw" min="0" max="100" value="60" step="5" oninput="window.rskUpdate()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px">
+        <div class="kc ra"><div class="kl">Overpayment/bbl</div><div class="kv neg" style="font-size:16px" id="rsk-overpay">-$23/bbl</div></div>
+        <div class="kc ra"><div class="kl">AI swap loss</div><div class="kv neg" style="font-size:16px" id="rsk-loss">-$358M</div></div>
+        <div class="kc ga"><div class="kl">Option saves</div><div class="kv gld" style="font-size:16px" id="rsk-save">$143M</div></div>
+        <div class="kc ta"><div class="kl">Net exposure</div><div class="kv" style="color:var(--teal2);font-size:16px" id="rsk-net">-$215M</div></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid var(--rule);padding-bottom:2px;flex-wrap:wrap;position:relative;z-index:5">
+      <button class="ytab on" id="rskt1" onclick="window.rskSub('rsk-ai',this)">Air India</button>
+      <button class="ytab" id="rskt2" onclick="window.rskSub('rsk-india',this)">India</button>
+      <button class="ytab" id="rskt3" onclick="window.rskSub('rsk-apac',this)">APAC</button>
+      <button class="ytab" id="rskt4" onclick="window.rskSub('rsk-me',this)">Middle East</button>
+      <button class="ytab" id="rskt5" onclick="window.rskSub('rsk-us',this)">US</button>
+      <button class="ytab" id="rskt6" onclick="window.rskSub('rsk-eu',this)">Europe</button>
+    </div>
+    <div id="rsk-ai" class="rskp">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card ra"><div class="ct">AI hedge P&L across Brent spot prices ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-ai-loss"></canvas></div><div style="font-size:8.5px;color:var(--mid);margin-top:6px">Swap loss = hedged vol x (locked-spot). Options lose premium only (~7%).</div></div>
+        <div class="card ga"><div class="ct">Instrument mix — net P&L at current spot ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-ai-inst"></canvas></div><div style="font-size:8.5px;color:var(--mid);margin-top:6px">Options cap max loss at premium paid. Swaps have unlimited downside.</div></div>
+      </div>
+      <div class="card ba" style="margin-bottom:12px"><div class="ct">Break-even: at what Brent does hedge start costing more than it saves?</div><div style="position:relative;height:200px"><canvas id="rsk-ai-be"></canvas></div></div>
+      <div class="card ra"><div class="ct">Sensitivity matrix — hedge P&L ($M) · locked price x post-resolution Brent</div><div style="overflow-x:auto;margin-top:6px"><table class="smat" id="rsk-ai-sens"></table></div></div>
+    </div>
+    <div id="rsk-india" class="rskp" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Indian subcontinent · ATF basis risk compounds downside · USD/INR amplifies</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="rsk-india-kpis"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card ra"><div class="ct">Hedge loss at resolution ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-india-loss"></canvas></div></div>
+        <div class="card ga"><div class="ct">ATF basis risk — Brent drops but ATF stays elevated</div><div style="position:relative;height:240px"><canvas id="rsk-india-basis"></canvas></div></div>
+      </div>
+    </div>
+    <div id="rsk-apac" class="rskp" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--green2);margin-bottom:10px">APAC · SIA/Cathay options-heavy = protected · Qantas entered near peak · JPY doubles FX risk</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="rsk-apac-kpis"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card ra"><div class="ct">Hedge loss at resolution ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-apac-loss"></canvas></div></div>
+        <div class="card ta"><div class="ct">Swap vs option volume by airline ($M fuel)</div><div style="position:relative;height:240px"><canvas id="rsk-apac-inst"></canvas></div></div>
+      </div>
+    </div>
+    <div id="rsk-me" class="rskp" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--teal);margin-bottom:10px">Middle East · sovereign backstop absorbs losses · petro upstream = natural hedge</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="rsk-me-kpis"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card ra"><div class="ct">Hedge loss at resolution ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-me-loss"></canvas></div></div>
+        <div class="card ba"><div class="ct">Swap vs option volume by airline ($M fuel)</div><div style="position:relative;height:240px"><canvas id="rsk-me-inst"></canvas></div></div>
+      </div>
+    </div>
+    <div id="rsk-us" class="rskp" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--blue);margin-bottom:10px">US majors · AAL/UAL/Delta unhedged = zero downside · Southwest exposed · Delta $2.3B lesson</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="rsk-us-kpis"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card ra"><div class="ct">Hedge loss at resolution ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-us-loss"></canvas></div></div>
+        <div class="card" style="border-top:2px solid var(--green2)"><div class="ct">Unhedged spot saving when Brent drops ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-us-spot"></canvas></div></div>
+      </div>
+    </div>
+    <div id="rsk-eu" class="rskp" style="display:none">
+      <div style="font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--purple);margin-bottom:10px">Europe · Ryanair $67/bbl fixed = most exposed · easyJet options = protected · ETS partial offset</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="rsk-eu-kpis"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card ra"><div class="ct">Hedge loss at resolution ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-eu-loss"></canvas></div></div>
+        <div class="card pa"><div class="ct">Option vs swap protection comparison ($M)</div><div style="position:relative;height:240px"><canvas id="rsk-eu-prot"></canvas></div></div>
+      </div>
+    </div>
+  </div><!-- /ai-risk -->
+</div><!-- /lai -->
+
+<footer class="foot">AI-Conceptual 5-Year Estimates · Independent Expert Simulation · Prepared by Sonal Sharma · IIM Udaipur Executive PhD Candidate · Distribution &amp; Commercial Leader · May 2026</footer>
+
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  EXECUTIVE NARRATIVE SUB-TABS + RECOMMENDATIONS MODULE
+// ════════════════════════════════════════════════════════════════════
+window.l5Sub = function(id, btn) {
+  document.querySelectorAll('.l5s').forEach(function(s){s.style.display='none';});
+  var el=document.getElementById(id); if(el) el.style.display='block';
+  document.querySelectorAll('[id^=l5t]').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  if(id==='l5-recs'){
+    setTimeout(function(){buildRecTable('all');}, 40);
+  } else {
+    // Clear rec-cards when switching away so they don't bleed through
+    var rc=document.getElementById('rec-cards'); if(rc) rc.innerHTML='';
+  }
+};
+
+// ── RECOMMENDATIONS DATA ──────────────────────────────────────────
+// Columns: area, title, currentState, benchmark, source, valueM, timeline, priority
+var RECS = [
+  // ── DISTRIBUTION ──────────────────────────────────────────────────────
+  ['dist','Accelerate NDC shift to 30%+ by FY2028',
+   'Air India NDC live since Sep 2024 (IATA 21.3); estimated ~5%-8% transactional volume share — nascent. IndiGo-Amadeus NDC partnership signed Sep 2024, early deployment. Global leaders at 20-35% NDC mix (IATA ARM 2025).',
+   'Lufthansa Group: ~35% NDC share (2025); British Airways: ~30%; Global ARC-settled NDC: 21.2% of transactions (Dec 2025, Travel Weekly). IATA 2025 Annual Review: leading airlines at 35% attachment rate. IATA Offer & Order target: 100% by 2030.',
+   'IATA NDC Study 2024','$330M','FY2026–28','HIGH'],
+
+  ['dist','Implement dynamic ancillary pricing via NDC',
+   'Air India ancillary revenue est. ~$4-5/pax — nascent NDC dynamic pricing. Global ancillary revenues reached $117B in 2024, rising to est. $180B by 2030 (IdeaWorksCompany 2025). NDC-enabled dynamic ancillary pricing drives 15-30% uplift per pax (airlinedistribution.net 2025). airBaltic reported +6% ASR revenue/pax after dynamic ancillary implementation (PROS 2026).',
+   'Airlines with full NDC dynamic pricing report 2.5-5% incremental revenue above GDS-based distribution (Airline RM Market Report 2025). Ryanair ~$30/pax ancillary (FY2025 annual report); easyJet ~$25/pax; IndiGo ~$6/pax (FY25). Air India target: $10-12/pax by FY2028 via NDC dynamic bundling.',
+   'IdeaWorksCompany 2025; PROS Dynamic Ancillary Pricing case studies 2026; Airline RM Market Report Oct 2025; IndiGo FY25 Annual Report','$410M','FY2026–27','HIGH'],
+
+  ['dist','Scale GDS media to 8+ targeted B2B campaigns/yr',
+   'GDS media at nascent stage; not systematically deployed',
+   'GDS media campaigns generate $3-8M gross per campaign for mid-to-large FSCs (Amadeus Media Solutions benchmark range, 2025); 30% net after ~70% cannibalization adjustment. British Airways est. monthly GDS ad spend ~£2.35M (ClickThrough Digital Benchmark Q1 2025). No airline publicly discloses per-campaign GDS media revenue.',
+   'Amadeus Media Solutions 2025; ClickThrough Digital Airline Benchmark Q1 2025; industry estimates','$296M','FY2026','MEDIUM'],
+
+  ['dist','Reduce GDS dependence — renegotiate Amadeus/Sabre fees',
+   '$2/seg domestic, $6.25/seg intl GDS fees — industry mid-point',
+   'Ryanair: <0.5% GDS distribution; IndiGo: 5% GDS mix (mostly direct)',
+   'Amadeus/Sabre published rates; IATA','$253M','FY2026–27','HIGH'],
+
+  ['dist','Deploy AI-driven revenue integrity at scale',
+   '$4M fraud recovery — 0.04% of revenue; very conservative floor',
+   'Industry: 0.3–0.5% of distribution revenue; US DOT $6–8/dispute',
+   'US DOT; revenue integrity industry studies','$108M','FY2026','MEDIUM'],
+
+  // ── FLEET & OPS ───────────────────────────────────────────────────────
+  ['fleet','Retire A319ceo and A320ceo immediately — highest CASK gap',
+   'A319ceo/A320ceo CASK gap vs IndiGo A320neo: 55–65% capacity on competed routes',
+   'IndiGo CASK 4.8¢ vs AI legacy A320ceo ~5.8¢; AirBench CBI 2026',
+   'AirBench CBI May 2026; IndiGo FY25 Annual Report','$795M','FY2026–27','HIGH'],
+
+  ['fleet','Accelerate A350-900 deployment on EU/US long-haul corridors',
+   '6 A350s delivered; EU ETS saving ~$4.2M/aircraft/yr on EU routes',
+   'A350: 76g CO₂/ASK vs AI legacy 777 at 155g/ASK; 25% CASK improvement',
+   'Cirium EmeraldSky 2025; Nature Comms Jan 2026','$380M','FY2026–29','HIGH'],
+
+  ['fleet','Increase fleet utilisation from 11.2 to 13+ hrs/day by FY2029',
+   '11.2 hrs/day — below SIA 13–14 hrs; each +1 hr/day = ~$46M EBIT',
+   'SIA: 13–14 hrs WB; IndiGo 14+ hrs NB; IATA WB target: 12 hrs+',
+   'SIA FY26 Annual Report; IATA fleet utilisation benchmarks','$460M','FY2027–29','HIGH'],
+
+  ['fleet','Retire 777-300ER fleet as A350-900s deliver (phased FY27–29)',
+   '14 × 777-300ER: 42% capacity on competed routes; GE90 fuel premium over Trent XWB',
+   'Each A350 saves 1.4t/hr vs 777-200LR; $4.2M/yr ETS avoidance per aircraft',
+   'AirBench CBI; Rolls-Royce Trent XWB specs; EU ETS data','$560M','FY2027–29','HIGH'],
+
+  ['fleet','Pursue GIFT City SLB for new deliveries to cut effective lease cost',
+   'AIFS: $215M for 6 × 777s (Oct 2025) — first deal only; nascent programme',
+   'No customs duty, no MAT, 10-yr tax holiday; saves 0.3–0.5%/yr vs offshore lessor',
+   'AIFS $215M deal Oct 2025; Bloomberg GIFT City Nov 2025','$235M','FY2026–28','MEDIUM'],
+
+  // ── GROUND & MRO ──────────────────────────────────────────────────────
+  ['ground','Reduce average TAT by 8 min across 600 daily flights',
+   '600 daily flights; each minute on ground costs ~$50; 8 min = $87.6M/yr gross',
+   'IATA ground ops best practice: 10–15 min TAT reduction achievable in Yr1',
+   'IATA Ground Ops Manual 2024','$2,799M','FY2026–28','HIGH'],
+
+  ['ground','Renegotiate MRO contracts — 8% saving on $800M base',
+   '$800M estimated MRO base; 8% target saving = $64M/yr; no public disclosure',
+   'Air Arabia achieved 9%; IndiGo ~8%; renegotiation at scale yields 6–12%',
+   'Air Arabia / IndiGo annual reports; MRO benchmarks','$1,679M','FY2026–27','HIGH'],
+
+  ['ground','Deploy AI demand forecasting to cut F&B waste by 25%',
+   '$150M catering cost × 25% waste reduction = $37.5M/yr; $2.5M AI system cost',
+   'Airlines reduce catering waste 20–35% with AI forecasting',
+   'Industry F&B AI benchmarks; SIA $4/pax catering reference','$1,178M','FY2026–27','HIGH'],
+
+  ['ground','Commission Bengaluru greenfield MRO for third-party revenue',
+   '$0 third-party MRO revenue FY2026–27; facility under construction',
+   'SIA Engineering: ~$800M/yr third-party MRO; AI target $50M from FY2028',
+   'SIA Engineering Annual Report; Air France Industries benchmark','$250M','FY2028–30','MEDIUM'],
+
+  ['ground','Implement biometric boarding and airport process efficiency',
+   '$10M airport efficiency saving opportunity; $2M investment required',
+   'IATA FAST programme: 30% boarding time reduction; strong ROI at AI scale',
+   'IATA FAST 2024; airport efficiency industry studies','$269M','FY2026–27','MEDIUM'],
+
+  // ── SALES & ALLIANCES ─────────────────────────────────────────────────
+  ['sales','Activate SIA codeshare and expand Star Alliance network coverage',
+   'SIA 25.1% stake leverage not fully utilised; $40M gross codeshare uplift modelled',
+   'SIA codeshare est. $35–50M incremental; Post-merger network integration',
+   'SIA FY26 Annual Report; IATA interline benchmarks','$1,211M','FY2026–27','HIGH'],
+
+  ['sales','Renegotiate corporate contracts — target 3% yield improvement',
+   '$25M uplift modelled; annual contract cycle required for full activation',
+   'Post-merger corporate repricing: typically 3–5% improvement industry-wide',
+   'Industry corporate pricing benchmarks; revenue management studies','$774M','FY2027–28','HIGH'],
+
+  ['sales','Restructure agency override incentives to reduce over-payment',
+   'Air India historically over-paid overrides vs industry norm; $15M saving potential',
+   '$15M saving from override rationalisation; $1M transition cost',
+   'IATA distribution studies; agency restructuring benchmarks','$471M','FY2026','HIGH'],
+
+  ['sales','Improve interline yield by 3% on estimated $500M interline base',
+   '$500M interline revenue base; 3% yield improvement = $15M/yr net of costs',
+   'IATA interline yield optimisation benchmark: 2–5%; 3% is lower-end conservative',
+   'IATA Interline Settlement; yield management benchmarks','$454M','FY2026–27','MEDIUM'],
+
+  // ── NEW REVENUE ───────────────────────────────────────────────────────
+  ['revenue','Scale Flying Returns loyalty to 2% of revenue by FY2030',
+   '0.5% loyalty revenue FY2026 — far below SIA (3%), Emirates (4%), AA (7.2%)',
+   'AA: 7.2% revenue; SIA KrisFlyer: ~3%; Emirates Skywards: ~4%',
+   'American Airlines / SIA / Emirates annual reports','$1,312M','FY2026–30','HIGH'],
+
+  ['revenue','Grow cargo revenue 20%/yr — targeting 300% capacity growth',
+   '$150M cargo Yr1; AI CEO guided 300% over 5yr = 32%/yr; model uses 20%',
+   'AI CEO Campbell Wilson: 300% cargo capacity via 70 WB orders',
+   'Air India cargo guidance; IATA cargo benchmarks','$2,355M','FY2026–30','HIGH'],
+
+  ['revenue','Activate Tata ecosystem earn-burn (Tata Neu / Infinity / Trent)',
+   '$15M Tata ecosystem Yr1 — integration in early stages; wallet at $200M target',
+   'Airline co-branded wallet breakage 3-6% (IATA loyalty benchmarks 2025); IndiGo BluChip wallet active since FY2024; Air Asia Super App wallet: ~$180M GMV (FY2024 annual report); Tata Neu app 90M+ registered users (Tata Group 2024).',
+   'Tata Group investor presentations; prepaid wallet benchmarks','$737M','FY2026–28','MEDIUM'],
+
+  ['revenue','Commission third-party pilot and AME training revenue from FY2028',
+   '$0 third-party training revenue FY2026–27; $65M AI capex in Airbus JV',
+   'Conservative $15M/yr Yr3, $22M Yr5; 10 FFS capacity, 180 pilots/yr',
+   'AFM Aero Oct 2025; Airbus JV press release Sep 2025','$85M','FY2028–30','LOW'],
+
+  // ── FUEL HEDGING ──────────────────────────────────────────────────────
+  ['fuel','Build fuel hedging programme to 25% cover in FY2026, 50% by FY2028',
+   'No formal hedging programme disclosed; estimated ~0% hedge ratio FY2026',
+   'IndiGo ~40%; Emirates ~65%; SIA ~70%; Ryanair ~80% ($67/bbl locked FY24)',
+   'Bloomberg O\'Leary 2024; Emirates Annual Report FY2024','$890M','FY2026','HIGH'],
+
+  ['fuel','Add put option layer (7% of notional) to cap downside price risk',
+   'No options programme in place; full spot exposure amplifies P&L volatility',
+   'IndiGo uses OTC puts on ~7% of notional; standard industry collar structure',
+   'IndiGo treasury disclosure; IATA fuel hedging best practice','$420M','FY2027–28','HIGH'],
+
+  ['fuel','Implement USD/INR forward programme covering all fuel USD outflows',
+   'Dual FX exposure: USD fuel cost + INR revenue; no FX hedge disclosed',
+   'Indian airlines lose 15–20% of fuel hedge benefit to USD/INR moves unhedged',
+   'IATA treasury best practice; RBI FX data','$210M','FY2026–27','HIGH'],
+
+  ['fuel','Establish 18-month rolling hedge window by FY2027',
+   'No rolling window programme; purchasing at spot on ~$3.2B/yr fuel bill',
+   'Ryanair: 24-month rolling; SIA: 18-month; Emirates: 12-month rolling',
+   'Ryanair / SIA / Emirates annual reports','$480M','FY2027–28','MEDIUM'],
+
+  // ── ESG & REPORTING ───────────────────────────────────────────────────
+  ['esg','Publish full standalone CO₂/ASK disclosure by route annually',
+   'Partial — SIA reports AI as 25.1% stake; no standalone route-level disclosure',
+   'Cirium EmeraldSky 2025: AI legacy fleet ~105g/ASK; target 70g/ASK by FY2030',
+   'Cirium EmeraldSky 2025; Atmosfair AAI 2025','Narrative value','FY2026','HIGH'],
+
+  ['esg','Commission Oxford Economics economic impact study for Air India',
+   'No standalone economic impact study published; SIA reports partial data',
+   'Emirates: $37.3B GDP / 27% Dubai GDP; SIA: $54.7B / 9.8% Singapore GDP',
+   'Oxford Economics for Emirates Oct 2024; IATA India 2024','Narrative value','FY2026','HIGH'],
+
+  ['esg','Publish 5-year economic footprint projection aligned to fleet plan',
+   'Model estimates AI will support ~3.1M jobs and ~$37B GDP by FY2030 — unpublished',
+   'Emirates forecasts 32% GDP / 816K jobs by 2030; SIA $80B sector forecast',
+   'Oxford Economics methodology; IATA 3.25× multiplier','Narrative value','FY2027','MEDIUM'],
+
+  // ── FINANCE & TAX ─────────────────────────────────────────────────────
+  ['fin','Activate unabsorbed depreciation DTA to shield FY2029+ profits from tax',
+   'Model assumes 25% statutory tax on FY2029 profits — DTA not yet activated',
+   'Section 32(2): unabsorbed depreciation carried indefinitely; ~₹25,000 Cr pool',
+   'Section 32(2) Income Tax Act 1961; KPMG India 2025','$298M','FY2029–30','HIGH'],
+
+  ['fin','Scale AIFS GIFT City SLB programme to 50–80 aircraft by FY2030',
+   'AIFS: $215M for 6 × 777s (Oct 2025) — nascent; CFO signals scaling intent',
+   'No MAT, 10-yr tax holiday, no customs duty; 0.3–0.5%/yr saving vs offshore',
+   'AIFS $215M deal; Bloomberg Nov 2025; Cape Town (PIAO) Act 2025','$325M','FY2026–28','HIGH'],
+];
+
+// ── Render table ──
+var _allRecs = RECS;
+
+window.recFilter = function(area, btn) {
+  document.querySelectorAll('[id^=rf-]').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  buildRecTable(area);
+};
+
+function buildRecTable(area) {
+  var container = document.getElementById('rec-cards'); if(!container) return;
+  var filter = (typeof area === 'string') ? area : 'all';
+  var rows = filter === 'all' ? _allRecs : _allRecs.filter(function(r){return r[0]===filter;});
+
+  var PRI_COL   = {HIGH:'var(--red2)', MEDIUM:'var(--gold2)', LOW:'var(--muted)'};
+  var PRI_BG    = {HIGH:'rgba(224,85,85,.12)', MEDIUM:'rgba(200,168,75,.12)', LOW:'rgba(154,149,133,.08)'};
+  var AREA_COL  = {dist:'var(--teal2)',fleet:'var(--gold2)',ground:'var(--purple)',
+                   sales:'var(--blue2)',revenue:'var(--green2)',fuel:'#F59E0B',
+                   esg:'#3DD6C4',fin:'var(--mid)'};
+  var AREA_LABEL= {dist:'Distribution',fleet:'Fleet & Ops',ground:'Ground & MRO',
+                   sales:'Sales & Alliances',revenue:'New Revenue',fuel:'Fuel Hedging',
+                   esg:'ESG & Reporting',fin:'Finance & Tax'};
+
+  var html = '';
+  rows.forEach(function(r) {
+    var ac  = AREA_COL[r[0]] || 'var(--muted)';
+    var pc  = PRI_COL[r[7]]  || 'var(--muted)';
+    var pbg = PRI_BG[r[7]]   || 'transparent';
+    var val = r[5];
+    var valCol = (val.indexOf('$') > -1 && val.indexOf('narrative') === -1) ? 'var(--green2)' : 'var(--muted)';
+
+    html += '<div style="background:var(--card);border:1px solid rgba(255,255,255,.06);border-left:3px solid '+ac+';border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:8px 16px">'
+
+      // Row 1: title + badges
+      + '<div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">'
+      +   '<span style="font-size:11px;font-weight:600;color:var(--text);line-height:1.4">'+r[1]+'</span>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">'
+      +   '<span style="font-size:9px;font-family:var(--mono);color:'+ac+';background:'+ac+'20;padding:2px 7px;border-radius:3px;white-space:nowrap">'+AREA_LABEL[r[0]]+'</span>'
+      +   '<span style="font-size:9px;font-family:var(--mono);color:'+pc+';background:'+pbg+';padding:2px 7px;border-radius:3px;font-weight:600;white-space:nowrap">'+r[7]+'</span>'
+      +   '<span style="font-size:10px;font-family:var(--mono);color:'+valCol+';font-weight:600;white-space:nowrap">'+val+'</span>'
+      +   '<span style="font-size:9px;font-family:var(--mono);color:var(--muted);white-space:nowrap">'+r[6]+'</span>'
+      + '</div>'
+
+      // Row 2: current state | benchmark | source
+      + '<div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;border-top:1px solid rgba(255,255,255,.05);padding-top:8px">'
+      +   '<div><div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);margin-bottom:3px">AI current state</div>'
+      +       '<div style="font-size:9.5px;color:var(--muted);line-height:1.5">'+r[2]+'</div></div>'
+      +   '<div><div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);margin-bottom:3px">Industry benchmark</div>'
+      +       '<div style="font-size:9.5px;color:var(--mid);line-height:1.5">'+r[3]+'</div></div>'
+      +   '<div><div style="font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);margin-bottom:3px">Source</div>'
+      +       '<div style="font-size:9px;color:var(--muted);line-height:1.5">'+r[4]+'</div></div>'
+      + '</div>'
+
+      + '</div>';
+  });
+
+  container.innerHTML = html;
+
+  // Update KPI counts
+  var countEl = document.getElementById('rec-count');
+  var quickEl = document.getElementById('rec-quick');
+  var structEl = document.getElementById('rec-structural');
+  if(countEl)  countEl.textContent  = rows.length;
+  // Quick start: begins in FY2026 AND has monetary value
+  var quick = rows.filter(function(r){
+    return r[6].indexOf('2026') > -1 && r[5].indexOf('$') > -1 && r[5].indexOf('narrative') === -1 && r[5] !== 'First-mover';
+  }).length;
+  // Structural: spans to FY2028+ or starts FY2027+
+  var structural = rows.filter(function(r){
+    return r[6].indexOf('2028') > -1 || r[6].indexOf('2029') > -1 || r[6].indexOf('2030') > -1 || r[6].indexOf('FY2027') === 0;
+  }).length;
+  if(quickEl)  quickEl.textContent  = quick;
+  if(structEl) structEl.textContent = structural;
+  // Sum 5-yr value from data (parse $330M, $410M etc.)
+  var valEl = document.getElementById('rec-value');
+  var valLabelEl = document.querySelector('[id="rec-value"]') ? document.querySelector('[id="rec-value"]').previousElementSibling : null;
+  if(valEl){
+    var total=0;
+    rows.forEach(function(r){
+      var v=r[5]; if(!v||v.indexOf('$')===-1||v.indexOf('narrative')>-1||v.indexOf('direct')>-1||v==='First-mover') return;
+      var n=parseFloat(v.replace(/[^0-9.]/g,'').replace(/,/g,''));
+      if(isNaN(n)) return;
+      if(v.indexOf('B')>-1) n*=1000;
+      total+=n;
+    });
+    var monetaryCount = rows.filter(function(r){ return r[5].indexOf('$')>-1 && r[5].indexOf('narrative')===-1 && r[5].indexOf('direct')===-1 && r[5]!=='First-mover'; }).length;
+    var noteEl = document.getElementById('rec-value-note');
+    if(total===0){
+      valEl.textContent='Narrative value';
+      valEl.style.color='var(--muted)';
+      valEl.style.fontSize='14px';
+      if(noteEl) noteEl.textContent='No direct P&L impact — reputational & regulatory value';
+    } else if(total>=1000){
+      valEl.textContent='$'+(total/1000).toFixed(1)+'B';
+      valEl.style.color='var(--green2)';
+      valEl.style.fontSize='';
+      if(noteEl) noteEl.textContent=monetaryCount+' monetary item'+(monetaryCount!==1?'s':'');
+    } else {
+      valEl.textContent='$'+Math.round(total)+'M';
+      valEl.style.color='var(--green2)';
+      valEl.style.fontSize='';
+      if(noteEl) noteEl.textContent=monetaryCount+' monetary item'+(monetaryCount!==1?'s':'');
+    }
+  }  // end if(valEl)
+}
+
+// Hook into showLayer so table builds when l5 becomes active
+var _l5ShowOrig = window.showLayer;
+window.showLayer = function(id, btn) {
+  _l5ShowOrig(id, btn);
+  if(id === 'l5') {
+    // Default to narrative tab active
+    document.querySelectorAll('.l5s').forEach(function(s){s.style.display='none';});
+    var narr = document.getElementById('l5-narrative');
+    if(narr) narr.style.display = 'block';
+    document.querySelectorAll('[id^=l5t]').forEach(function(b){b.classList.remove('on');});
+    var t1 = document.getElementById('l5t1');
+    if(t1) t1.classList.add('on');
+  }
+  if(id === 'lai') {
+    // Activate Strategy Overview sub-tab and draw its charts
+    setTimeout(function(){
+      // Hide all ais panels, show ai-over
+      document.querySelectorAll('.ais').forEach(function(s){s.style.display='none';});
+      var over = document.getElementById('ai-over');
+      if(over) over.style.display = 'block';
+      // Set ait1 active
+      document.querySelectorAll('[id^=ait]').forEach(function(b){b.classList.remove('on');});
+      var ait1 = document.getElementById('ait1');
+      if(ait1) ait1.classList.add('on');
+      // Draw the overview charts
+      if(typeof window.drawOver === 'function') window.drawOver();
+    }, 120);
+  }
+};
+
+// ════════════════════════════════════════════════════════════════════
+//  RISK: DOWNSIDE SCENARIOS MODULE
+// ════════════════════════════════════════════════════════════════════
+(function(){
+var rskC = {};
+var YEARS = ['2026','2027','2028','2029','2030'];
+var M = '"IBM Plex Mono",monospace', TC = 'rgba(154,149,133,.8)', GC = 'rgba(255,255,255,.05)';
+
+// Region peer data: [airline, hedgeRatio, swapPct, fuelBillM, sovereignBuffer]
+// swapPct = % of hedge that is fixed-price swaps (rest = options/collars)
+var PEERS = {
+  india: {
+    label:'Indian subcontinent',
+    airlines:['IndiGo','Air India','SpiceJet','AI Express','Akasa Air'],
+    colors:['#C8A84B','#3DD6C4','#E05555','#3498DB','#8B6FD4'],
+    hr:     [40,  25,   0,  20,  15],  // hedge ratio %
+    swapPct:[45,  60, 100,  70,  80],  // % of hedge that is fixed swaps
+    fuelM:  [2800,3200,420,680,340],   // annual fuel bill $M
+    buffer: [0,   0,   0,   0,   0],  // sovereign buffer $M
+    kpis:[
+      {l:'IndiGo hedge',   v:'40%', c:'var(--gold2)',  note:'~45% swaps, options protected'},
+      {l:'Air India hedge',v:'25%', c:'var(--teal2)',  note:'60% swaps — higher swap risk'},
+      {l:'SpiceJet hedge', v:'0%',  c:'var(--red2)',   note:'Fully unhedged — gains on drop'},
+      {l:'ATF basis risk', v:'HIGH',c:'var(--red2)',   note:'ATF may stay high vs Brent drop'},
+      {l:'USD/INR amplifier',v:'YES',c:'var(--gold2)', note:'Dual FX exposure on hedges'}
+    ]
+  },
+  apac: {
+    label:'APAC',
+    airlines:['Singapore Air','Cathay Pacific','Qantas','Air New Zealand','ANA'],
+    colors:['#4AC97A','#3498DB','#E05555','#C8A84B','#8B6FD4'],
+    hr:     [70, 65, 60, 55, 40],
+    swapPct:[40, 45, 55, 50, 60],
+    fuelM:  [4200,3100,2800,680,3400],
+    buffer: [0,  0,  0,  0,  0],
+    kpis:[
+      {l:'SIA hedge',    v:'70%', c:'var(--green2)',note:'Cross-asset, options-heavy — protected'},
+      {l:'Cathay hedge', v:'65%', c:'var(--teal2)', note:'Swaps + options mix'},
+      {l:'Qantas hedge', v:'60%', c:'var(--gold2)', note:'Entered FY2025 — near peak'},
+      {l:'JPY overlay',  v:'ANA', c:'var(--muted)', note:'JPY/USD amplifies hedge P&L'},
+      {l:'Cross-asset',  v:'SIA/Cathay',c:'var(--teal2)',note:'Jet-kero + crude + FX layered'}
+    ]
+  },
+  me: {
+    label:'Middle East',
+    airlines:['Emirates','Qatar Airways','Etihad','flydubai','Air Arabia'],
+    colors:['#4AC97A','#3498DB','#C8A84B','#8B6FD4','#3DD6C4'],
+    hr:     [65, 60, 50, 35, 30],
+    swapPct:[35, 40, 50, 55, 60],
+    fuelM:  [8200,4100,2600,680,520],
+    buffer: [2000,800,500,200,100],  // sovereign backstop buffer $M
+    kpis:[
+      {l:'Emirates',   v:'65%', c:'var(--green2)',note:'Cross-asset; petro upstream offsets'},
+      {l:'Sovereign',  v:'BACKSTOP',c:'var(--teal2)',note:'Government absorbs mark-to-market'},
+      {l:'Crisis origin',v:'HOME',c:'var(--gold2)',note:'US-Iran = ME crisis; natural hedge'},
+      {l:'Petro offset',v:'YES', c:'var(--teal2)',note:'Upstream oil profits offset fuel cost'},
+      {l:'Qatar',      v:'60%', c:'var(--blue2)', note:'QIA sovereign fund backstop'}
+    ]
+  },
+  us: {
+    label:'US',
+    airlines:['American','United','Delta','Southwest','Spirit'],
+    colors:['#3498DB','#C8A84B','#E05555','#4AC97A','#8B6FD4'],
+    hr:     [0,  0,  0, 50,  5],
+    swapPct:[0,  0,  0, 70, 80],
+    fuelM:  [8400,7200,7800,3200,680],
+    buffer: [0,  0,  0,  0,  0],
+    kpis:[
+      {l:'AAL/UAL/Delta',v:'0% hedge',c:'var(--green2)',note:'Fully unhedged — ZERO downside risk on price drop'},
+      {l:'Southwest',    v:'50%',    c:'var(--gold2)', note:'70% swaps — most exposed US airline'},
+      {l:'Delta lesson', v:'$2.3B',  c:'var(--red2)',  note:'Programme discontinued after $2.3B loss'},
+      {l:'Unhedged gain',v:'LARGE',  c:'var(--teal2)', note:'AAL/UAL benefit most from spot drop'},
+      {l:'Spirit',       v:'5%',     c:'var(--muted)', note:'Distressed — minimal hedge'}
+    ]
+  },
+  eu: {
+    label:'Europe + LCCs',
+    airlines:['Ryanair','easyJet','Lufthansa','IAG','Air France-KLM'],
+    colors:['#E05555','#F59E0B','#3498DB','#8B6FD4','#4AC97A'],
+    hr:     [80, 75, 70, 65, 60],
+    swapPct:[85, 30, 55, 50, 60],  // Ryanair mostly fixed-price; easyJet options-heavy
+    fuelM:  [3800,2200,7200,5100,4800],
+    buffer: [0,  0,  0,  0,  0],
+    kpis:[
+      {l:'Ryanair',      v:'80%', c:'var(--red2)',   note:'~85% fixed-price swaps — MOST exposed to price drop'},
+      {l:'easyJet',      v:'75%', c:'var(--gold2)',  note:'~70% options — protected on downside'},
+      {l:'Ryanair lock', v:'$67/bbl',c:'var(--red2)',note:'Locked FY24 avg; now above market'},
+      {l:'ETS partial',  v:'OFFSET',c:'var(--teal2)',note:'Lower fuel = lower ETS cost too'},
+      {l:'Lufthansa',    v:'70%', c:'var(--blue2)',  note:'Mixed swap/option; 24-month rolling'}
+    ]
+  }
+};
+
+// ── Core calculation ──
+function calcRsk(fuelM, hr, swapPct, lockedPx, spotPx) {
+  var hedgedVol = fuelM * (hr / 100);
+  var swapVol   = hedgedVol * (swapPct / 100);
+  var optVol    = hedgedVol * (1 - swapPct / 100);
+  var priceDiff = lockedPx - spotPx; // positive = overpaying
+  var swapLoss  = swapVol  * (priceDiff / lockedPx);   // mark-to-market loss on swaps
+  var optPrem   = optVol   * 0.07;                      // option premium already paid
+  var optLoss   = priceDiff > 0 ? optPrem : 0;          // options: only lose premium if drop
+  return { swapLoss: swapLoss, optLoss: optLoss, total: swapLoss + optLoss,
+           unhedgedGain: (fuelM - hedgedVol) * (priceDiff / lockedPx) };
+}
+
+function mkChart(id, type, data, opts) {
+  var el = document.getElementById(id); if(!el) return;
+  var p = el.parentElement;
+  el.width  = (p ? (p.clientWidth  || p.offsetWidth  || 700) : 700);
+  el.height = (p ? (p.clientHeight || p.offsetHeight || 220) : 220);
+  if (el.height < 50) el.height = 220;
+  if(rskC[id]) rskC[id].destroy();
+  rskC[id] = new Chart(el, { type: type, data: data, options: opts });
+}
+
+function lineOpts(yfmt) {
+  return { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:TC, font:{ family:M, size:9 }, boxWidth:10 }}},
+    scales:{ x:{ ticks:{ color:TC, font:{ family:M, size:9 }}, grid:{ color:GC }},
+             y:{ ticks:{ color:TC, font:{ family:M, size:9 }, callback: yfmt||function(v){return v;}}, grid:{ color:GC }}}};
+}
+function barOpts(yfmt, stacked) {
+  return { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:TC, font:{ family:M, size:9 }, boxWidth:10 }}},
+    scales:{ x:{ stacked:!!stacked, ticks:{ color:TC, font:{ family:M, size:9 }}, grid:{ color:GC }},
+             y:{ stacked:!!stacked, ticks:{ color:TC, font:{ family:M, size:9 }, callback: yfmt||function(v){return v;}}, grid:{ color:GC }}}};
+}
+
+// ── Update KPI cards from sliders ──
+window.rskUpdate = function() {
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+  var hr   = parseFloat(document.getElementById('rsk-hr').value)   || 40;
+  var sw   = parseFloat(document.getElementById('rsk-sw').value)   || 60;
+
+  document.getElementById('rsk-peak-v').textContent = '$' + peak;
+  document.getElementById('rsk-spot-v').textContent = '$' + spot;
+  document.getElementById('rsk-hr-v').textContent   = hr + '%';
+  document.getElementById('rsk-sw-v').textContent   = sw + '%';
+
+  var r = calcRsk(3200, hr, sw, peak, spot);
+  var overpay = peak - spot;
+  document.getElementById('rsk-overpay').textContent = (overpay >= 0 ? '−$' : '+$') + Math.abs(overpay).toFixed(0) + '/bbl';
+  document.getElementById('rsk-loss').textContent   = '−$' + Math.round(r.swapLoss).toLocaleString() + 'M';
+  document.getElementById('rsk-save').textContent   = '$' + Math.round(r.optLoss > 0 ? r.swapLoss - r.optLoss : r.swapLoss * (1 - sw/100)).toLocaleString() + 'M';
+  document.getElementById('rsk-net').textContent    = '−$' + Math.round(r.total).toLocaleString() + 'M';
+
+  // Redraw active panel chart if visible
+  var activePnl = document.querySelector('.rskp[style*="block"]') || document.getElementById('rsk-ai');
+  if(activePnl && activePnl.id === 'rsk-ai') drawAiRisk(peak, spot, hr, sw);
+};
+
+// ── Air India risk charts ──
+window.drawAiRisk = function drawAiRisk(peak, spot, hr, sw) {
+  var brentRange = [50,60,70,80,90,100,110,120];
+
+  // Chart 1: hedge loss across Brent spot prices
+  var swapLosses = brentRange.map(function(b){ return -Math.round(calcRsk(3200, hr, sw, peak, b).swapLoss); });
+  var optLosses  = brentRange.map(function(b){ return -Math.round(calcRsk(3200, hr, 100, peak, b).optLoss); });
+  var unhedgedG  = brentRange.map(function(b){ return  Math.round(calcRsk(3200, hr, 0,    peak, b).unhedgedGain); });
+  mkChart('rsk-ai-loss-chart','bar',
+    { labels: brentRange.map(function(b){return '$'+b;}),
+      datasets:[
+        { label:'Swap hedge loss ($M)',    data:swapLosses, backgroundColor:'rgba(224,85,85,.6)',  borderRadius:3 },
+        { label:'Option max loss ($M)',    data:optLosses,  backgroundColor:'rgba(200,168,75,.5)', borderRadius:3 },
+        { label:'Unhedged saving ($M)',    data:unhedgedG,  backgroundColor:'rgba(74,201,122,.5)', borderRadius:3 }
+      ]},
+    barOpts(function(v){ return '$'+v+'M'; })
+  );
+
+  // Chart 2: instrument mix comparison at current spot
+  var instruments = ['100% Swaps\n(Ryanair style)', '60% Swaps\n40% Options\n(AI target)', '100% Options\n(IndiGo style)', 'Unhedged\n(Delta/AAL)'];
+  var swPcts = [100, 60, 0, 0];
+  var hrs2   = [hr,  hr, hr, 0];
+  var losses = swPcts.map(function(sw2, i){
+    return -Math.round(calcRsk(3200, hrs2[i], sw2, peak, spot).total);
+  });
+  var cols = losses.map(function(v){ return v <= 0 ? 'rgba(74,201,122,.7)' : 'rgba(224,85,85,.6)'; });
+  mkChart('rsk-ai-inst-chart','bar',
+    { labels: instruments,
+      datasets:[{ label:'Net hedge P&L at current spot ($M)', data:losses, backgroundColor:cols, borderRadius:3 }]},
+    barOpts(function(v){ return '$'+v+'M'; })
+  );
+
+  // Chart 3: break-even Brent price line
+  var spotRange = [];
+  for(var b=50; b<=120; b+=5) spotRange.push(b);
+  var aiNetPL = spotRange.map(function(b){ return Math.round(calcRsk(3200, hr, sw, peak, b).total * -1); });
+  var aiUnhed = spotRange.map(function(b){ return Math.round(calcRsk(3200, 0,  0,  peak, b).unhedgedGain); });
+  mkChart('rsk-ai-be-chart','line',
+    { labels: spotRange.map(function(b){ return '$'+b; }),
+      datasets:[
+        { label:'With hedge (net P&L $M)', data:aiNetPL, borderColor:'#C8A84B', fill:false, tension:.4, borderWidth:2.5 },
+        { label:'Unhedged spot saving $M', data:aiUnhed, borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[5,3], borderWidth:2 },
+        { label:'Break-even (zero)', data:spotRange.map(function(){ return 0; }), borderColor:'rgba(154,149,133,.4)', fill:false, pointRadius:0, borderDash:[3,3] }
+      ]},
+    lineOpts(function(v){ return '$'+v+'M'; })
+  );
+
+  // Sensitivity table
+  var tb = document.getElementById('rsk-ai-sens'); if(!tb) return;
+  var lockedPxRows = [70,80,90,95,100,110,120];
+  var spotCols     = [55,60,65,70,75,80,90,100];
+  var h = '<tr style="background:var(--card2)"><th style="text-align:left;padding:6px 8px">Locked→ / Spot↓</th>'
+    + spotCols.map(function(s){ return '<th>$'+s+'</th>'; }).join('') + '</tr>';
+  lockedPxRows.forEach(function(lp){
+    var isBase = (lp===95);
+    h += '<tr><td style="padding:5px 8px;color:'+(isBase?'var(--gold2)':'var(--muted)')+'">$'+lp+(isBase?' ★':'')+'</td>';
+    spotCols.forEach(function(sp){
+      var loss = Math.round(calcRsk(3200, hr, sw, lp, sp).total);
+      var col  = loss <= 0 ? 'var(--green2)' : loss < 100 ? 'var(--gold2)' : loss < 300 ? 'var(--muted)' : 'var(--red2)';
+      h += '<td style="color:'+col+'">'+(loss<=0?'+':'-')+'$'+Math.abs(loss)+'M</td>';
+    });
+    h += '</tr>';
+  });
+  tb.innerHTML = h;
+};
+
+// ── Regional charts ──
+window.drawRegionRisk = function drawRegionRisk(key) {
+  var d = PEERS[key]; if(!d) return;
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+
+  // KPI cards
+  var kEl = document.getElementById('rsk-'+key+'-kpis');
+  if(kEl && d.kpis) kEl.innerHTML = d.kpis.map(function(k){
+    return '<div class="kc" style="border-top:2px solid '+k.c+'">'
+      + '<div class="kl">'+k.l+'</div><div class="kv" style="font-size:13px;color:'+k.c+'">'+k.v+'</div>'
+      + '<div class="ks" style="font-size:8.5px;color:var(--mid)">'+k.note+'</div></div>';
+  }).join('');
+
+  // Loss bar chart
+  var losses = d.airlines.map(function(a, i){
+    var r = calcRsk(d.fuelM[i], d.hr[i], d.swapPct[i], peak, spot);
+    return -Math.round(r.swapLoss + r.optLoss - (d.buffer[i]||0));
+  });
+  var unhedgedG = d.airlines.map(function(a,i){
+    return d.hr[i] === 0 ? Math.round(calcRsk(d.fuelM[i], 0, 0, peak, spot).unhedgedGain) : 0;
+  });
+  var lossColors = losses.map(function(v){ return v <= 0 ? 'rgba(74,201,122,.7)' : 'rgba(224,85,85,.65)'; });
+
+  mkChart('rsk-'+key+'-loss','bar',
+    { labels: d.airlines,
+      datasets:[
+        { label:'Net hedge loss/gain ($M)', data:losses, backgroundColor:lossColors, borderRadius:3 },
+        { label:'Unhedged spot saving ($M)', data:unhedgedG, backgroundColor:'rgba(74,201,122,.4)', borderRadius:3 }
+      ]},
+    barOpts(function(v){ return '$'+v+'M'; })
+  );
+
+  // Second chart — instrument breakdown or special
+  var secondId = { india:'rsk-india-basis', apac:'rsk-apac-inst', me:'rsk-me-buffer', us:'rsk-us-spot', eu:'rsk-eu-prot' }[key];
+  if(key === 'india') {
+    // ATF basis risk: show Brent drop vs ATF drop (ATF lags due to fixed taxes)
+    var brentPts = [50,60,70,80,90,100];
+    var atfDrop  = brentPts.map(function(b){ return Math.round(b * 1.18); });  // ATF stays at +18% even if Brent drops
+    var atfActual= brentPts.map(function(b){ return Math.round(b * 1.18 * 0.65 + 200); }); // partial pass-through + fixed tax
+    mkChart(secondId,'line',
+      { labels: brentPts.map(function(b){ return '$'+b+'/bbl'; }),
+        datasets:[
+          { label:'Brent × 1.18 (full pass-through)', data:atfDrop, borderColor:'#3498DB', fill:false, tension:.3 },
+          { label:'Actual ATF (partial pass-through + fixed tax)', data:atfActual, borderColor:'#C8A84B', fill:false, tension:.3, borderDash:[5,3] }
+        ]},
+      lineOpts(function(v){ return '$'+v+'/ton'; })
+    );
+  } else {
+    var instData = d.airlines.map(function(a,i){
+      return { swap: Math.round(d.fuelM[i] * d.hr[i]/100 * d.swapPct[i]/100),
+               opt:  Math.round(d.fuelM[i] * d.hr[i]/100 * (100-d.swapPct[i])/100) };
+    });
+    mkChart(secondId,'bar',
+      { labels: d.airlines,
+        datasets:[
+          { label:'Fixed swaps ($M fuel volume)', data:instData.map(function(x){return x.swap;}), backgroundColor:'rgba(224,85,85,.6)', borderRadius:3 },
+          { label:'Options/collars ($M fuel volume)', data:instData.map(function(x){return x.opt;}), backgroundColor:'rgba(74,201,122,.5)', borderRadius:3 }
+        ]},
+      barOpts(function(v){ return '$'+v+'M'; }, true)
+    );
+  }
+
+  setTimeout(function(){Object.keys(rskC).forEach(function(k){if(rskC[k])try{rskC[k].resize();}catch(e){}});},150);
+};
+
+// ── Sub-tab switcher ──
+window.rskSub = function(id, btn) {
+  document.querySelectorAll('.rskp').forEach(function(s){ s.style.display='none'; });
+  var el = document.getElementById(id); if(el) el.style.display='block';
+  document.querySelectorAll('[id^=rskt]').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+  var hr   = parseFloat(document.getElementById('rsk-hr').value)   || 40;
+  var sw   = parseFloat(document.getElementById('rsk-sw').value)   || 60;
+  setTimeout(function(){
+    if(id === 'rsk-ai')    drawAiRisk(peak, spot, hr, sw);
+    else if(id === 'rsk-india') drawRegionRisk('india');
+    else if(id === 'rsk-apac')  drawRegionRisk('apac');
+    else if(id === 'rsk-me')    drawRegionRisk('me');
+    else if(id === 'rsk-us')    drawRegionRisk('us');
+    else if(id === 'rsk-eu')    drawRegionRisk('eu');
+  }, 60);
+};
+})();
+</script>
+<script>
+// ════════════════════════════════════════════════════════════════════
+// HEDGING MODEL INTERNATIONAL + RISK DOWNSIDE SCENARIOS
+// Plain top-level scope — no IIFE — all functions on window automatically
+// ════════════════════════════════════════════════════════════════════
+
+// ── AI STRATEGY DRAW FUNCTIONS (drawOver, drawRoad, drawBest, hmDraw) ──
+// These were lost during IIFE cleanup — restored here as plain window functions
+
+var AI_YEARS = ['2026','2027','2028','2029','2030'];
+var aiChartStore = {};
+
+function aiMkLine(id, datasets, yfmt) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = p ? (p.clientWidth  || p.offsetWidth  || 700) : 700;
+  el.height = p ? (p.clientHeight || p.offsetHeight || 190) : 190;
+  if (el.height < 50) el.height = 190;
+  if (aiChartStore[id]) aiChartStore[id].destroy();
+  var tc = 'rgba(154,149,133,.8)', gc = 'rgba(255,255,255,.05)', M = '"IBM Plex Mono",monospace';
+  aiChartStore[id] = new Chart(el, { type:'line', data:{labels:AI_YEARS, datasets:datasets},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:tc, font:{ family:M, size:9 }, boxWidth:10 }}},
+      scales:{ x:{ ticks:{ color:tc, font:{ family:M, size:9 }}, grid:{ color:gc }},
+               y:{ ticks:{ color:tc, font:{ family:M, size:9 }, callback: yfmt||function(v){return v;}}, grid:{ color:gc }}}}});
+}
+
+function aiMkBar(id, datasets, yfmt, stacked) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = p ? (p.clientWidth  || p.offsetWidth  || 700) : 700;
+  el.height = p ? (p.clientHeight || p.offsetHeight || 220) : 220;
+  if (el.height < 50) el.height = 220;
+  if (aiChartStore[id]) aiChartStore[id].destroy();
+  var tc = 'rgba(154,149,133,.8)', gc = 'rgba(255,255,255,.05)', M = '"IBM Plex Mono",monospace';
+  aiChartStore[id] = new Chart(el, { type:'bar', data:{labels:AI_YEARS, datasets:datasets},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:tc, font:{ family:M, size:9 }, boxWidth:10 }}},
+      scales:{ x:{ stacked:!!stacked, ticks:{ color:tc, font:{ family:M, size:9 }}, grid:{ color:gc }},
+               y:{ stacked:!!stacked, ticks:{ color:tc, font:{ family:M, size:9 }, callback: yfmt||function(v){return v;}}, grid:{ color:gc }}}}});
+}
+
+function aiMkDonut(id, data, colors, labels) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = p ? (p.clientWidth  || 300) : 300;
+  el.height = p ? (p.clientHeight || 170) : 170;
+  if (aiChartStore[id]) aiChartStore[id].destroy();
+  aiChartStore[id] = new Chart(el, { type:'doughnut',
+    data:{ labels:labels, datasets:[{ data:data, backgroundColor:colors, borderWidth:0, hoverOffset:4 }]},
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'58%', plugins:{ legend:{ display:false }}}});
+}
+
+function aiResize() {
+  setTimeout(function(){ Object.keys(aiChartStore).forEach(function(k){ try{ aiChartStore[k].resize(); }catch(e){} }); }, 300);
+}
+
+window.drawOver = function() {
+  aiMkLine('ai-hr-chart', [
+    { label:'AI base case',         data:[25,35,50,57,62], borderColor:'#C8A84B', backgroundColor:'rgba(200,168,75,.12)', fill:true, tension:.4 },
+    { label:'AI best case',         data:[25,40,55,62,65], borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[5,3] },
+    { label:'Ryanair benchmark (~80%)', data:[80,80,78,76,75], borderColor:'#E05555', fill:false, pointRadius:0, borderDash:[3,3], tension:0 },
+    { label:'Emirates benchmark (~65%)', data:[65,65,65,65,65], borderColor:'#3498DB', fill:false, pointRadius:0, borderDash:[6,4], tension:0 },
+    { label:'IndiGo benchmark (~40-52%)', data:[40,43,46,49,52], borderColor:'#F59E0B', fill:false, pointRadius:0, borderDash:[4,2], tension:0 },
+    { label:'SIA benchmark (~70%)',          data:[70,70,71,72,72], borderColor:'#8B6FD4', fill:false, pointRadius:0, borderDash:[5,2], tension:0 },
+    { label:'Delta benchmark (~0-12%)',       data:[0,5,8,10,12],   borderColor:'#FF6B6B', fill:false, pointRadius:0, borderDash:[3,3], tension:0 }
+  ], function(v){ return v+'%'; });
+
+  aiMkDonut('ai-inst-chart', [40,25,20,15], ['#1ABC9C','#C8A84B','#3498DB','#8B6FD4'],
+    ['Fixed swaps','Put options','USD/INR fwd','Collars']);
+
+  aiMkBar('ai-annual-fuel', [
+    { label:'Gross fuel (INR Cr)', data:[29400,31200,33100,34800,36200], backgroundColor:'rgba(224,85,85,.45)', borderColor:'#E05555', borderWidth:1, borderRadius:3 },
+    { label:'Hedge saving (illus.)', data:[890,1420,2100,2680,3200], backgroundColor:'rgba(74,201,122,.55)', borderColor:'#4AC97A', borderWidth:1, borderRadius:3 },
+    { label:'Net fuel', data:[28510,29780,31000,32120,33000], type:'line', borderColor:'#C8A84B', fill:false, tension:.4, borderWidth:2 }
+  ], function(v){ return v+'Cr'; });
+  aiResize();
+};
+
+window.drawRoad = function() {
+  aiMkBar('ai-cumulative', [
+    { label:'Cumulative saving (INR Cr)', data:[890,2310,4410,7090,10290],
+      backgroundColor:['rgba(200,168,75,.5)','rgba(26,188,156,.5)','rgba(52,152,219,.5)','rgba(74,201,122,.6)','rgba(74,201,122,.85)'],
+      borderRadius:4 }
+  ], function(v){ return v+'Cr'; });
+  aiResize();
+};
+
+window.drawBest = function() {
+  aiMkBar('ai-best-ebit', [
+    { label:'Base EBIT ($M)', data:[-2052,-1480,-620,134,164],
+      backgroundColor:[-2052,-1480,-620,134,164].map(function(v){ return v<0?'rgba(224,85,85,.5)':'rgba(74,201,122,.5)'; }), borderRadius:3 },
+    { label:'Best case (illus.)', data:[-2052,-1180,-280,580,1240], type:'line',
+      borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[5,3] }
+  ], function(v){ return '$'+v+'M'; });
+
+  aiMkLine('ai-best-cask', [
+    { label:'Base fuel CASK', data:[4.8,4.6,4.3,4.1,3.9], borderColor:'#E05555', backgroundColor:'rgba(224,85,85,.1)', fill:true, tension:.4 },
+    { label:'Hedged (illus.)', data:[4.8,4.4,4.0,3.7,3.5], borderColor:'#C8A84B', fill:false, tension:.4, borderDash:[5,3] },
+    { label:'Best case (illus.)', data:[4.8,4.2,3.7,3.3,3.1], borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[3,3] },
+    { label:'IndiGo benchmark',      data:[2.1,2.15,2.2,2.2,2.25], borderColor:'#F59E0B', fill:false, tension:.4, pointRadius:0, borderDash:[4,2] },
+    { label:'SIA benchmark',          data:[2.0,2.05,2.1,2.1,2.15], borderColor:'#8B6FD4', fill:false, tension:.4, pointRadius:0, borderDash:[5,2] },
+    { label:'Emirates benchmark',     data:[1.9,1.95,2.0,2.0,2.05], borderColor:'#3498DB', fill:false, tension:.4, pointRadius:0, borderDash:[6,3] },
+    { label:'Delta benchmark',        data:[2.35,2.45,2.55,2.55,2.6], borderColor:'#FF6B6B', fill:false, tension:.4, pointRadius:0, borderDash:[3,3] }
+  ], function(v){ return v+'c'; });
+
+  var tb = document.getElementById('ai-sens-table'); if (!tb) return;
+  var brentPx = [55,65,75,82,90,100,115,130], hedgeRt = [0,20,35,50,65];
+  var h = '<tr style="background:var(--card2)"><th style="text-align:left;padding:6px 8px">Brent / Hedge</th>' + hedgeRt.map(function(r){ return '<th>'+r+'%</th>'; }).join('') + '</tr>';
+  brentPx.forEach(function(b){
+    var isBase = (b===82);
+    h += '<tr><td style="text-align:left;padding:5px 8px;color:'+(isBase?'var(--gold2)':'var(--muted)')+'">$'+b+(isBase?' *':'')+'</td>';
+    hedgeRt.forEach(function(hh){
+      var g = 29400*(b/82), s = g*(hh/100)*((b-82)/b), net = Math.round(g-s);
+      var col = net<20000?'var(--green2)':net<27000?'var(--teal)':net<32000?'var(--gold2)':'var(--red2)';
+      h += '<td style="color:'+col+'">'+Math.round(net/100)/10+'k</td>';
+    });
+    h += '</tr>';
+  });
+  tb.innerHTML = h;
+  aiResize();
+};
+
+window.aiPlUpdate = function() {
+  var bEl = document.getElementById('ai-brent'), hEl = document.getElementById('ai-hr'), pEl = document.getElementById('ai-pt2');
+  var brent = bEl ? parseFloat(bEl.value) : 82, hr = hEl ? parseFloat(hEl.value) : 40, pt = pEl ? parseFloat(pEl.value) : 48;
+  var bvEl = document.getElementById('ai-brent-v'); if(bvEl) bvEl.textContent = '$'+brent;
+  var hvEl = document.getElementById('ai-hr-v');    if(hvEl) hvEl.textContent = hr+'%';
+  var pvEl = document.getElementById('ai-pt2-v');   if(pvEl) pvEl.textContent = pt+'%';
+  var gross = Math.round(29400*(brent/82)), diff = brent-82;
+  var save  = Math.round(gross*(hr/100)*(diff/brent));
+  var surch = Math.round(gross*(pt/100)*0.35), net = gross-save-surch;
+  var gEl=document.getElementById('ai-gross'); if(gEl) gEl.textContent='INR '+gross.toLocaleString()+' Cr';
+  var sEl=document.getElementById('ai-save');  if(sEl){ sEl.textContent=(save>=0?'+':'')+save.toLocaleString()+' Cr'; sEl.style.color=save>=0?'var(--teal2)':'var(--red2)'; }
+  var srEl=document.getElementById('ai-surch');if(srEl) srEl.textContent=surch.toLocaleString()+' Cr';
+  var nEl=document.getElementById('ai-net2');  if(nEl)  nEl.textContent=net.toLocaleString()+' Cr';
+  var fuelVols=[29400,31200,33100,34800,36200], ebitBase=[-2052,-1480,-620,134,164];
+  var ebitHedge=ebitBase.map(function(v,i){ return Math.round(v+fuelVols[i]*(brent/82)*(hr/100)*(diff/brent)/84); });
+  var ebitBest =ebitBase.map(function(v,i){ return Math.round(v+fuelVols[i]*(brent/82)*Math.min(hr*1.3,65)/100*(diff/brent)/84); });
+  aiMkBar('ai-scenario-chart', [
+    { label:'Base (no hedge)', data:ebitBase,  backgroundColor:ebitBase.map(function(v){ return v<0?'rgba(224,85,85,.5)':'rgba(74,201,122,.5)'; }), borderRadius:3 },
+    { label:'With '+hr+'% hedge', data:ebitHedge, backgroundColor:'rgba(200,168,75,.5)', borderColor:'#C8A84B', borderWidth:1, borderRadius:3 },
+    { label:'Best case (illus.)', data:ebitBest,  backgroundColor:'rgba(74,201,122,.5)', borderColor:'#4AC97A', borderWidth:1, borderRadius:3 }
+  ], function(v){ return '$'+v+'M'; });
+  var marginBase=[-44.5,-26.8,-8.2,0.9,1.1], rev=[10900,12400,14200,16100,18200];
+  var marginHedge=marginBase.map(function(v,i){ return Math.round((v+fuelVols[i]*(brent/82)*(hr/100)*(diff/brent)/84/rev[i]*100)*10)/10; });
+  aiMkLine('ai-margin-chart', [
+    { label:'Base case',        data:marginBase,  borderColor:'#E05555', backgroundColor:'rgba(224,85,85,.1)', fill:true, tension:.4 },
+    { label:'With '+hr+'% hedge', data:marginHedge, borderColor:'#C8A84B', fill:false, tension:.4, borderDash:[5,3] },
+    { label:'Best case (illus.)', data:[-44.5,-22.1,-3.2,5.8,8.4], borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[3,3] }
+  ], function(v){ return v+'%'; });
+  aiResize();
+};
+
+var hmChartStore = {};
+window.hmDraw = function(key) {
+  var HMD = {
+    india:{ airlines:['IndiGo','Air India','SpiceJet','Air India Exp.','Akasa Air'], colors:['#C8A84B','#3DD6C4','#E05555','#3498DB','#8B6FD4'],
+      hr:[[40,45,48,50,52],[25,30,37,43,48],[0,5,8,10,12],[20,25,28,30,32],[15,19,22,25,27]],
+      bps:[[180,210,190,165,150],[60,80,95,110,120],[-220,-260,-240,-200,-180],[40,55,65,75,80],[30,45,55,62,68]],
+      ask:[[2.1,2.2,2.3,2.3,2.4],[2.5,2.6,2.65,2.65,2.7],[3.1,3.4,3.6,3.5,3.4],[2.4,2.5,2.55,2.6,2.6],[2.45,2.5,2.55,2.6,2.65]],
+      kpis:[{l:'Avg hedge',v:'31%',c:'var(--gold)'},{l:'Fuel % OPEX',v:'31%',c:'var(--red2)'},{l:'ATF basis risk',v:'HIGH',c:'var(--red2)'},{l:'Pass-through',v:'53%',c:'var(--teal)'},{l:'USD/INR exp.',v:'DOUBLE',c:'var(--gold)'}] }
+  };
+  var d = HMD[key]; if (!d) return;
+  var brent = parseFloat((document.getElementById('hm-brent')||{value:82}).value)||82;
+  var kEl = document.getElementById('hmk-'+key);
+  if (kEl) kEl.innerHTML = d.kpis.map(function(k){ return '<div class="kc" style="border-top:2px solid '+k.c+'"><div class="kl">'+k.l+'</div><div class="kv" style="font-size:13px;color:'+k.c+'">'+k.v+'</div></div>'; }).join('');
+  var tc='rgba(154,149,133,.8)', gc='rgba(255,255,255,.05)', M='"IBM Plex Mono",monospace', DASHES=[[],[6,3],[3,3],[8,3,2,3],[4,2]];
+  function hmMk(id, datasets) {
+    var el=document.getElementById(id); if(!el)return;
+    var p=el.parentElement;
+    el.width=(p?p.clientWidth||p.offsetWidth||700:700); el.height=(p?p.clientHeight||p.offsetHeight||220:220); if(el.height<50)el.height=220;
+    if(hmChartStore[id])hmChartStore[id].destroy();
+    hmChartStore[id]=new Chart(el,{type:'line',data:{labels:AI_YEARS,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{color:tc,font:{family:M,size:9}},grid:{color:gc}},y:{ticks:{color:tc,font:{family:M,size:9}},grid:{color:gc}}}}});
+  }
+  var f=(brent-82)/82*0.55;
+  var mkDs=function(field){ return d.airlines.map(function(a,i){ var data=field==='ask'?d.ask[i].map(function(v){return Math.round((v*(1+f))*100)/100;}):d[field][i]; return{label:a,data:data,borderColor:d.colors[i],backgroundColor:d.colors[i]+'28',borderWidth:2,borderDash:DASHES[i],pointRadius:3,tension:0.38,fill:false}; }); };
+  hmMk('hmc-'+key+'-margin', mkDs('bps'));
+  hmMk('hmc-'+key+'-hedge',  mkDs('hr'));
+  hmMk('hmc-'+key+'-ask',    mkDs('ask'));
+  ['margin','hedge','ask'].forEach(function(t){ var lEl=document.getElementById('hml-'+key+'-'+t); if(!lEl)return; lEl.innerHTML=d.airlines.map(function(a,i){ return '<span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-block;width:16px;height:2px;background:'+d.colors[i]+'"></span>'+a+'</span>'; }).join(''); });
+  setTimeout(function(){ Object.keys(hmChartStore).forEach(function(k){ try{hmChartStore[k].resize();}catch(e){} }); }, 300);
+};
+
+
+var HMI_YEARS = ['2026','2027','2028','2029','2030'];
+var HMI_TC = 'rgba(154,149,133,.8)';
+var HMI_GC = 'rgba(255,255,255,.05)';
+var HMI_M  = '"IBM Plex Mono",monospace';
+var HMI_DASHES = [[],[6,3],[3,3],[8,3,2,3],[4,2]];
+var hmiCharts = {};
+
+var HMI_RD = {
+  me:{airlines:['Emirates','Qatar Airways','Etihad','flydubai','Air Arabia'],colors:['#4AC97A','#3498DB','#C8A84B','#8B6FD4','#3DD6C4'],hr:[[65,68,70,72,72],[60,63,65,67,67],[50,55,58,60,60],[35,38,40,42,42],[30,32,34,35,35]],bps:[[280,300,310,320,315],[240,255,265,275,270],[160,185,200,210,210],[90,105,115,120,120],[70,80,90,95,95]],ask:[[1.9,1.95,2.0,2.0,2.05],[2.0,2.05,2.1,2.1,2.15],[2.2,2.25,2.3,2.3,2.35],[2.3,2.4,2.45,2.45,2.5],[2.1,2.15,2.2,2.2,2.25]],kpis:[{l:'Avg hedge',v:'55%',c:'var(--green2)'},{l:'Fuel % OPEX',v:'27%',c:'var(--teal)'},{l:'Sovereign support',v:'YES',c:'var(--green2)'},{l:'Cross-asset',v:'65%',c:'var(--teal)'},{l:'Pass-through',v:'45%',c:'var(--muted)'}]},
+  eu:{airlines:['Ryanair','easyJet','Lufthansa','IAG','Air France-KLM'],colors:['#E05555','#F59E0B','#3498DB','#8B6FD4','#4AC97A'],hr:[[80,80,78,76,75],[75,75,74,73,72],[70,70,70,70,70],[65,65,66,66,66],[60,60,62,62,62]],bps:[[320,340,355,365,360],[280,295,305,315,310],[210,225,235,240,240],[190,205,215,220,220],[155,170,180,185,185]],ask:[[1.7,1.75,1.8,1.85,1.9],[1.85,1.9,1.95,2.0,2.0],[2.1,2.15,2.2,2.25,2.25],[2.0,2.05,2.1,2.15,2.15],[2.2,2.25,2.3,2.35,2.35]],kpis:[{l:'Avg hedge',v:'72%',c:'var(--green2)'},{l:'Ryanair locked',v:'$67/bbl',c:'var(--gold)'},{l:'ETS surcharge',v:'ACTIVE',c:'var(--teal)'},{l:'Pass-through',v:'60%',c:'var(--green2)'},{l:'LCCs marked',v:'(R)',c:'var(--muted)'}]},
+  us:{airlines:['American','United','Delta','Southwest','Spirit'],colors:['#3498DB','#C8A84B','#E05555','#4AC97A','#8B6FD4'],hr:[[0,0,5,5,8],[0,0,5,5,8],[0,5,8,10,12],[55,52,50,50,48],[5,5,8,8,10]],bps:[[-40,-50,-55,-55,-50],[-35,-45,-48,-48,-45],[-60,-70,-72,-70,-65],[150,160,165,170,168],[-80,-95,-100,-95,-90]],ask:[[2.4,2.5,2.6,2.6,2.65],[2.3,2.4,2.5,2.5,2.55],[2.35,2.45,2.55,2.55,2.6],[1.9,1.95,2.0,2.05,2.1],[2.6,2.75,2.85,2.8,2.75]],kpis:[{l:'Avg hedge',v:'22%',c:'var(--red2)'},{l:'Delta stopped',v:'$2.3B loss',c:'var(--red2)'},{l:'AAL/UAL',v:'0% hedge',c:'var(--red2)'},{l:'SW exception',v:'55%',c:'var(--green2)'},{l:'LCCs marked',v:'(R)',c:'var(--muted)'}]},
+  latam:{airlines:['LATAM','Copa Airlines','Avianca','Azul','Gol'],colors:['#3DD6C4','#C8A84B','#E05555','#8B6FD4','#F59E0B'],hr:[[35,38,40,42,43],[40,42,44,45,45],[25,28,30,32,33],[20,22,24,26,27],[5,8,10,12,13]],bps:[[80,90,100,105,105],[110,120,125,130,128],[40,55,65,70,70],[-60,-50,-40,-35,-30],[-150,-130,-110,-100,-95]],ask:[[2.6,2.65,2.7,2.7,2.75],[2.4,2.45,2.5,2.5,2.55],[2.8,2.85,2.9,2.9,2.95],[3.1,3.2,3.25,3.2,3.15],[3.4,3.5,3.5,3.45,3.4]],kpis:[{l:'Avg hedge',v:'28%',c:'var(--gold)'},{l:'BRL/COP risk',v:'DOUBLE FX',c:'var(--red2)'},{l:'Copa',v:'40% best',c:'var(--green2)'},{l:'Pass-through',v:'40%',c:'var(--muted)'},{l:'Gol',v:'DISTRESSED',c:'var(--red2)'}]},
+  apac:{airlines:['Singapore Air','Cathay Pacific','Qantas','Air New Zealand','ANA'],colors:['#4AC97A','#3498DB','#E05555','#C8A84B','#8B6FD4'],hr:[[70,70,71,72,72],[65,66,67,68,68],[60,62,63,64,64],[55,56,58,59,59],[40,42,44,45,45]],bps:[[260,275,285,290,288],[230,245,255,260,258],[195,210,220,225,222],[175,188,198,202,200],[120,135,145,150,148]],ask:[[2.0,2.05,2.1,2.1,2.15],[2.1,2.15,2.2,2.2,2.25],[2.15,2.2,2.25,2.25,2.3],[2.2,2.25,2.3,2.3,2.35],[2.3,2.35,2.4,2.4,2.45]],kpis:[{l:'Avg hedge',v:'58%',c:'var(--green2)'},{l:'SIA',v:'70%',c:'var(--green2)'},{l:'Cross-asset',v:'YES',c:'var(--teal)'},{l:'JPY overlay',v:'ANA',c:'var(--muted)'},{l:'Qantas entry',v:'FY2025',c:'var(--gold)'}]},
+  africa:{airlines:['Ethiopian','EgyptAir','Kenya Airways','SAA','RwandAir'],colors:['#4AC97A','#C8A84B','#E05555','#8B6FD4','#3DD6C4'],hr:[[20,22,24,26,27],[10,11,12,13,14],[8,9,10,11,12],[5,6,7,8,9],[0,2,3,4,5]],bps:[[50,60,68,73,73],[-20,-15,-10,-5,-5],[-90,-80,-70,-62,-58],[-120,-105,-90,-80,-76],[-60,-55,-48,-42,-39]],ask:[[3.0,3.05,3.1,3.1,3.15],[3.2,3.3,3.35,3.35,3.4],[3.4,3.5,3.55,3.5,3.5],[3.6,3.7,3.72,3.68,3.65],[3.3,3.4,3.42,3.38,3.35]],kpis:[{l:'Avg hedge',v:'12%',c:'var(--red2)'},{l:'Fuel % OPEX',v:'37%',c:'var(--red2)'},{l:'USD access',v:'LIMITED',c:'var(--red2)'},{l:'Ethiopian',v:'LEADS',c:'var(--green2)'},{l:'Pass-through',v:'35%',c:'var(--muted)'}]}
+};
+
+function hmiAdjASK(arr, brent) {
+  var f = (brent - 82) / 82 * 0.55;
+  return arr.map(function(v){ return Math.round((v * (1 + f)) * 100) / 100; });
+}
+
+function hmiMakeLine(id, datasets) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = (p ? (p.clientWidth  || p.offsetWidth  || 700) : 700);
+  el.height = (p ? (p.clientHeight || p.offsetHeight || 220) : 220);
+  if (el.height < 50) el.height = 220;
+  if (hmiCharts[id]) hmiCharts[id].destroy();
+  hmiCharts[id] = new Chart(el, {
+    type: 'line',
+    data: { labels: HMI_YEARS, datasets: datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 } }, grid: { color: HMI_GC } },
+        y: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 } }, grid: { color: HMI_GC } }
+      }
+    }
+  });
+}
+
+window.hmiDraw = function(key) {
+  var d = HMI_RD[key]; if (!d) return;
+  var brent = parseFloat((document.getElementById('hmi-brent') || { value: 82 }).value) || 82;
+  var kEl = document.getElementById('hmik-' + key);
+  if (kEl) kEl.innerHTML = d.kpis.map(function(k) {
+    return '<div class="kc" style="border-top:2px solid ' + k.c + '"><div class="kl">' + k.l + '</div><div class="kv" style="font-size:13px;color:' + k.c + '">' + k.v + '</div></div>';
+  }).join('');
+  var mkDs = function(field) {
+    return d.airlines.map(function(a, i) {
+      var data = field === 'ask' ? hmiAdjASK(d.ask[i], brent) : d[field][i];
+      return { label: a, data: data, borderColor: d.colors[i], backgroundColor: d.colors[i] + '28', borderWidth: 2, borderDash: HMI_DASHES[i], pointRadius: 3, tension: 0.38, fill: false };
+    });
+  };
+  hmiMakeLine('hmic-' + key + '-margin', mkDs('bps'));
+  hmiMakeLine('hmic-' + key + '-hedge',  mkDs('hr'));
+  hmiMakeLine('hmic-' + key + '-ask',    mkDs('ask'));
+  ['margin','hedge','ask'].forEach(function(t) {
+    var lEl = document.getElementById('hmil-' + key + '-' + t); if (!lEl) return;
+    lEl.innerHTML = d.airlines.map(function(a, i) {
+      return '<span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-block;width:16px;height:2px;background:' + d.colors[i] + '"></span>' + a + '</span>';
+    }).join('');
+  });
+  setTimeout(function() {
+    Object.keys(hmiCharts).forEach(function(k) { try { hmiCharts[k].resize(); } catch(e){} });
+  }, 300);
+};
+
+window.hmiSub = function(id, btn) {
+  document.querySelectorAll('.hmir').forEach(function(s) { s.style.display = 'none'; });
+  var el = document.getElementById(id); if (el) el.style.display = 'block';
+  document.querySelectorAll('[id^=hmit]').forEach(function(b) { b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  setTimeout(function() { window.hmiDraw(id.replace('hmir-', '')); }, 120);
+};
+
+window.hmiUpdate = function() {
+  var brent = parseFloat(document.getElementById('hmi-brent').value) || 82;
+  var atf   = parseFloat(document.getElementById('hmi-atf').value)   || 18;
+  document.getElementById('hmi-brent-v').textContent = '$' + brent;
+  document.getElementById('hmi-atf-v').textContent   = atf + '%';
+  document.getElementById('hmi-atfl').textContent = '$' + ((brent * (1 + atf / 100)) / 159).toFixed(3);
+  var pt = parseFloat(document.getElementById('hmi-pt').value) || 53;
+  var fx = parseFloat(document.getElementById('hmi-fx').value) || 84;
+  document.getElementById('hmi-pt-v').textContent = pt + '%';
+  document.getElementById('hmi-fx-v').textContent = fx;
+  Object.keys(hmiCharts).forEach(function(cid) {
+    if (!cid.endsWith('-ask')) return;
+    var key = cid.replace('hmic-', '').replace('-ask', '');
+    var d = HMI_RD[key]; if (!d) return;
+    hmiCharts[cid].data.datasets.forEach(function(ds, i) { ds.data = hmiAdjASK(d.ask[i], brent); });
+    hmiCharts[cid].update('none');
+  });
+};
+
+// ── RISK MODULE ────────────────────────────────────────────────────
+
+var RSK_CHARTS = {};
+var RSK_PEERS = {
+  india: { airlines:['IndiGo','Air India','SpiceJet','AI Express','Akasa'], colors:['#C8A84B','#3DD6C4','#E05555','#3498DB','#8B6FD4'], hr:[40,25,0,20,15], swapPct:[45,60,100,70,80], fuelM:[2800,3200,420,680,340], buffer:[0,0,0,0,0], kpis:[{l:'IndiGo hedge',v:'40%',c:'var(--gold2)',n:'~45% swaps, rest options'},{l:'Air India hedge',v:'25%',c:'var(--teal2)',n:'60% swaps - higher risk'},{l:'SpiceJet',v:'0%',c:'var(--red2)',n:'Unhedged - gains on drop'},{l:'ATF basis risk',v:'HIGH',c:'var(--red2)',n:'ATF may stay high vs Brent'},{l:'USD/INR',v:'AMPLIFIES',c:'var(--gold2)',n:'Dual FX exposure'}]},
+  apac:  { airlines:['Singapore Air','Cathay','Qantas','Air NZ','ANA'], colors:['#4AC97A','#3498DB','#E05555','#C8A84B','#8B6FD4'], hr:[70,65,60,55,40], swapPct:[40,45,55,50,60], fuelM:[4200,3100,2800,680,3400], buffer:[0,0,0,0,0], kpis:[{l:'SIA hedge',v:'70%',c:'var(--green2)',n:'Options-heavy - protected'},{l:'Cathay',v:'65%',c:'var(--teal2)',n:'Swaps + options mix'},{l:'Qantas',v:'60%',c:'var(--gold2)',n:'Entered FY2025 - near peak'},{l:'JPY overlay',v:'ANA',c:'var(--muted)',n:'JPY/USD amplifies P&L'},{l:'Cross-asset',v:'SIA/Cathay',c:'var(--teal2)',n:'Jet-kero + crude + FX'}]},
+  me:    { airlines:['Emirates','Qatar','Etihad','flydubai','Air Arabia'], colors:['#4AC97A','#3498DB','#C8A84B','#8B6FD4','#3DD6C4'], hr:[65,60,50,35,30], swapPct:[35,40,50,55,60], fuelM:[8200,4100,2600,680,520], buffer:[2000,800,500,200,100], kpis:[{l:'Emirates',v:'65%',c:'var(--green2)',n:'Cross-asset; petro offsets'},{l:'Sovereign',v:'BACKSTOP',c:'var(--teal2)',n:'Govt absorbs MTM losses'},{l:'Crisis origin',v:'HOME TURF',c:'var(--gold2)',n:'US-Iran = ME crisis; nat hedge'},{l:'Qatar',v:'60%',c:'var(--blue2)',n:'QIA sovereign fund backstop'},{l:'Etihad',v:'50%',c:'var(--muted)',n:'Post-restructure, mixed'}]},
+  us:    { airlines:['American','United','Delta','Southwest','Spirit'], colors:['#3498DB','#C8A84B','#E05555','#4AC97A','#8B6FD4'], hr:[0,0,0,50,5], swapPct:[0,0,0,70,80], fuelM:[8400,7200,7800,3200,680], buffer:[0,0,0,0,0], kpis:[{l:'AAL/UAL/Delta',v:'0% hedge',c:'var(--green2)',n:'ZERO downside - gain from drop'},{l:'Southwest',v:'50%',c:'var(--gold2)',n:'70% swaps - most exposed'},{l:'Delta lesson',v:'$2.3B loss',c:'var(--red2)',n:'Programme discontinued FY2023'},{l:'Spot gain',v:'LARGE',c:'var(--teal2)',n:'AAL/UAL benefit most'},{l:'Spirit',v:'5%',c:'var(--muted)',n:'Distressed - minimal hedge'}]},
+  eu:    { airlines:['Ryanair','easyJet','Lufthansa','IAG','AF-KLM'], colors:['#E05555','#F59E0B','#3498DB','#8B6FD4','#4AC97A'], hr:[80,75,70,65,60], swapPct:[85,30,55,50,60], fuelM:[3800,2200,7200,5100,4800], buffer:[0,0,0,0,0], kpis:[{l:'Ryanair',v:'80% swaps',c:'var(--red2)',n:'$67/bbl fixed - MOST exposed'},{l:'easyJet',v:'70% options',c:'var(--green2)',n:'Protected on downside'},{l:'Ryanair lock',v:'$67/bbl',c:'var(--red2)',n:'Locked FY24; now above mkt'},{l:'ETS partial',v:'OFFSET',c:'var(--teal2)',n:'Lower fuel = lower ETS too'},{l:'Lufthansa',v:'70%',c:'var(--blue2)',n:'Mixed swap/option 24-month'}]}
+};
+
+function rskCalc(fuelM, hr, swapPct, lockedPx, spotPx) {
+  var hedgedVol = fuelM * (hr / 100);
+  var swapVol   = hedgedVol * (swapPct / 100);
+  var optVol    = hedgedVol * (1 - swapPct / 100);
+  var diff      = lockedPx - spotPx;
+  return {
+    swapLoss:    Math.round(swapVol * (diff / lockedPx)),
+    optLoss:     Math.round(optVol  * 0.07),
+    unhedgedGain:Math.round((fuelM - hedgedVol) * (diff / lockedPx))
+  };
+}
+
+function rskMkBar(id, labels, datasets, yfmt) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = (p ? (p.clientWidth  || p.offsetWidth  || 700) : 700);
+  el.height = (p ? (p.clientHeight || p.offsetHeight || 240) : 240);
+  if (el.height < 50) el.height = 240;
+  if (RSK_CHARTS[id]) RSK_CHARTS[id].destroy();
+  RSK_CHARTS[id] = new Chart(el, {
+    type: 'bar',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: HMI_TC, font: { family: HMI_M, size: 9 }, boxWidth: 10 } } },
+      scales: {
+        x: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 } }, grid: { color: HMI_GC } },
+        y: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 }, callback: yfmt || function(v){return v;} }, grid: { color: HMI_GC } }
+      }
+    }
+  });
+}
+
+function rskMkLine(id, labels, datasets, yfmt) {
+  var el = document.getElementById(id); if (!el) return;
+  var p = el.parentElement;
+  el.width  = (p ? (p.clientWidth  || p.offsetWidth  || 700) : 700);
+  el.height = (p ? (p.clientHeight || p.offsetHeight || 200) : 200);
+  if (el.height < 50) el.height = 200;
+  if (RSK_CHARTS[id]) RSK_CHARTS[id].destroy();
+  RSK_CHARTS[id] = new Chart(el, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: HMI_TC, font: { family: HMI_M, size: 9 }, boxWidth: 10 } } },
+      scales: {
+        x: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 } }, grid: { color: HMI_GC } },
+        y: { ticks: { color: HMI_TC, font: { family: HMI_M, size: 9 }, callback: yfmt || function(v){return v;} }, grid: { color: HMI_GC } }
+      }
+    }
+  });
+}
+
+window.rskUpdate = function() {
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+  var hr   = parseFloat(document.getElementById('rsk-hr').value)   || 40;
+  var sw   = parseFloat(document.getElementById('rsk-sw').value)   || 60;
+  document.getElementById('rsk-peak-v').textContent = '$' + peak;
+  document.getElementById('rsk-spot-v').textContent = '$' + spot;
+  document.getElementById('rsk-hr-v').textContent   = hr + '%';
+  document.getElementById('rsk-sw-v').textContent   = sw + '%';
+  var r = rskCalc(3200, hr, sw, peak, spot);
+  var overpay = peak - spot;
+  document.getElementById('rsk-overpay').textContent = (overpay >= 0 ? '-$' : '+$') + Math.abs(overpay) + '/bbl';
+  document.getElementById('rsk-loss').textContent    = '-$' + Math.abs(r.swapLoss) + 'M';
+  document.getElementById('rsk-save').textContent    = '$' + r.optLoss + 'M';
+  document.getElementById('rsk-net').textContent     = '-$' + (r.swapLoss + r.optLoss) + 'M';
+  // Redraw AI charts if visible
+  var ai = document.getElementById('rsk-ai');
+  if (ai && ai.style.display !== 'none') { window.rskDrawAI(peak, spot, hr, sw); }
+};
+
+window.rskDrawAI = function(peak, spot, hr, sw) {
+  var brentRange = [50,55,60,65,70,75,80,85,90,95,100,110,120];
+  var mfmt = function(v){ return '$'+v+'M'; };
+
+  // Chart 1: hedge P&L across Brent prices
+  rskMkBar('rsk-ai-loss', brentRange.map(function(b){ return '$'+b; }), [
+    { label:'Swap loss ($M)',    data:brentRange.map(function(b){ return -rskCalc(3200,hr,sw,peak,b).swapLoss; }),    backgroundColor:'rgba(224,85,85,.65)',  borderRadius:3 },
+    { label:'Option loss ($M)', data:brentRange.map(function(b){ return -rskCalc(3200,hr,100,peak,b).optLoss; }),   backgroundColor:'rgba(200,168,75,.5)', borderRadius:3 },
+    { label:'Unhedged gain ($M)',data:brentRange.map(function(b){ return  rskCalc(3200,0,0,peak,b).unhedgedGain; }),backgroundColor:'rgba(74,201,122,.5)',borderRadius:3 }
+  ], mfmt);
+
+  // Chart 2: instrument mix comparison at current spot
+  var instLabels = ['100% Swaps', '60% Swaps / 40% Options', '100% Options', 'Unhedged'];
+  var instSw     = [100, 60, 0, 0];
+  var instHR     = [hr,  hr, hr, 0];
+  rskMkBar('rsk-ai-inst', instLabels, [{
+    label: 'Net hedge P&L at spot ($M)',
+    data:  instSw.map(function(s,i){ var r=rskCalc(3200,instHR[i],s,peak,spot); return -(r.swapLoss+r.optLoss); }),
+    backgroundColor: instSw.map(function(s,i){ var v=-(rskCalc(3200,instHR[i],s,peak,spot).swapLoss+rskCalc(3200,instHR[i],s,peak,spot).optLoss); return v<=0?'rgba(74,201,122,.7)':'rgba(224,85,85,.65)'; }),
+    borderRadius: 3
+  }], mfmt);
+
+  // Chart 3: break-even line
+  var pts = [50,55,60,65,70,75,80,85,90,95,100,105,110];
+  rskMkLine('rsk-ai-be', pts.map(function(b){ return '$'+b; }), [
+    { label:'Hedge net P&L ($M)',   data:pts.map(function(b){ var r=rskCalc(3200,hr,sw,peak,b); return -(r.swapLoss+r.optLoss); }), borderColor:'#C8A84B', fill:false, tension:.4, borderWidth:2 },
+    { label:'Unhedged saving ($M)', data:pts.map(function(b){ return rskCalc(3200,hr,0,peak,b).unhedgedGain; }), borderColor:'#4AC97A', fill:false, tension:.4, borderDash:[5,3], borderWidth:2 },
+    { label:'Break-even',           data:pts.map(function(){ return 0; }), borderColor:'rgba(154,149,133,.35)', fill:false, pointRadius:0, borderDash:[3,3], borderWidth:1 }
+  ], mfmt);
+
+  // Sensitivity table
+  var tb = document.getElementById('rsk-ai-sens'); if (!tb) return;
+  var locks = [70,80,90,95,100,110,120];
+  var spots2= [55,60,65,70,75,80,90,100];
+  var h = '<tr style="background:var(--card2)"><th style="text-align:left;padding:6px 8px">Locked / Spot</th>' + spots2.map(function(s){ return '<th>$'+s+'</th>'; }).join('') + '</tr>';
+  locks.forEach(function(lp){
+    var isBase = (lp===95);
+    h += '<tr><td style="padding:5px 8px;color:'+(isBase?'var(--gold2)':'var(--muted)')+'">$'+lp+(isBase?' *':'')+'</td>';
+    spots2.forEach(function(sp){
+      var r = rskCalc(3200,hr,sw,lp,sp);
+      var net = -(r.swapLoss+r.optLoss);
+      var col = net>=0?'var(--green2)':Math.abs(net)<100?'var(--gold2)':Math.abs(net)<300?'var(--muted)':'var(--red2)';
+      h += '<td style="color:'+col+'">'+(net>=0?'+$':'-$')+Math.abs(net)+'M</td>';
+    });
+    h += '</tr>';
+  });
+  tb.innerHTML = h;
+  setTimeout(function(){ Object.keys(RSK_CHARTS).forEach(function(k){ try{ RSK_CHARTS[k].resize(); }catch(e){} }); }, 300);
+};
+
+window.rskDrawRegion = function(key) {
+  var d = RSK_PEERS[key]; if (!d) return;
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+  var mfmt = function(v){ return '$'+v+'M'; };
+
+  // KPI cards
+  var kEl = document.getElementById('rsk-'+key+'-kpis');
+  if (kEl && d.kpis) kEl.innerHTML = d.kpis.map(function(k){
+    return '<div class="kc" style="border-top:2px solid '+k.c+'"><div class="kl">'+k.l+'</div><div class="kv" style="font-size:12px;color:'+k.c+'">'+k.v+'</div><div class="ks" style="font-size:8px;color:var(--mid)">'+k.n+'</div></div>';
+  }).join('');
+
+  // Loss bar
+  var losses = d.airlines.map(function(a,i){
+    var r = rskCalc(d.fuelM[i], d.hr[i], d.swapPct[i], peak, spot);
+    var net = -(r.swapLoss + r.optLoss) + (d.buffer[i]||0);
+    return net;
+  });
+  var unhedged = d.airlines.map(function(a,i){
+    return d.hr[i]===0 ? rskCalc(d.fuelM[i],0,0,peak,spot).unhedgedGain : 0;
+  });
+  rskMkBar('rsk-'+key+'-loss', d.airlines, [
+    { label:'Net hedge P&L ($M)', data:losses, backgroundColor:losses.map(function(v){ return v>=0?'rgba(74,201,122,.7)':'rgba(224,85,85,.65)'; }), borderRadius:3 },
+    { label:'Unhedged spot gain',  data:unhedged, backgroundColor:'rgba(74,201,122,.4)', borderRadius:3 }
+  ], mfmt);
+
+  // Second chart
+  var id2map = { india:'rsk-india-basis', apac:'rsk-apac-inst', me:'rsk-me-inst', us:'rsk-us-spot', eu:'rsk-eu-prot' };
+  var id2 = id2map[key];
+  if (key === 'india') {
+    var bpts = [50,60,70,80,90,100];
+    rskMkLine(id2, bpts.map(function(b){ return '$'+b+'/bbl'; }), [
+      { label:'Full pass-through ATF', data:bpts.map(function(b){ return Math.round(b*1.18); }), borderColor:'#3498DB', fill:false, tension:.3, borderWidth:2 },
+      { label:'Actual ATF (partial pass-through + fixed tax)', data:bpts.map(function(b){ return Math.round(b*0.77+200); }), borderColor:'#C8A84B', fill:false, tension:.3, borderDash:[5,3], borderWidth:2 }
+    ], function(v){ return '$'+v+'/ton'; });
+  } else if (key === 'us') {
+    var spotGains = d.airlines.map(function(a,i){
+      return d.hr[i]===0 ? Math.round(d.fuelM[i]*(peak-spot)/peak) : 0;
+    });
+    rskMkBar(id2, d.airlines, [{ label:'Spot saving vs locked price ($M)', data:spotGains, backgroundColor:d.colors.map(function(c){ return c+'99'; }), borderRadius:3 }], mfmt);
+  } else {
+    var swapV = d.airlines.map(function(a,i){ return Math.round(d.fuelM[i]*d.hr[i]/100*d.swapPct[i]/100); });
+    var optV  = d.airlines.map(function(a,i){ return Math.round(d.fuelM[i]*d.hr[i]/100*(100-d.swapPct[i])/100); });
+    rskMkBar(id2, d.airlines, [
+      { label:'Fixed swaps ($M vol)', data:swapV, backgroundColor:'rgba(224,85,85,.6)',  borderRadius:3 },
+      { label:'Options/collars ($M vol)', data:optV,  backgroundColor:'rgba(74,201,122,.5)',borderRadius:3 }
+    ], mfmt);
+  }
+  setTimeout(function(){ Object.keys(RSK_CHARTS).forEach(function(k){ try{ RSK_CHARTS[k].resize(); }catch(e){} }); }, 300);
+};
+
+window.rskSub = function(id, btn) {
+  document.querySelectorAll('.rskp').forEach(function(s){ s.style.display = 'none'; });
+  var el = document.getElementById(id); if (el) el.style.display = 'block';
+  document.querySelectorAll('[id^=rskt]').forEach(function(b){ b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  var peak = parseFloat(document.getElementById('rsk-peak').value) || 95;
+  var spot = parseFloat(document.getElementById('rsk-spot').value) || 72;
+  var hr   = parseFloat(document.getElementById('rsk-hr').value)   || 40;
+  var sw   = parseFloat(document.getElementById('rsk-sw').value)   || 60;
+  setTimeout(function(){
+    if      (id==='rsk-ai')    window.rskDrawAI(peak, spot, hr, sw);
+    else if (id==='rsk-india') window.rskDrawRegion('india');
+    else if (id==='rsk-apac')  window.rskDrawRegion('apac');
+    else if (id==='rsk-me')    window.rskDrawRegion('me');
+    else if (id==='rsk-us')    window.rskDrawRegion('us');
+    else if (id==='rsk-eu')    window.rskDrawRegion('eu');
+  }, 150);
+};
+
+// Update aiSub to call window.* versions
+window.aiSub = function(id, btn) {
+  document.querySelectorAll('.ais').forEach(function(s){ s.style.display = 'none'; });
+  var panel = document.getElementById(id); if (panel) panel.style.display = 'block';
+  document.querySelectorAll('[id^=ait]').forEach(function(b){ b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  setTimeout(function(){
+    if (id==='ai-over')  { if(typeof window.drawOver==='function')   window.drawOver(); }
+    if (id==='ai-road')  { if(typeof window.drawRoad==='function')   window.drawRoad(); }
+    if (id==='ai-pl')    { if(typeof window.aiPlUpdate==='function') window.aiPlUpdate(); }
+    if (id==='ai-best')  { if(typeof window.drawBest==='function')   window.drawBest(); }
+    if (id==='ai-model') { if(typeof window.hmDraw==='function')     window.hmDraw('india'); }
+    if (id==='ai-intl')  { window.hmiDraw('me'); }
+    if (id==='ai-risk')  {
+      window.rskUpdate();
+      setTimeout(function(){ window.rskSub('rsk-ai', document.getElementById('rskt1')); }, 150);
+    }
+  }, 120);
+};
+
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+// COCKPIT INTEGRATION LAYER
+// Connects all tabs into a single coherent P&L model
+// Each module's output feeds into L1 updateLevers() as adjustments
+// ════════════════════════════════════════════════════════════════════
+
+var _intLock = false; // prevent circular updates
+
+// ── Global state: tracks contribution from each module ──────────────
+window.INT = {
+  distSaving:  0,   // $M from distribution mix optimisation (L3 dsUpdate)
+  distYield:   0,   // $M yield uplift from NDC/direct shift
+  simRevDelta: 0,   // $M from marketing engine scenario sliders
+  cxRevDelta:  0,   // $M from CX improvement (NPS→yield link)
+  hedgeSaving: 0,   // $M from fuel hedging (P&L Scenarios)
+  rskExposure: 0,   // $M downside risk exposure (Risk tab)
+};
+
+// ── Helper: push INT state into L1 levers and rerun updateLevers ────
+function intPush() {
+  if (_intLock) return;
+  _intLock = true;
+
+  // 1. Distribution saving → adjust L1 intl/yield composite
+  //    dsUpdate computes saving in $M; map to L1's intl slider ($M increment)
+  var intlEl = document.getElementById('intl');
+  if (intlEl) {
+    var base = 0; // L1 intl default = 0
+    var newVal = Math.min(800, Math.max(-200, Math.round(base + window.INT.distSaving + window.INT.distYield)));
+    intlEl.value = newVal;
+    var intlV = document.getElementById('intl-v');
+    if (intlV) intlV.textContent = '$' + newVal + 'M';
+  }
+
+  // 2. Marketing sim delta → adjust L1 yield slider
+  //    simUpdate delta is revenue difference from base; map proportionally to yield
+  var yldEl = document.getElementById('yld');
+  if (yldEl) {
+    var yldBase = 200; // default
+    var yldAdj = Math.min(260, Math.max(150, Math.round(yldBase + window.INT.simRevDelta / 22)));
+    yldEl.value = yldAdj;
+    var yldV = document.getElementById('yield-v');
+    if (yldV) yldV.textContent = '$' + yldAdj;
+  }
+
+  // 3. CX improvement → adjust ancillary (NPS drives ancillary attach rate)
+  var ancEl = document.getElementById('anc');
+  if (ancEl) {
+    var ancBase = 4; // default
+    var ancAdj = Math.min(12, Math.max(2, parseFloat((ancBase + window.INT.cxRevDelta / 45).toFixed(1))));
+    ancEl.value = ancAdj;
+    var ancV = document.getElementById('anc-v');
+    if (ancV) ancV.textContent = '$' + ancAdj;
+  }
+
+  // 4. Hedge saving → already injected into lv-fuel by aiPlUpdate; also adjust fuel slider
+  //    hedgeSaving in $M → equivalent $/ton reduction
+  var fuelEl = document.getElementById('fuel');
+  if (fuelEl && window.INT.hedgeSaving !== 0) {
+    var fuelBase = parseFloat(fuelEl.value) || 450;
+    // Each $M saving ≈ $1.3/ton on AI's fuel base
+    var savPerTon = window.INT.hedgeSaving * 1.3;
+    var fuelAdj = Math.min(650, Math.max(350, Math.round(fuelBase - savPerTon)));
+    fuelEl.value = fuelAdj;
+    var fuelV = document.getElementById('fuel-v');
+    if (fuelV) fuelV.textContent = '$' + fuelAdj;
+  }
+
+  // 5. Rerun updateLevers with adjusted values
+  if (typeof updateLevers === 'function') updateLevers();
+
+  // 6. Sync header break-even
+  setTimeout(function() {
+    var lv = document.getElementById('lv-be');
+    var hdr = document.getElementById('hdr-be');
+    if (lv && hdr) hdr.textContent = lv.textContent;
+  }, 30);
+
+  _intLock = false;
+}
+
+// ── Integration: patch dsUpdate (Distribution) ─────────────────────
+var _dsOrig = window.dsUpdate;
+window.dsUpdate = function() {
+  if (typeof _dsOrig === 'function') _dsOrig();
+  // Extract computed saving and yield from dsUpdate's outputs
+  var savEl = document.getElementById('ds-saving');
+  var yldEl2 = document.getElementById('ds-yield');
+  if (savEl) {
+    var savTxt = savEl.textContent.replace(/[^0-9.-]/g,'');
+    window.INT.distSaving = parseFloat(savTxt) || 0;
+  }
+  if (yldEl2) {
+    var yldTxt = yldEl2.textContent.replace(/[^0-9.-]/g,'');
+    window.INT.distYield = parseFloat(yldTxt) || 0;
+  }
+  // Show integration indicator
+  intShowBadge('dist', window.INT.distSaving + window.INT.distYield);
+  setTimeout(intPush, 50);
+};
+
+// ── Integration: patch simUpdate (Marketing Engine) ─────────────────
+var _simOrig = window.simUpdate;
+window.simUpdate = function() {
+  if (typeof _simOrig === 'function') _simOrig();
+  var deltaEl = document.getElementById('sim-ebitda');
+  if (deltaEl) {
+    var txt = deltaEl.textContent.replace(/[^0-9.-]/g,'');
+    window.INT.simRevDelta = parseFloat(txt) || 0;
+  }
+  intShowBadge('sim', window.INT.simRevDelta);
+  setTimeout(intPush, 50);
+};
+
+// ── Integration: patch cxSimUpdate (CX Intelligence) ────────────────
+var _cxOrig = window.cxSimUpdate;
+window.cxSimUpdate = function() {
+  if (typeof _cxOrig === 'function') _cxOrig();
+  // CX improvement: each 10pt NPS gain → ~$0.5/pax ancillary uplift
+  var npsEl = document.getElementById('cxi-loy'); // loyalty/NPS slider
+  if (npsEl) {
+    var npsGain = (parseFloat(npsEl.value) - 38) * 0.5; // 38 = default NPS
+    window.INT.cxRevDelta = Math.max(0, Math.round(npsGain * 45e6 / 1e9 * 1000) / 1000);
+  }
+  intShowBadge('cx', window.INT.cxRevDelta * 45);
+  setTimeout(intPush, 50);
+};
+
+// ── Integration: patch aiPlUpdate (Fuel Hedging P&L) ─────────────────
+var _aiPlOrig = window.aiPlUpdate;
+window.aiPlUpdate = function() {
+  if (typeof _aiPlOrig === 'function') _aiPlOrig();
+  // Extract hedge saving from P&L Scenarios
+  var saveEl = document.getElementById('ai-save');
+  if (saveEl) {
+    var txt = saveEl.textContent.replace(/[^0-9.-]/g,'');
+    var inrCr = parseFloat(txt) || 0;
+    window.INT.hedgeSaving = Math.round(inrCr / 84); // INR Cr → $M
+  }
+  intShowBadge('hedge', window.INT.hedgeSaving);
+  setTimeout(intPush, 80);
+};
+
+// ── Integration: patch rskUpdate (Risk tab) → risk exposure to header
+var _rskOrig = window.rskUpdate;
+window.rskUpdate = function() {
+  if (typeof _rskOrig === 'function') _rskOrig();
+  // Pull net exposure from risk tab
+  var netEl = document.getElementById('rsk-net');
+  if (netEl) {
+    var txt = netEl.textContent.replace(/[^0-9.-]/g,'');
+    window.INT.rskExposure = parseFloat(txt) || 0;
+  }
+  // Show risk badge on header
+  intShowRiskHeader();
+  // Also sync rsk-spot into global Brent sync
+  var spotEl = document.getElementById('rsk-spot');
+  if (spotEl && typeof window.syncFromBrent === 'function') {
+    window.syncFromBrent(spotEl.value);
+  }
+};
+
+// ── Integration: sync hedge ratio across all hedging panels ──────────
+// When ai-hr changes, update hm-brent display note and rsk-hr
+document.addEventListener('DOMContentLoaded', function() {
+  var aiHr = document.getElementById('ai-hr');
+  if (aiHr) {
+    aiHr.addEventListener('input', function() {
+      var rskHr = document.getElementById('rsk-hr');
+      if (rskHr) { rskHr.value = Math.min(80, this.value); }
+      var rskHrV = document.getElementById('rsk-hr-v');
+      if (rskHrV) rskHrV.textContent = this.value + '%';
+    });
+  }
+});
+
+// ── Visual indicator: badge showing each module's P&L contribution ──
+function intShowBadge(module, deltaM) {
+  var id = 'int-badge-' + module;
+  var el = document.getElementById(id);
+  if (!el) return;
+  var sign = deltaM >= 0 ? '+$' : '-$';
+  var col  = deltaM >= 0 ? 'var(--green2)' : 'var(--red2)';
+  el.textContent = sign + Math.abs(Math.round(deltaM)) + 'M → L1';
+  el.style.color = col;
+  el.style.display = 'inline-block';
+}
+
+// ── Risk exposure warning in header ──────────────────────────────────
+function intShowRiskHeader() {
+  var el = document.getElementById('int-risk-header');
+  if (!el) return;
+  var exp = window.INT.rskExposure;
+  if (exp > 0) {
+    el.textContent = '⚠ Hedge risk: −$' + Math.round(exp) + 'M';
+    el.style.display = 'inline-block';
+    el.style.color = 'var(--red2)';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ── Integration status panel: shows what each module is feeding L1 ──
+// Inject a small status bar into the L1 layer
+document.addEventListener('DOMContentLoaded', function() {
+  var l1 = document.getElementById('l1');
+  if (!l1) return;
+
+  // Add integration badge elements inline after each relevant module output
+  // Distribution badge
+  var dsEbitda = document.getElementById('ds-ebitda');
+  if (dsEbitda && !document.getElementById('int-badge-dist')) {
+    var badge = document.createElement('span');
+    badge.id = 'int-badge-dist';
+    badge.style.cssText = 'font-size:9px;font-family:var(--mono);margin-left:8px;display:none';
+    dsEbitda.parentNode.appendChild(badge);
+  }
+
+  // Simulation badge
+  var simEbitda = document.getElementById('sim-ebitda');
+  if (simEbitda && !document.getElementById('int-badge-sim')) {
+    var badge2 = document.createElement('span');
+    badge2.id = 'int-badge-sim';
+    badge2.style.cssText = 'font-size:9px;font-family:var(--mono);margin-left:8px;display:none';
+    simEbitda.parentNode.appendChild(badge2);
+  }
+
+  // CX badge
+  var cxSimM = document.getElementById('cx-sim-margin');
+  if (cxSimM && !document.getElementById('int-badge-cx')) {
+    var badge3 = document.createElement('span');
+    badge3.id = 'int-badge-cx';
+    badge3.style.cssText = 'font-size:9px;font-family:var(--mono);margin-left:8px;display:none';
+    cxSimM.parentNode.appendChild(badge3);
+  }
+
+  // Hedge saving badge
+  var aiSave = document.getElementById('ai-save');
+  if (aiSave && !document.getElementById('int-badge-hedge')) {
+    var badge4 = document.createElement('span');
+    badge4.id = 'int-badge-hedge';
+    badge4.style.cssText = 'font-size:9px;font-family:var(--mono);margin-left:8px;display:none';
+    aiSave.parentNode.appendChild(badge4);
+  }
+
+  // Risk header element
+  var hkpis = document.querySelector('.hkpis');
+  if (hkpis && !document.getElementById('int-risk-header')) {
+    var riskBadge = document.createElement('div');
+    riskBadge.id = 'int-risk-header';
+    riskBadge.style.cssText = 'font-size:9px;font-family:var(--mono);display:none;padding:2px 6px;background:rgba(224,85,85,.1);border-radius:3px;align-self:center';
+    hkpis.appendChild(riskBadge);
+  }
+
+  // ── L1 integration status card ──────────────────────────────────
+  // Add a compact status panel at the top of L1 showing all live feeds
+  var l1Layer = document.querySelector('#l1.layer, #l1');
+  if (l1Layer && !document.getElementById('int-status-panel')) {
+    var panel = document.createElement('div');
+    panel.id = 'int-status-panel';
+    panel.style.cssText = 'display:none;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:8px 12px;background:rgba(26,188,156,.06);border:1px solid rgba(26,188,156,.2);border-radius:6px;align-items:center';
+    panel.innerHTML =
+      '<span style="font-size:9px;font-family:var(--mono);color:var(--teal2);text-transform:uppercase;letter-spacing:.1em;margin-right:4px">P&amp;L adjustments from levers →</span>' +
+      '<span id="int-s-dist"  style="font-size:9px;font-family:var(--mono);color:var(--muted)">Distribution: —</span>' +
+      '<span style="color:var(--rule)">|</span>' +
+      '<span id="int-s-sim"   style="font-size:9px;font-family:var(--mono);color:var(--muted)">Marketing: —</span>' +
+      '<span style="color:var(--rule)">|</span>' +
+      '<span id="int-s-cx"    style="font-size:9px;font-family:var(--mono);color:var(--muted)">CX: —</span>' +
+      '<span style="color:var(--rule)">|</span>' +
+      '<span id="int-s-hedge" style="font-size:9px;font-family:var(--mono);color:var(--muted)">Hedge: —</span>' +
+      '<span style="color:var(--rule)">|</span>' +
+      '<span id="int-s-rsk"   style="font-size:9px;font-family:var(--mono);color:var(--muted)">Risk: —</span>' +
+      '<span style="color:var(--rule)">|</span>' +
+      '<span id="int-s-total" style="font-size:9px;font-family:var(--mono);color:var(--gold2);font-weight:600">Total adj: —</span>';
+    // Insert as first child of the l1 layer
+    l1Layer.insertBefore(panel, l1Layer.firstChild);
+  }
+});
+
+// ── Update the status panel whenever intPush runs ──
+var _origIntPush = intPush;
+intPush = function() {
+  _origIntPush();
+  // Update status panel
+  function fmt(v) { return (v>=0?'+$':'-$')+Math.abs(Math.round(v))+'M'; }
+  function col(v) { return v>=0?'var(--green2)':'var(--red2)'; }
+  var total = window.INT.distSaving + window.INT.distYield + window.INT.simRevDelta + window.INT.cxRevDelta * 45 + window.INT.hedgeSaving - window.INT.rskExposure;
+  var elems = {
+    'int-s-dist':  { v: window.INT.distSaving + window.INT.distYield, label: 'Dist' },
+    'int-s-sim':   { v: window.INT.simRevDelta,                        label: 'Mktg' },
+    'int-s-cx':    { v: window.INT.cxRevDelta * 45,                    label: 'CX'   },
+    'int-s-hedge': { v: window.INT.hedgeSaving,                        label: 'Hedge'},
+    'int-s-rsk':   { v: -window.INT.rskExposure,                       label: 'Risk' },
+    'int-s-total': { v: total,                                          label: 'Total'},
+  };
+  var panel = document.getElementById('int-status-panel');
+  if (panel) {
+    // Only show panel when at least one feed has a non-zero value
+    var hasChange = Math.abs(total) > 1 || Math.abs(window.INT.distSaving) > 1 || Math.abs(window.INT.simRevDelta) > 1 || Math.abs(window.INT.hedgeSaving) > 1;
+    panel.style.display = hasChange ? 'flex' : 'none';
+  }
+  Object.keys(elems).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var item = elems[id];
+    if (Math.abs(item.v) < 1 && id !== 'int-s-total') {
+      el.textContent = item.label + ': baseline';
+      el.style.color = 'var(--muted)';
+    } else {
+      el.textContent = item.label + ': ' + fmt(item.v);
+      el.style.color = col(item.v);
+    }
+  });
+};
+</script>
 </body>
 </html>
