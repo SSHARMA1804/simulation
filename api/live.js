@@ -1,6 +1,5 @@
 // api/live.js — Air India Dashboard Serverless Proxy v2
 // Vercel Hobby plan compatible (CommonJS)
-// Added: DGCA load factor via Claude web search
 
 module.exports = async function handler(req, res) {
 
@@ -39,13 +38,15 @@ module.exports = async function handler(req, res) {
           source: 'fallback'
         });
       }
-      const prompt = 'Search for the latest DGCA India monthly domestic airline traffic statistics for Air India and IndiGo. Return ONLY a JSON object, no other text: { "airIndia": { "loadFactor": <number>, "passengers": <number in thousands>, "month": "<Mon YYYY>", "isActual": true }, "indiGo": { "loadFactor": <number>, "passengers": <number in thousands>, "month": "<same month>", "isActual": true }, "dataSource": "DGCA Monthly Domestic Traffic Statistics" }. If no actual data found, use loadFactor 84.2 for Air India and 87.4 for IndiGo with isActual: false.';
+      const prompt = `Search "DGCA India domestic airline traffic statistics load factor 2026". Find Air India and IndiGo passenger load factor for the most recent month available. Respond with ONLY valid JSON and nothing else, no markdown, no explanation:
+{"airIndia":{"loadFactor":82.4,"passengers":3842,"month":"Feb 2026","isActual":true},"indiGo":{"loadFactor":86.1,"passengers":8200,"month":"Feb 2026","isActual":true},"dataSource":"DGCA"}
+Replace numbers with actual values found. If not found set isActual to false and use 84.2 for Air India and 87.4 for IndiGo.`;
       const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 500,
+          max_tokens: 300,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{ role: 'user', content: prompt }]
         })
