@@ -1,4 +1,4 @@
-// api/live.js — Air India Dashboard Serverless Proxy v2
+// api/live.js — Air India Dashboard Serverless Proxy v3
 // Vercel Hobby plan compatible (CommonJS)
 
 module.exports = async function handler(req, res) {
@@ -30,48 +30,64 @@ module.exports = async function handler(req, res) {
     }
 
     if (source === 'loadfactor') {
-      const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-      if (!ANTHROPIC_KEY) {
-        return res.status(200).json({ airIndia: { loadFactor: 84.2, month: 'base case', isActual: false, passengers: null }, indiGo: { loadFactor: 87.4, month: 'base case', isActual: false }, source: 'fallback' });
-      }
-      const prompt = `Search the web for: "DGCA domestic airline statistics 2026 Air India load factor"
+      const KEY = process.env.ANTHROPIC_API_KEY;
+      if (!KEY) return res.status(200).json({ airIndia: { loadFactor: 84.2, month: 'base case', isActual: false }, indiGo: { loadFactor: 87.4, month: 'base case', isActual: false }, source: 'fallback' });
 
-Find the most recent monthly load factor percentage for Air India and IndiGo from official DGCA data.
-
-Reply with exactly 4 lines and nothing else:
-AI_LF: 84.2
-IG_LF: 87.4
-MONTH: Feb 2026
-ACTUAL: true
-
-Replace values with what you found. If not found keep the numbers above and set ACTUAL: false`;
-
-      const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+      // Turn 1: search
+      const r1 = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+        headers: { 'Content-Type': 'application/json', 'x-api-key': KEY, 'anthropic-version': '2023-06-01' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 200,
+          max_tokens: 1000,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          messages: [{ role: 'user', content: prompt }]
+          messages: [{ role: 'user', content: 'Search for DGCA India monthly domestic airline traffic statistics 2025 2026. Find the passenger load factor for Air India and IndiGo for the most recent month reported.' }]
         })
       });
-      const aiData = await aiRes.json();
+      const d1 = await r1.json();
+
+      // Build messages with tool results
+      var messages = [
+        { role: 'user', content: 'Search for DGCA India monthly domestic airline traffic statistics 2025 2026. Find the passenger load factor for Air India and IndiGo for the most recent month reported.' },
+        { role: 'assistant', content: d1.content }
+      ];
+
+      // Handle tool use blocks
+      var toolUseBlocks = (d1.content || []).filter(function(b) { return b.type === 'tool_use'; });
+      if (toolUseBlocks.length > 0) {
+        var toolResults = toolUseBlocks.map(function(b) {
+          return { type: 'tool_result', tool_use_id: b.id, content: 'Search completed.' };
+        });
+        messages.push({ role: 'user', content: toolResults });
+      }
+
+      // Turn 2: extract numbers
+      messages.push({ role: 'user', content: 'Based on what you found, reply with exactly these 4 lines only:\nAI_LF: [Air India load factor number]\nIG_LF: [IndiGo load factor number]\nMONTH: [month year]\nACTUAL: true\n\nIf no data found, use AI_LF: 84.2 and IG_LF: 87.4 and ACTUAL: false' });
+
+      const r2 = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 100, messages: messages })
+      });
+      const d2 = await r2.json();
+
       var textOut = '';
-      if (aiData && aiData.content) {
-        for (var i = 0; i < aiData.content.length; i++) {
-          if (aiData.content[i].type === 'text') textOut += aiData.content[i].text;
+      if (d2 && d2.content) {
+        for (var i = 0; i < d2.content.length; i++) {
+          if (d2.content[i].type === 'text') textOut += d2.content[i].text;
         }
       }
+
       var aiLF  = parseFloat((textOut.match(/AI_LF:\s*([\d.]+)/) || [])[1]) || 84.2;
       var igLF  = parseFloat((textOut.match(/IG_LF:\s*([\d.]+)/) || [])[1]) || 87.4;
       var month = ((textOut.match(/MONTH:\s*(.+)/) || [])[1] || 'est.').trim();
-      var actual = textOut.indexOf('ACTUAL: true') > -1;
+      var actual = textOut.toLowerCase().indexOf('actual: true') > -1;
+
       return res.status(200).json({
         airIndia: { loadFactor: aiLF, month: month, isActual: actual, passengers: null },
         indiGo:   { loadFactor: igLF, month: month, isActual: actual },
         dataSource: 'DGCA',
-        rawResponse: textOut.substring(0, 300)
+        debug: textOut.substring(0, 200)
       });
     }
 
