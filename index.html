@@ -8302,7 +8302,7 @@ window.updateAssumptionImpactBanner = updateAssumptionImpactBanner;
   </div>  </div><!-- /gov-mc -->
 
   <!-- ── SECTION 10: RISK HEATMAP ───────────────────────────────── -->
-  <div id="gov-rh" class="gov-section" style="display:none">
+  <div id="gov-rh" class="gov-section" style="display:none;margin-top:0;padding-top:0">
     <div class="eye" style="margin-bottom:4px">10 · Risk Heatmap &amp; Controls</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Probability × Impact matrix · 7 risk categories · Click any cell to view mitigation pathway</div>
 
@@ -8318,9 +8318,9 @@ window.updateAssumptionImpactBanner = updateAssumptionImpactBanner;
     </div>
 
     <!-- Heatmap canvas -->
-    <div class="card ga" style="margin-bottom:14px">
+    <div id="rh-card" class="card ga" style="margin-bottom:14px">
       <div class="ct">Risk Heatmap — Probability × Impact</div>
-      <div style="position:relative;height:420px"><div id="rh-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:var(--mid);font-family:var(--mono)">Loading…</div><canvas id="rh-canvas"></canvas></div>
+      <div style="position:relative;height:420px;display:none" id="rh-canvas-wrap"><canvas id="rh-canvas"></canvas></div>
     </div>
 
     <!-- Risk detail panel -->
@@ -10734,8 +10734,8 @@ var RH_RISKS = [
 ];
 
 function initRiskHeatmap() {
-  var loading = document.getElementById('rh-loading');
-  if(loading) loading.style.display = 'none';
+  var wrap = document.getElementById('rh-canvas-wrap');
+  if(wrap) wrap.style.display = 'block';
   // Always redraw to ensure chart renders correctly
   if(window._rhChart) { try{window._rhChart.destroy();}catch(e){} window._rhChart = null; }
   drawRiskHeatmap();
@@ -11198,6 +11198,9 @@ function initGovSubExtension() {
     document.querySelectorAll('.gov-section').forEach(function(s){ s.style.display = 'none'; });
     var el = document.getElementById(id);
     if(el) el.style.display = 'block';
+    // Remove min-height constraint so no empty gap appears
+    var l17 = document.getElementById('l17');
+    if(l17) l17.style.minHeight = '0';
     document.querySelectorAll('[id^="govt"]').forEach(function(b){ b.classList.remove('on'); });
     if(btn) btn.classList.add('on');
     // Fire legacy hooks
@@ -11206,7 +11209,7 @@ function initGovSubExtension() {
     }
     // New tab initialisers
     if(id === 'gov-mc') setTimeout(initMCInputs, 150);
-    if(id === 'gov-rh') setTimeout(initRiskHeatmap, 150);
+    if(id === 'gov-rh') { setTimeout(function(){ if(window._rhChart){try{window._rhChart.destroy();}catch(e){} window._rhChart=null;} var tb=document.getElementById('rh-table-body');if(tb)tb.innerHTML=''; initRiskHeatmap(); }, 150); }
   };
 }
 
