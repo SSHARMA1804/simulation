@@ -416,7 +416,7 @@ body { overflow-x: auto !important; }
     <div class="kc ga"><div class="kl">Total Revenue</div><div class="kv" style="color:var(--teal2)">$10.9B</div><div class="ks">FY2026 · ₹79,150 Cr confirmed</div><div class="kbar"><div class="kbf" style="width:62%;background:var(--teal)"></div></div></div>
     <div class="kc ra"><div class="kl">EBITDA</div><div class="kv neg">-$2,052M</div><div class="ks">First positive FY2028</div><div class="kbar"><div class="kbf" style="width:10%;background:var(--red2)"></div></div></div>
     <div class="kc ra"><div class="kl">Net Margin</div><div class="kv neg">-44.5%</div><div class="ks">→ +0.9% FY2029 → +11.4% FY2030</div><div class="kbar"><div class="kbf" style="width:5%;background:var(--red2)"></div></div></div>
-    <div class="kc ta"><div class="kl">Load Factor</div><div class="kv" style="color:var(--green2)">84.2%</div><div class="ks">Target 87%+ (IndiGo: 87.4%)</div><div class="kbar"><div class="kbf" style="width:84%;background:var(--green2)"></div></div></div>
+    <div class="kc ta"><div class="kl">Load Factor</div><div class="kv" style="color:var(--green2)"><span id="hdr-lf">84.2%</span></div><div class="ks">Target 87%+ (IndiGo: 87.4%) · <span id="hdr-lf-badge" style="color:var(--gold);font-size:8px">base case est.</span></div><div class="kbar"><div class="kbf" style="width:84%;background:var(--green2)"></div></div></div>
   </div>
   <div class="g4" style="margin-bottom:24px">
     <div class="kc ba"><div class="kl">RASK</div><div class="kv" style="color:var(--blue2)">~$0.078</div><div class="ks">Target $0.090+ FY2029</div><div class="kbar"><div class="kbf" style="width:55%;background:var(--blue)"></div></div></div>
@@ -9310,6 +9310,31 @@ window.l5SubX = l5SubX;
   <div id="egil-ops" class="egil-sub" style="display:none">
     <div class="eye2" style="margin-top:0">Operations Intelligence</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Airspace &amp; Routing · Airport Capacity · Pilot Supply Chain · Fleet Delivery &amp; Retrofit Delays</div>
+
+    <!-- DGCA Live KPI Strip -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;background:rgba(232,160,32,.04);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:12px 14px">
+      <div>
+        <div style="font-size:8px;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Load Factor</div>
+        <div id="ops-lf-live" style="font-size:20px;font-weight:600;color:var(--green2);font-family:var(--mono)">84.2%</div>
+        <div style="font-size:8px;color:var(--gold);margin-top:2px" id="ops-lf-badge">base case est.</div>
+      </div>
+      <div>
+        <div style="font-size:8px;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">vs IndiGo</div>
+        <div id="ops-indigo-lf" style="font-size:20px;font-weight:600;color:var(--blue2);font-family:var(--mono)">87.4%</div>
+        <div style="font-size:8px;color:var(--mid);margin-top:2px">IndiGo benchmark</div>
+      </div>
+      <div>
+        <div style="font-size:8px;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">AI Passengers</div>
+        <div id="ops-pax-live" style="font-size:20px;font-weight:600;color:var(--text);font-family:var(--mono)">—</div>
+        <div style="font-size:8px;color:var(--mid);margin-top:2px" id="ops-pax-badge">click refresh</div>
+      </div>
+      <div>
+        <div style="font-size:8px;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Data source</div>
+        <div style="font-size:11px;font-weight:600;color:var(--teal2);font-family:var(--mono);margin-top:4px">DGCA</div>
+        <div style="font-size:8px;color:var(--mid);margin-top:2px">Monthly · Official</div>
+      </div>
+    </div>
+
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px">
       <div class="card ga" style="padding:14px 18px">
         <div class="ct" style="margin-bottom:8px">Airspace &amp; Routing Shock Model</div>
@@ -9815,6 +9840,61 @@ var EGIL = {
       }
     },
 
+    async fetchLoadFactor() {
+      try {
+        if(!LIVE_CONFIG.useProxy) return; // only on Vercel
+        var url = LIVE_CONFIG.proxy + '?source=loadfactor';
+        var r = await fetch(url);
+        var d = await r.json();
+        if(d && d.airIndia) {
+          var lf   = parseFloat(d.airIndia.loadFactor);
+          var month = d.airIndia.month || '';
+          var actual = d.airIndia.isActual;
+          var badge = actual
+            ? '<span style="color:var(--green2);font-size:8px">✓ DGCA ' + month + '</span>'
+            : '<span style="color:var(--gold);font-size:8px">~ model est.</span>';
+
+          // L1 header tile
+          var t = document.getElementById('hdr-lf');
+          if(t) t.innerHTML = lf.toFixed(1) + '%<br>' + badge;
+
+          // EGIL ops live display
+          var o = document.getElementById('ops-lf-live');
+          if(o) o.innerHTML = lf.toFixed(1) + '%';
+          var ob = document.getElementById('ops-lf-badge');
+          if(ob) ob.innerHTML = actual ? '<span style="color:var(--green2)">✓ DGCA ' + month + '</span>' : '<span style="color:var(--gold)">~ model est.</span>';
+          // Update L1 badge too
+          var hb = document.getElementById('hdr-lf-badge');
+          if(hb) hb.innerHTML = actual ? '✓ DGCA ' + month : 'base case est.';
+          if(hb) hb.style.color = actual ? 'var(--green2)' : 'var(--gold)';
+          // Update IndiGo comparison
+          var il = document.getElementById('ops-indigo-lf');
+          if(il && d.indiGo && d.indiGo.loadFactor) il.textContent = parseFloat(d.indiGo.loadFactor).toFixed(1) + '%';
+          // Update pax
+          var px = document.getElementById('ops-pax-live');
+          var pb = document.getElementById('ops-pax-badge');
+          if(px && d.airIndia.passengers) {
+            var paxM = (d.airIndia.passengers / 1000000).toFixed(2);
+            px.textContent = paxM + 'M';
+            if(pb) pb.innerHTML = actual ? '<span style="color:var(--green2)">✓ DGCA ' + month + '</span>' : '~ estimated';
+          }
+
+          // Store globally for charts
+          window.DGCA_DATA = d;
+
+          // Update simulation base
+          if(window.SIM_STATE) window.SIM_STATE.lfd = lf;
+
+          // Redraw L2 LF chart if available
+          if(typeof window.drawLFActualsChart === 'function') window.drawLFActualsChart(d);
+
+          console.log('[DGCA] LF:', lf + '% ' + month);
+        }
+      } catch(e) {
+        console.warn('[DGCA] LF fetch failed:', e.message);
+      }
+    },
+
     async callAI(prompt, targetEl, loadingMsg) {
       if(targetEl) targetEl.innerHTML = '<span style="color:var(--mid);font-style:italic">⟳ ' + (loadingMsg||'Loading…') + '</span>';
       try {
@@ -9847,7 +9927,7 @@ var EGIL = {
 
     async refreshAll() {
       document.getElementById('egil-last-refresh').textContent = 'Refreshing…';
-      await Promise.all([EGIL.live.fetchFX(), EGIL.live.fetchFuel()]);
+      await Promise.all([EGIL.live.fetchFX(), EGIL.live.fetchFuel(), EGIL.live.fetchLoadFactor()]);
       document.getElementById('egil-aviation-status').textContent = 'Aviation: connected ✓';
       document.getElementById('egil-aviation-status').style.color = 'var(--green2)';
       document.getElementById('egil-last-refresh').textContent = 'Last refresh: ' + new Date().toLocaleTimeString();
