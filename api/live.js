@@ -38,33 +38,58 @@ module.exports = async function handler(req, res) {
           source: 'fallback'
         });
       }
-      const prompt = `Search "DGCA India domestic airline traffic statistics load factor 2026". Find Air India and IndiGo passenger load factor for the most recent month available. Respond with ONLY valid JSON and nothing else, no markdown, no explanation:
-{"airIndia":{"loadFactor":82.4,"passengers":3842,"month":"Feb 2026","isActual":true},"indiGo":{"loadFactor":86.1,"passengers":8200,"month":"Feb 2026","isActual":true},"dataSource":"DGCA"}
-Replace numbers with actual values found. If not found set isActual to false and use 84.2 for Air India and 87.4 for IndiGo.`;
+
+      const prompt = `Search the web for DGCA India monthly domestic airline statistics 2025 2026 load factor Air India IndiGo. After searching, respond with ONLY this JSON structure filled with real numbers you found, absolutely no other text before or after:
+{"airIndia":{"loadFactor":84.2,"passengers":3800,"month":"Jan 2026","isActual":true},"indiGo":{"loadFactor":87.4,"passengers":7900,"month":"Jan 2026","isActual":true},"dataSource":"DGCA"}`;
+
       const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_KEY,
+          'anthropic-version': '2023-06-01'
+        },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 300,
+          max_tokens: 500,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{ role: 'user', content: prompt }]
         })
       });
+
       const aiData = await aiRes.json();
-      var responseText = '';
+
+      // Extract only text blocks from response (skip tool_use blocks)
+      var allText = '';
       if (aiData && aiData.content) {
         for (var i = 0; i < aiData.content.length; i++) {
-          if (aiData.content[i].type === 'text') responseText += aiData.content[i].text;
+          var block = aiData.content[i];
+          if (block.type === 'text') {
+            allText += block.text + '\n';
+          }
         }
       }
-      try {
-        var jsonMatch = responseText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          var parsed = JSON.parse(jsonMatch[0]);
-          if (parsed.airIndia && parsed.airIndia.loadFactor) return res.status(200).json(parsed);
+
+      // Find ALL JSON objects in the text, take the last one (Claude's final answer)
+      var jsonMatches = allText.match(/\{[^{}]*"airIndia"[^{}]*\}/g);
+      if (!jsonMatches) {
+        // Try broader match
+        jsonMatches = allText.match(/\{[\s\S]*?"airIndia"[\s\S]*?\}/g);
+      }
+
+      if (jsonMatches && jsonMatches.length > 0) {
+        // Try each match from last to first
+        for (var j = jsonMatches.length - 1; j >= 0; j--) {
+          try {
+            var parsed = JSON.parse(jsonMatches[j]);
+            if (parsed.airIndia && typeof parsed.airIndia.loadFactor === 'number') {
+              return res.status(200).json(parsed);
+            }
+          } catch(e) {}
         }
-      } catch(e) {}
+      }
+
+      // Final fallback
       return res.status(200).json({
         airIndia: { loadFactor: 84.2, month: 'est.', isActual: false, passengers: null },
         indiGo: { loadFactor: 87.4, month: 'est.', isActual: false },
