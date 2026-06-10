@@ -32,68 +32,46 @@ module.exports = async function handler(req, res) {
     if (source === 'loadfactor') {
       const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
       if (!ANTHROPIC_KEY) {
-        return res.status(200).json({
-          airIndia: { loadFactor: 84.2, month: 'base case', isActual: false, passengers: null },
-          indiGo: { loadFactor: 87.4, month: 'base case', isActual: false },
-          source: 'fallback'
-        });
+        return res.status(200).json({ airIndia: { loadFactor: 84.2, month: 'base case', isActual: false, passengers: null }, indiGo: { loadFactor: 87.4, month: 'base case', isActual: false }, source: 'fallback' });
       }
+      const prompt = `Search the web for: "DGCA domestic airline statistics 2026 Air India load factor"
 
-      const prompt = `Search the web for DGCA India monthly domestic airline statistics 2025 2026 load factor Air India IndiGo. After searching, respond with ONLY this JSON structure filled with real numbers you found, absolutely no other text before or after:
-{"airIndia":{"loadFactor":84.2,"passengers":3800,"month":"Jan 2026","isActual":true},"indiGo":{"loadFactor":87.4,"passengers":7900,"month":"Jan 2026","isActual":true},"dataSource":"DGCA"}`;
+Find the most recent monthly load factor percentage for Air India and IndiGo from official DGCA data.
+
+Reply with exactly 4 lines and nothing else:
+AI_LF: 84.2
+IG_LF: 87.4
+MONTH: Feb 2026
+ACTUAL: true
+
+Replace values with what you found. If not found keep the numbers above and set ACTUAL: false`;
 
       const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_KEY,
-          'anthropic-version': '2023-06-01'
-        },
+        headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 500,
+          max_tokens: 200,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{ role: 'user', content: prompt }]
         })
       });
-
       const aiData = await aiRes.json();
-
-      // Extract only text blocks from response (skip tool_use blocks)
-      var allText = '';
+      var textOut = '';
       if (aiData && aiData.content) {
         for (var i = 0; i < aiData.content.length; i++) {
-          var block = aiData.content[i];
-          if (block.type === 'text') {
-            allText += block.text + '\n';
-          }
+          if (aiData.content[i].type === 'text') textOut += aiData.content[i].text;
         }
       }
-
-      // Find ALL JSON objects in the text, take the last one (Claude's final answer)
-      var jsonMatches = allText.match(/\{[^{}]*"airIndia"[^{}]*\}/g);
-      if (!jsonMatches) {
-        // Try broader match
-        jsonMatches = allText.match(/\{[\s\S]*?"airIndia"[\s\S]*?\}/g);
-      }
-
-      if (jsonMatches && jsonMatches.length > 0) {
-        // Try each match from last to first
-        for (var j = jsonMatches.length - 1; j >= 0; j--) {
-          try {
-            var parsed = JSON.parse(jsonMatches[j]);
-            if (parsed.airIndia && typeof parsed.airIndia.loadFactor === 'number') {
-              return res.status(200).json(parsed);
-            }
-          } catch(e) {}
-        }
-      }
-
-      // Final fallback
+      var aiLF  = parseFloat((textOut.match(/AI_LF:\s*([\d.]+)/) || [])[1]) || 84.2;
+      var igLF  = parseFloat((textOut.match(/IG_LF:\s*([\d.]+)/) || [])[1]) || 87.4;
+      var month = ((textOut.match(/MONTH:\s*(.+)/) || [])[1] || 'est.').trim();
+      var actual = textOut.indexOf('ACTUAL: true') > -1;
       return res.status(200).json({
-        airIndia: { loadFactor: 84.2, month: 'est.', isActual: false, passengers: null },
-        indiGo: { loadFactor: 87.4, month: 'est.', isActual: false },
-        source: 'fallback'
+        airIndia: { loadFactor: aiLF, month: month, isActual: actual, passengers: null },
+        indiGo:   { loadFactor: igLF, month: month, isActual: actual },
+        dataSource: 'DGCA',
+        rawResponse: textOut.substring(0, 300)
       });
     }
 
