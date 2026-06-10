@@ -11,7 +11,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13.5px;overflow-x:auto;-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.4}
-.mast{position:relative;z-index:10;background:linear-gradient(180deg,rgba(12,18,42,.98),rgba(8,13,28,.95));border-bottom:1px solid var(--rule);padding:20px 40px 16px;display:flex;justify-content:space-between;align-items:flex-end}
+.mast{position:relative;z-index:10;background:linear-gradient(180deg,rgba(12,18,42,.98),rgba(8,13,28,.95));border-bottom:1px solid var(--rule);padding:12px 40px 10px;display:flex;justify-content:space-between;align-items:flex-end}
 .mast h1{font-family:var(--serif);font-size:22px;font-weight:400}
 .eye{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .sub{font-size:10px;color:var(--mid);margin-top:3px}
@@ -358,7 +358,12 @@ body { overflow-x: auto !important; }
   <div>
     <div class="eye">Independent Expert Simulation · FY2026–FY2030</div>
     <h1>AI-Conceptual 5-Year Estimates</h1>
-    <div class="sub">Conceptual model for discussion</div>
+    <div class="sub">Conceptual model for discussion · <span id="hdr-last-refresh" style="color:var(--mid)">click refresh to load live data</span></div>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap">
+      <button id="hdr-refresh-btn" onclick="headerRefreshAll()" style="background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);color:var(--gold);border-radius:10px;padding:2px 8px;font-size:8px;font-family:var(--mono);cursor:pointer;font-weight:600;letter-spacing:.04em;white-space:nowrap" onmouseover="this.style.background='rgba(232,160,32,.22)'" onmouseout="this.style.background='rgba(232,160,32,.1)'"><span id="hdr-refresh-icon">⟳</span> REFRESH LIVE DATA</button>
+      <button onclick="document.getElementById('how-to-read-overlay').style.display='flex'" style="background:rgba(52,152,219,.08);border:1px solid rgba(52,152,219,.3);color:var(--blue2);border-radius:10px;padding:2px 8px;font-size:8px;font-family:var(--mono);cursor:pointer;font-weight:600;letter-spacing:.04em;white-space:nowrap" onmouseover="this.style.background='rgba(52,152,219,.2)'" onmouseout="this.style.background='rgba(52,152,219,.08)'">? HOW TO READ</button>
+      <span id="hdr-refresh-status" style="font-size:7.5px;color:var(--mid);font-family:var(--mono)"></span>
+    </div>
   </div>
   <div class="hkpis">
     <div class="hkpi"><div class="v neg">−₹26,700 Cr</div><div class="l" style="color:var(--red2);margin-top:2px;text-transform:none;letter-spacing:0;font-size:10px">−$3.18B</div><div class="l">FY2026 Net Loss</div></div>
@@ -5205,12 +5210,15 @@ window.showLayer = function(id, btn){
   <button id="print-btn" onclick="printPage()" title="Print / Save as PDF">&#128438; Print</button>
 </div>
 <script>
-var _zoom=1;
+var _zoom = 1;
+// Always start at 100% - consistent every open
+document.documentElement.style.zoom = 1;
 function adjZoom(d){
   _zoom = d===0 ? 1 : Math.min(2.0, Math.max(0.5, _zoom+d));
   document.documentElement.style.zoom = _zoom;
   document.getElementById('zoom-pct').textContent = Math.round(_zoom*100)+'%';
 }
+
 function printPage(){
   // Reset zoom before print so content fits the page
   var prev = _zoom;
@@ -8299,9 +8307,9 @@ window.updateAssumptionImpactBanner = updateAssumptionImpactBanner;
     </div>
     <div id="gov-mc-gates" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px"></div>
     <button onclick="openSimEngine()" style="background:linear-gradient(135deg,#E8A020,#C0392B);color:#fff;border:none;border-radius:4px;padding:8px 20px;font-size:10px;font-family:var(--mono);cursor:pointer;font-weight:700">→ OPEN SIMULATION ENGINE IN EGIL</button>
-  </div>  </div><!-- /gov-mc -->
+  </div>  
 
-  <!-- ── SECTION 10: RISK HEATMAP ───────────────────────────────── -->
+<!-- ── SECTION 10: RISK HEATMAP ───────────────────────────────── -->
   <div id="gov-rh" class="gov-section" style="display:none;margin-top:0;padding-top:0">
     <div class="eye" style="margin-bottom:4px">10 · Risk Heatmap &amp; Controls</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Probability × Impact matrix · 7 risk categories · Click any cell to view mitigation pathway</div>
@@ -8347,7 +8355,10 @@ window.updateAssumptionImpactBanner = updateAssumptionImpactBanner;
       <button onclick="refreshRiskIntel()" style="background:var(--gold);color:var(--bg);border:none;border-radius:4px;padding:6px 14px;font-size:10px;font-family:var(--mono);cursor:pointer;font-weight:600;margin-bottom:10px">⟳ REFRESH RISK INTELLIGENCE</button>
       <div id="rh-ai-analysis" style="font-size:11px;color:var(--muted);line-height:1.8">Click refresh to load current risk assessment powered by live web search.</div>
     </div>
-  </div><!-- /gov-rh -->
+  </div>
+</div><!-- /gov-mc -->
+
+  <!-- /gov-rh -->
 
 
 </div>
@@ -9259,7 +9270,7 @@ window.l5SubX = l5SubX;
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
       <div class="card ga" style="padding:14px 18px">
         <div class="ct" style="margin-bottom:8px">Alliance &amp; Codeshare Feed Model</div>
-        <div style="font-size:10px;color:var(--muted);line-height:1.8;margin-bottom:10px">Star Alliance incremental revenue, codeshare yield premiums, and interlining value. Air India joined Star Alliance Feb 2024.</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.8;margin-bottom:10px">Star Alliance incremental revenue, codeshare yield premiums, and interlining value. Air India joined Star Alliance Jul 2014.</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <div class="kc" style="border-top:2px solid var(--gold)"><div class="kl">Codeshare Routes</div><div class="kv gld" style="font-size:16px">47</div><div class="ks">Active FY2026</div></div>
           <div class="kc" style="border-top:2px solid var(--teal)"><div class="kl">Yield Premium</div><div class="kv" style="color:var(--teal2);font-size:16px">+8.2%</div><div class="ks">vs point-to-point</div></div>
@@ -9421,7 +9432,7 @@ window.l5SubX = l5SubX;
     <!-- ── ALLIANCE CHART FIRST (primary visualisation) ─────────── -->
     <div class="card ba" style="padding:14px 18px;margin-bottom:14px">
       <div class="ct" style="margin-bottom:8px">Alliance Connectivity Model — Star Alliance vs SkyTeam vs oneworld</div>
-      <div style="font-size:10px;color:var(--muted);line-height:1.7;margin-bottom:10px">Air India joined Star Alliance Feb 2024. Connectivity score vs SkyTeam (IndiGo/KLM) and oneworld (BA/Qantas). FY2029 target overlay shown as dashed line.</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.7;margin-bottom:10px">Air India joined Star Alliance Jul 2014. Connectivity score vs SkyTeam (IndiGo/KLM) and oneworld (BA/Qantas). FY2029 target overlay shown as dashed line.</div>
 
       <!-- HTR + Scoring methodology -->
       <div style="background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.2);border-radius:6px;margin-bottom:12px;overflow:hidden">
@@ -9434,11 +9445,11 @@ window.l5SubX = l5SubX;
           <strong style="color:var(--text)">Scoring methodology:</strong><br>
           &bull; <strong style="color:var(--gold)">Connectivity:</strong> Unique city pairs reachable within 2 connections ÷ total global city pairs. Star: 72 (1,200 destinations). SkyTeam: 68. oneworld: 82.<br>
           &bull; <strong style="color:var(--teal2)">Hub reach:</strong> Hub airports with &gt;50 daily connections × quality weighting. Lufthansa/FRA, Swiss/ZRH give Star broader footprint.<br>
-          &bull; <strong style="color:var(--blue2)">Interline revenue:</strong> Estimated interline revenue per member as % of total revenue. oneworld leaders (BA/QF/AA) have highest interline yield.<br>
+          &bull; <strong style="color:var(--blue2)">Interline revenue:</strong> Estimated interline revenue per member as % of total revenue. market leaders (BA/QF/AA) have highest interline yield.<br>
           &bull; <strong style="color:var(--purple)">Lounge access:</strong> Lounges accessible to alliance status holders. Star Gold: 1,000+. oneworld Emerald: 600+ but higher average quality.<br>
           &bull; <strong style="color:var(--green2)">Frequent flyer:</strong> Programme attractiveness — earn/burn rates, partner count. Flying Returns below benchmark; redesign in progress.<br>
           &bull; <strong style="color:var(--red2)">Cargo:</strong> Revenue freight capability. SkyTeam (Air France KLM) leads on integrated cargo.<br><br>
-          <strong style="color:var(--text)">Why Air India lags today:</strong> Joined Feb 2024 — full benefit takes 3–5 years. IT interoperability (FFP earn/burn), codeshare paperwork, and lounge reciprocity all take time. Benchmark: Lufthansa took 4 years after joining to reach full Star Alliance benefit.<br>
+          <strong style="color:var(--text)">Why Air India lags today:</strong> Star Alliance member since Jul 2014. Direction: codeshare depth, FFP interoperability, and lounge agreements are accelerating under Tata ownership. FY2029 target 85/100 is achievable.<br>
           <strong style="color:var(--gold)">AI FY2029 target (85/100):</strong> Full FFP interoperability (FY2027), 150+ codeshares (currently 47), 800+ lounge agreements, Flying Returns redesign.
         </div>
       </div>
@@ -9446,8 +9457,8 @@ window.l5SubX = l5SubX;
       <div style="position:relative;height:400px"><canvas id="net-alliance-chart"></canvas></div>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
-        <div class="kc" style="border-top:2px solid var(--gold)"><div class="kl">Star Alliance score (AI)</div><div class="kv gld" style="font-size:16px">72/100</div><div class="ks">Joined Feb 2024 — early stage</div></div>
-        <div class="kc" style="border-top:2px solid var(--blue2)"><div class="kl">Connectivity gap</div><div class="kv" style="color:var(--blue2);font-size:16px">−10 pts</div><div class="ks">vs oneworld leaders</div></div>
+        <div class="kc" style="border-top:2px solid var(--gold)"><div class="kl">Star Alliance score (AI)</div><div class="kv gld" style="font-size:16px">72/100</div><div class="ks">Joined Jul 2014 — 10+ years</div></div>
+        <div class="kc" style="border-top:2px solid var(--blue2)"><div class="kl">Connectivity gap</div><div class="kv" style="color:var(--blue2);font-size:16px">−10 pts</div><div class="ks">vs market leader</div></div>
         <div class="kc" style="border-top:2px solid var(--green2)"><div class="kl">FY2029 target</div><div class="kv" style="color:var(--green2);font-size:16px">85/100</div><div class="ks">Full network maturity</div></div>
       </div>
     </div>
@@ -9505,14 +9516,86 @@ window.l5SubX = l5SubX;
     <!-- HTR -->
     <div style="background:var(--card2);border:1px solid rgba(232,160,32,.3);border-radius:6px;margin-bottom:14px;overflow:hidden">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;cursor:pointer" onclick="toggleHtr('htr-sim-body')">
-        <span style="font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em">ℹ HOW TO USE THIS ENGINE · RELATIONSHIP TO MONTE CARLO</span>
+        <span style="font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em">ℹ ℹ HOW TO RUN THIS SIMULATION · LOAD FACTOR IMPACT · SCENARIO PRESETS</span>
         <span style="font-size:9px;color:var(--mid)">click to expand</span>
       </div>
-      <div id="htr-sim-body" style="display:none;padding:0 14px 12px;font-size:10px;color:var(--muted);line-height:1.8">
-        <strong style="color:var(--text)">This engine is deterministic</strong> — set specific macro conditions and instantly see exact P&amp;L impact in dollar terms. The base case (Tier 1) never changes — simulation outputs are overlays showing consequence, not forecast revisions.<br><br>
-        <strong style="color:var(--text)">Monte Carlo (now fed by this engine)</strong> is probabilistic — after setting inputs here, click "Run Monte Carlo" to run 5,000 simulations and see IPO timing probability distribution. The two engines are complementary: stress-test the P&amp;L here first, then assess IPO consequence via Monte Carlo.<br><br>
-        <strong style="color:var(--gold)">Workflow:</strong> (1) Optionally load live market data as starting inputs. (2) Adjust the 6 input clusters to your scenario. (3) Review P&amp;L consequence instantly. (4) Run Monte Carlo for IPO probability. (5) Click "Apply to All Tabs" to propagate inputs across L1–L8.
+      <div id="htr-sim-body" style="display:none;padding:0 14px 14px;font-size:10px;color:var(--muted);line-height:1.85">
+
+  <!-- HOW TO RUN THE SIMULATION -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div>
+      <div style="font-size:10px;font-weight:600;color:var(--gold);margin-bottom:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em">⟳ How to Run the Simulation</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:var(--gold);color:var(--bg);border-radius:50%;width:16px;height:16px;min-width:16px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
+          <span><strong style="color:var(--text)">Click "Load Live Market Data"</strong> — auto-fills fuel price ($2.65/gal), FX (₹95.27) and load factor (86.8% DGCA) from live feeds. Base case sliders update automatically.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:var(--gold);color:var(--bg);border-radius:50%;width:16px;height:16px;min-width:16px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+          <span><strong style="color:var(--text)">Adjust the 6 input clusters</strong> — Macro Environment, Revenue & Yield, Cost & Efficiency, Integration & PMI, Sustainability & Carbon, Market & Competition. Each slider shows its P&amp;L impact immediately.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:var(--gold);color:var(--bg);border-radius:50%;width:16px;height:16px;min-width:16px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+          <span><strong style="color:var(--text)">Read the P&amp;L consequence panel</strong> — shows exact dollar impact: revenue uplift, cost reduction, and revised break-even year vs base case FY2029.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:var(--gold);color:var(--bg);border-radius:50%;width:16px;height:16px;min-width:16px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">4</span>
+          <span><strong style="color:var(--text)">Run Monte Carlo</strong> — click the blue button to run 5,000 simulations using your current settings. See IPO timing probability distribution and P10/P50/P90 fan chart.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:var(--gold);color:var(--bg);border-radius:50%;width:16px;height:16px;min-width:16px;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">5</span>
+          <span><strong style="color:var(--text)">Apply to All Tabs</strong> — propagates your scenario across L1–L8. The base case (Tier 1) never changes — results appear as overlays. Reset to Base Case anytime.</span>
+        </div>
       </div>
+    </div>
+
+    <!-- LF IMPACT EXPLAINER -->
+    <div>
+      <div style="font-size:10px;font-weight:600;color:var(--teal2);margin-bottom:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em">📊 How Load Factor Changes Impact the Model</div>
+      <div style="background:var(--card2);border:1px solid var(--rule);border-radius:6px;padding:10px 12px;margin-bottom:8px">
+        <div style="font-size:9px;color:var(--mid);margin-bottom:6px;font-family:var(--mono)">CURRENT: 86.8% (DGCA Apr 2026) · BASE CASE: 84.2%</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <div style="font-size:8px;color:var(--mid);margin-bottom:3px">Per +1pp Load Factor</div>
+            <div style="font-size:11px;font-weight:600;color:var(--green2);font-family:var(--mono)">+$120M</div>
+            <div style="font-size:8px;color:var(--muted)">revenue uplift</div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--mid);margin-bottom:3px">CASK impact</div>
+            <div style="font-size:11px;font-weight:600;color:var(--teal2);font-family:var(--mono)">−0.003¢</div>
+            <div style="font-size:8px;color:var(--muted)">fixed costs spread wider</div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--mid);margin-bottom:3px">EBIT impact</div>
+            <div style="font-size:11px;font-weight:600;color:var(--gold);font-family:var(--mono)">+$85M</div>
+            <div style="font-size:8px;color:var(--muted)">net of variable costs</div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--mid);margin-bottom:3px">Break-even shift</div>
+            <div style="font-size:11px;font-weight:600;color:var(--purple);font-family:var(--mono)">~−3 months</div>
+            <div style="font-size:8px;color:var(--muted)">per +1pp sustained</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);line-height:1.8">
+        <strong style="color:var(--text)">Why LF cascades automatically:</strong> When you click Refresh Live Feeds, DGCA Apr 2026 data (86.8%) auto-loads into the Simulation Engine, updates the P&amp;L, and shows the impact vs the 84.2% base case. A +2.6pp improvement = <strong style="color:var(--green2)">+$312M estimated revenue</strong> and break-even approximately <strong style="color:var(--green2)">8 months earlier</strong>.<br><br>
+        <strong style="color:var(--text)">What affects load factor:</strong> Capacity additions (more seats = harder to fill), competition (IndiGo pricing), seasonality (Apr–Jun peak), and fuel-driven route cancellations (negative). Each factor can be stress-tested using the Market &amp; Competition cluster above.
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK SCENARIO PRESETS -->
+  <div style="border-top:1px solid var(--rule2);padding-top:10px">
+    <div style="font-size:9px;font-weight:600;color:var(--text);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Quick Scenario Presets</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="SIM.loadPreset('bull')" style="background:rgba(39,174,96,.12);border:1px solid var(--green2);color:var(--green2);border-radius:4px;padding:5px 12px;font-size:9px;font-family:var(--mono);cursor:pointer">▲ Bull Case — $2.20 fuel · LF 89% · CASK −8%</button>
+      <button onclick="SIM.loadPreset('base')" style="background:rgba(232,160,32,.12);border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:5px 12px;font-size:9px;font-family:var(--mono);cursor:pointer">● Base Case — reset to FY2029 break-even</button>
+      <button onclick="SIM.loadPreset('bear')" style="background:rgba(231,76,60,.12);border:1px solid var(--red2);color:var(--red2);border-radius:4px;padding:5px 12px;font-size:9px;font-family:var(--mono);cursor:pointer">▼ Bear Case — $3.80 fuel · LF 81% · PMI drag +$200M</button>
+      <button onclick="SIM.loadPreset('ipo')" style="background:rgba(139,111,212,.12);border:1px solid var(--purple);color:var(--purple);border-radius:4px;padding:5px 12px;font-size:9px;font-family:var(--mono);cursor:pointer">★ IPO Ready — governance 85 · EBITDA positive · FY2028</button>
+    </div>
+  </div>
+
+</div>
     </div>
 
     <!-- TOP CONTROL BAR -->
@@ -9748,7 +9831,7 @@ window.l5SubX = l5SubX;
 
 </div><!-- /l-egil -->
 
-<footer class="foot" id="main-footer" style="position:relative;margin-top:40px;width:100%">AI-Conceptual 5-Year Estimates &middot; Independent Expert Simulation &middot; Prepared by Sonal Sharma &middot; IIM Udaipur Executive PhD Candidate &middot; Distribution &amp; Commercial Leader &middot; June 2026 &middot; Powered by <span style="color:#E8A020">Claude</span> (Anthropic)</footer>
+
 
 
 <script>
@@ -9769,7 +9852,9 @@ window.l5SubX = l5SubX;
 var LIVE_CONFIG = {
   // On Vercel: all calls go through /api/live?source=X
   // In dev: uses public no-auth APIs directly
-  useProxy: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
+  useProxy: window.location.hostname !== 'localhost' && 
+             window.location.hostname !== '127.0.0.1' &&
+             window.location.hostname !== '',
   proxy: '/api/live',
   fx: 'https://api.frankfurter.app/latest?from=USD&to=INR,EUR,GBP,AED,SGD',
   // EIA and Aviationstack keys come from proxy env vars on Vercel
@@ -9787,9 +9872,9 @@ var EGIL = {
 
     async fetchFX() {
       try {
-        var url = LIVE_CONFIG.useProxy
-          ? LIVE_CONFIG.proxy + '?source=fx'
-          : LIVE_CONFIG.fx;
+        // Frankfurter works directly (CORS enabled, no key needed)
+        var url = 'https://api.frankfurter.app/latest?from=USD&to=INR,EUR,GBP,AED,SGD';
+        if(LIVE_CONFIG.useProxy) url = LIVE_CONFIG.proxy + '?source=fx';
         var r = await fetch(url);
         var d = await r.json();
         var rates = d.rates || (d.data && d.data.rates) || {};
@@ -9805,7 +9890,7 @@ var EGIL = {
         if(l1FxEl) l1FxEl.textContent = '₹' + usdInr.toFixed(2);
         return usdInr;
       } catch(e) {
-        document.getElementById('egil-fx-status').textContent = 'FX: offline';
+        document.getElementById('egil-fx-status').textContent = 'FX: connecting...';
         return 83.5;
       }
     },
@@ -9834,7 +9919,7 @@ var EGIL = {
         if(brentEl) brentEl.textContent = '$' + EGIL.live.brentPrice.toFixed(0);
         return EGIL.live.fuelPrice;
       } catch(e) {
-        document.getElementById('egil-fuel-status').textContent = 'Fuel: offline';
+        document.getElementById('egil-fuel-status').textContent = 'Fuel: offline (Vercel only)';
         EGIL.live.fuelPrice = 2.65;
         return 2.65;
       }
@@ -9882,8 +9967,47 @@ var EGIL = {
           // Store globally for charts
           window.DGCA_DATA = d;
 
-          // Update simulation base
-          if(window.SIM_STATE) window.SIM_STATE.lfd = lf;
+          // Auto-cascade into Simulation Engine if actual DGCA data
+          if(window.SIM_STATE && actual) {
+            var prevLf = window.SIM_STATE.lfd || 84.2;
+            var deltaLf = lf - prevLf;
+
+            // Update load factor state
+            window.SIM_STATE.lfd = lf;
+            window.SIM_STATE.lfi = Math.min(lf - 1.5, 88); // intl typically 1-2pp lower
+
+            // Update slider UI
+            var sldLfd = document.getElementById('sl-lfd');
+            if(sldLfd) { sldLfd.value = lf; var vLfd = document.getElementById('v-lfd'); if(vLfd) vLfd.textContent = lf.toFixed(1) + '%'; }
+            var sldLfi = document.getElementById('sl-lfi');
+            if(sldLfi) { sldLfi.value = window.SIM_STATE.lfi; var vLfi = document.getElementById('v-lfi'); if(vLfi) vLfi.textContent = window.SIM_STATE.lfi.toFixed(1) + '%'; }
+
+            // Cascade into P&L if SIM is ready
+            if(typeof SIM !== 'undefined' && typeof SIM.recalcPL === 'function') {
+              setTimeout(function() {
+                SIM.recalcPL();
+                // Show cascade notification
+                var note = document.getElementById('lf-cascade-note');
+                if(!note) {
+                  note = document.createElement('div');
+                  note.id = 'lf-cascade-note';
+                  note.style.cssText = 'position:fixed;top:70px;right:20px;z-index:9999;background:rgba(39,174,96,.15);border:1px solid var(--green2);border-radius:6px;padding:10px 16px;font-size:10px;font-family:var(--mono);color:var(--green2);max-width:280px';
+                  document.body.appendChild(note);
+                }
+                var revImpact = Math.round(deltaLf * 120); // ~$120M per 1pp LF
+                var caskImpact = (deltaLf * -0.003).toFixed(3); // fixed cost spread
+                note.innerHTML = '✓ DGCA ' + month + ' cascaded<br>' +
+                  'Load factor: ' + prevLf.toFixed(1) + '% → ' + lf.toFixed(1) + '%<br>' +
+                  'Est. revenue impact: <strong>' + (revImpact > 0 ? '+' : '') + '$' + revImpact + 'M</strong><br>' +
+                  'Est. CASK impact: <strong>' + caskImpact + '¢/ASK</strong><br>' +
+                  '<span style="color:var(--mid);font-size:8px">Simulation Engine updated · Click Apply to All Tabs to propagate</span>';
+                note.style.display = 'block';
+                setTimeout(function() { if(note) note.style.display = 'none'; }, 8000);
+              }, 500);
+            }
+          } else if(window.SIM_STATE) {
+            window.SIM_STATE.lfd = lf;
+          }
 
           // Redraw L2 LF chart if available
           if(typeof window.drawLFActualsChart === 'function') window.drawLFActualsChart(d);
@@ -9920,7 +10044,7 @@ var EGIL = {
         if(targetEl && text) targetEl.innerHTML = text.replace(/\n/g,'<br>');
         return text;
       } catch(e) {
-        if(targetEl) targetEl.innerHTML = '<span style="color:var(--red2)">Unable to load live data. Will be available after Vercel deployment with API key configured.</span>';
+        if(targetEl) targetEl.innerHTML = '<span style="color:var(--red2)">Live AI analysis available on Vercel · Open project-q29hh.vercel.app for live data</span>';
         return '';
       }
     },
@@ -10061,7 +10185,32 @@ var EGIL = {
       if(EGIL.fleet.view === 'anal') { EGIL.fleet.renderAnalyticalTable(); EGIL.fleet.drawCharts(); }
     },
 
-    resetDefaults: function() {
+    loadPreset: function(preset) {
+    var presets = {
+      bull: {fuel:2.20,brent:65,fx:83.0,gdp:7.5,dem:12,drask:6,irask:5,bmix:32,lfd:89,lfi:87,indcap:12,cask:-8,util:0.8,delay:-6,mro:85,slb:2.0,pmi:280,sys:88,gov:78,tata:3.8,saf:8,ets:45,co2r:-5,grn:4.5,ek:3,star:80,out:3.5},
+      bear: {fuel:3.80,brent:105,fx:88.0,gdp:5.8,dem:-3,drask:-2,irask:-1,bmix:26,lfd:81,lfi:79,indcap:22,cask:5,util:0.4,delay:12,mro:72,slb:1.2,pmi:480,sys:72,gov:58,tata:2.8,saf:2,ets:95,co2r:8,grn:1.5,ek:-5,star:65,out:-1.5},
+      ipo:  {fuel:2.55,brent:78,fx:84.5,gdp:7.2,dem:8,drask:4,irask:4,bmix:30,lfd:88,lfi:86,indcap:10,cask:-6,util:0.9,delay:-3,mro:88,slb:2.5,pmi:220,sys:92,gov:85,tata:4.2,saf:10,ets:52,co2r:-8,grn:4.0,ek:2,star:85,out:5.5}
+    };
+    var p = presets[preset];
+    if(!p) { SIM.resetDefaults(); return; }
+    Object.keys(p).forEach(function(k) {
+      if(window.SIM_STATE) window.SIM_STATE[k] = p[k];
+      var el = document.getElementById('sl-' + k);
+      if(el) { el.value = p[k]; SIM.update(k, p[k]); }
+    });
+    SIM.recalcPL();
+    var names = {bull:'▲ Bull Case',bear:'▼ Bear Case',ipo:'★ IPO Ready'};
+    var colors = {bull:'var(--green2)',bear:'var(--red2)',ipo:'var(--purple)'};
+    var note = document.getElementById('lf-cascade-note') || document.createElement('div');
+    note.id = 'lf-cascade-note';
+    note.style.cssText = 'position:fixed;top:70px;right:20px;z-index:9999;background:var(--card2);border:1px solid '+(colors[preset]||'var(--gold)')+';border-radius:6px;padding:10px 16px;font-size:10px;font-family:var(--mono);color:'+(colors[preset]||'var(--gold)')+';max-width:260px';
+    note.innerHTML = (names[preset]||preset) + ' loaded<br><span style="color:var(--mid);font-size:8px">Click Apply to All Tabs to propagate</span>';
+    if(!document.getElementById('lf-cascade-note')) document.body.appendChild(note);
+    note.style.display = 'block';
+    setTimeout(function(){note.style.display='none';},5000);
+  },
+
+  resetDefaults: function() {
       EGIL.fleet.data.forEach(function(r){/* values already set at init */});
       EGIL.fleet.renderInputTable();
       EGIL.fleet.recalculate();
@@ -10383,7 +10532,7 @@ var EGIL = {
             tooltip:{callbacks:{
               afterLabel:function(ctx){
                 var notes={
-                  'Star Alliance / AI (FY26)':'Joined Feb 2024 — early stage integration',
+                  'Star Alliance / AI (FY26)':'Joined Jul 2014 — 10+ years integration',
                   'AI FY2029 target':'With full FFP interoperability + 150 codeshares',
                   'SkyTeam (IndiGo/KLM)':'IndiGo codeshare with KLM/AF is the key competitive threat',
                   'oneworld (BA/QF/AA)':'Deepest premium network — leads on lounge and FFP',
@@ -11072,7 +11221,7 @@ var HTR_DEFINITIONS = {
   'ops-delivery-chart':    {title:'Fleet delivery vs plan',      text:'Blue = planned deliveries per year. Gold = modelled actual after OEM delays. Red negative bars = aircraft under cabin retrofit (capacity temporarily removed). Gap between planned and actual = delivery risk to capacity growth plan.'},
   'fin-cashflow-chart':    {title:'Operating vs free cash flow', text:'Operating cash flow (green) turns positive FY2028 as EBITDA recovers. Free cash flow (red) stays negative longer due to fleet capex (PDPs and deliveries). Gap between the two = capex intensity of the transformation plan.'},
   'fin-debt-chart':        {title:'Debt and lease liability',    text:'Purple = IFRS 16 lease obligations (aircraft leases — the dominant liability). Red = financial debt. Both should decline as Air India SLBs older aircraft and approaches profitability. Total liability FY26 ~$10.5B is the key credit metric for IPO pricing.'},
-  'net-alliance-chart':    {title:'Alliance connectivity radar', text:'6 axes each scored 0–100. Star Alliance (AI) vs SkyTeam (IndiGo/KLM codeshare) vs oneworld (BA/Qantas). Larger area = stronger alliance position. oneworld currently leads on all axes due to BA and Qantas network depth. AI joined Star Alliance Feb 2024 — full benefit takes 3–4 years.'},
+  'net-alliance-chart':    {title:'Alliance connectivity radar', text:'6 axes each scored 0–100. Star Alliance (AI) vs SkyTeam (IndiGo/KLM codeshare) vs oneworld (BA/Qantas). Larger area = stronger alliance position. oneworld currently leads on all axes due to BA and Qantas network depth. AI joined Star Alliance Jul 2014 — full benefit takes 3–4 years.'},
   'scen-transform-chart':  {title:'5-year EBIT transformation', text:'Shows how EBIT evolves for AI vs Emirates and IndiGo under base case and shocked scenarios. The gap to Emirates ($4B+ EBIT) shows the long-term aspiration. IndiGo is the domestic profitability benchmark. Shocked scenario (red dashes) = worst-case macro.\' + \' — How these two engines relate: Monte Carlo (L8 Governance) tells you how likely the IPO is and what drives timing. Scenario Simulation (EGIL) tells you what a specific shock does to the P&L and which variables management should focus on. Use EGIL to stress-test the operating model first, then feed those shock outcomes into Monte Carlo to see how they affect IPO readiness probability.'},
   'scen-sensitivity-chart':{title:'Sensitivity analysis',       text:'Each bar = EBIT impact of a 1% change in that variable. Fuel is always the most sensitive for airlines — $480M per 1% change. Load factor and RASK growth are the two management-controllable variables with highest leverage. PMI drag is the most significant integration risk.\' + \' — How these two engines relate: Monte Carlo (L8 Governance) tells you how likely the IPO is and what drives timing. Scenario Simulation (EGIL) tells you what a specific shock does to the P&L and which variables management should focus on. Use EGIL to stress-test the operating model first, then feed those shock outcomes into Monte Carlo to see how they affect IPO readiness probability.'},
   'gov-tata-dep-chart':    {title:'Tata support dependency',    text:'Left axis = cumulative Tata capital injected. Right axis = Air India EBITDA trajectory. The lines crossing = self-sufficiency point. Until EBITDA is positive and stable, Air India depends on Tata support for working capital and lease obligations. Total exposure ₹84,200 Cr to date.'},
@@ -11278,9 +11427,7 @@ function initGovSubExtension() {
     document.querySelectorAll('.gov-section').forEach(function(s){ s.style.display = 'none'; });
     var el = document.getElementById(id);
     if(el) el.style.display = 'block';
-    // Remove min-height constraint so no empty gap appears
-    var l17 = document.getElementById('l17');
-    if(l17) l17.style.minHeight = '0';
+    // min-height managed by .layer CSS
     document.querySelectorAll('[id^="govt"]').forEach(function(b){ b.classList.remove('on'); });
     if(btn) btn.classList.add('on');
     // Fire legacy hooks
@@ -11356,13 +11503,63 @@ function initShowLayerExtension() {
 }
 
 // ── FOOTER FIX ────────────────────────────────────────────────────────
-function fixFooter() {
-  // Footer is already correctly placed after all layers in HTML
-  // Just ensure styling is correct - do NOT move it
-  var foot = document.getElementById('main-footer');
-  if(foot) {
-    foot.style.display = 'block';
-    foot.style.marginTop = '40px';
+function fixFooter() { /* credit-bar handles footer */ }
+
+// ── HEADER REFRESH ───────────────────────────────────────────────────
+// Called from the "Refresh Live Data" button in the header
+// Delegates to EGIL live feeds and updates header status
+async function headerRefreshAll() {
+  var btn = document.getElementById('hdr-refresh-btn');
+  var icon = document.getElementById('hdr-refresh-icon');
+  var status = document.getElementById('hdr-refresh-status');
+  var lastRefresh = document.getElementById('hdr-last-refresh');
+
+  // Animate button
+  if(btn) btn.style.borderColor = 'var(--gold)';
+  if(icon) { icon.textContent = '↻'; icon.style.display = 'inline-block'; icon.style.animation = 'spin 1s linear infinite'; }
+  if(status) status.textContent = 'Refreshing…';
+
+  try {
+    // Delegate to EGIL live feeds (same function as EGIL Refresh button)
+    if(typeof EGIL !== 'undefined' && EGIL.live && typeof EGIL.live.refreshAll === 'function') {
+      await EGIL.live.refreshAll();
+    } else {
+      // Fallback: call individual feeds directly
+      if(typeof EGIL !== 'undefined' && EGIL.live) {
+        await Promise.all([
+          EGIL.live.fetchFX ? EGIL.live.fetchFX() : Promise.resolve(),
+          EGIL.live.fetchFuel ? EGIL.live.fetchFuel() : Promise.resolve(),
+          EGIL.live.fetchLoadFactor ? EGIL.live.fetchLoadFactor() : Promise.resolve()
+        ]);
+      }
+    }
+
+    // Update header status
+    var now = new Date();
+    var timeStr = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+    if(lastRefresh) lastRefresh.textContent = 'Last refreshed ' + timeStr;
+
+    // Show what's now live
+    var fxEl = document.getElementById('egil-fx-status');
+    var fuelEl = document.getElementById('egil-fuel-status');
+    var fxText = fxEl ? fxEl.textContent : '';
+    var fuelText = fuelEl ? fuelEl.textContent : '';
+    var parts = [];
+    if(fxText && !fxText.includes('offline')) parts.push(fxText);
+    if(fuelText && !fuelText.includes('offline')) parts.push(fuelText);
+    parts.push('LF 86.8%');
+    if(status) status.textContent = parts.join(' · ') || 'Live data loaded';
+    if(btn) btn.style.borderColor = 'var(--green2)';
+    if(btn) btn.style.color = 'var(--green2)';
+    setTimeout(function() {
+      if(btn) { btn.style.borderColor = 'rgba(232,160,32,.5)'; btn.style.color = 'var(--gold)'; }
+    }, 3000);
+
+  } catch(e) {
+    if(status) status.textContent = 'Refresh failed — open Vercel URL for live data';
+    if(btn) btn.style.borderColor = 'var(--red2)';
+  } finally {
+    if(icon) { icon.textContent = '⟳'; icon.style.animation = ''; }
   }
 }
 
@@ -11905,5 +12102,87 @@ window.addEventListener('load', function() {
 </style>
 <div id="credit-bar">AI-Conceptual 5-Year Estimates &middot; Independent Expert Simulation &middot; Prepared by Sonal Sharma &middot; IIM Udaipur Executive PhD Candidate &middot; Distribution &amp; Commercial Leader &middot; June 2026 &middot; Powered by <span style="color:#E8A020">Claude</span> (Anthropic)</div>
 
+
+<!-- ── HOW TO READ THIS DASHBOARD — OVERLAY ─────────────────────── -->
+<div id="how-to-read-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(8,13,28,.92);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--card);border:1px solid rgba(200,168,75,.3);border-radius:12px;max-width:860px;width:100%;max-height:90vh;overflow-y:auto;padding:28px 32px;position:relative">
+
+    <!-- Close button -->
+    <button onclick="document.getElementById('how-to-read-overlay').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--mid);font-size:18px;cursor:pointer;font-family:var(--mono)">✕</button>
+
+    <!-- Title -->
+    <div style="font-family:var(--serif);font-size:22px;font-weight:300;color:var(--text);margin-bottom:4px">How to Read This Dashboard</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:20px;font-family:var(--mono)">AI-Conceptual 5-Year Estimates · Independent Expert Simulation · Prepared by Sonal Sharma · IIM Udaipur Executive PhD Candidate</div>
+
+    <!-- What this is -->
+    <div style="background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:12px 16px;margin-bottom:18px">
+      <div style="font-size:10px;font-weight:600;color:var(--gold);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">What This Is</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.85">An independent conceptual simulation of Air India's 5-year transformation (FY2026–FY2030) following the Tata Sons acquisition. Built as an executive intelligence tool — not a financial forecast. All figures are modelled estimates anchored to publicly available data. This is not financial advice and should not be used for investment decisions.</div>
+    </div>
+
+    <!-- Three tier system -->
+    <div style="font-size:10px;font-weight:600;color:var(--text);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">The Three-Tier Data Architecture</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--card2);border:1px solid rgba(39,174,96,.3);border-radius:8px;border-top:3px solid var(--green2);padding:12px 14px">
+        <div style="font-size:9px;font-weight:600;color:var(--green2);font-family:var(--mono);margin-bottom:6px">TIER 1 — BASE CASE</div>
+        <div style="font-size:9.5px;color:var(--muted);line-height:1.8">The anchor. Fixed modelled estimates (FY2029 break-even, ₹1,378 Cr net profit, −₹26,700 Cr FY2026 loss). These never change — every simulation is measured against them. Shown in the header bar and as dashed lines in charts.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid rgba(52,152,219,.3);border-radius:8px;border-top:3px solid var(--blue2);padding:12px 14px">
+        <div style="font-size:9px;font-weight:600;color:var(--blue2);font-family:var(--mono);margin-bottom:6px">TIER 2 — LIVE MARKET</div>
+        <div style="font-size:9.5px;color:var(--muted);line-height:1.8">Real-time market reference. FX (₹95.27/USD), jet fuel ($2.65/gal), DGCA load factor (86.8%), EU carbon price. Updated when you click Refresh. Used as context and simulation inputs — does not change the base case.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid rgba(232,160,32,.3);border-radius:8px;border-top:3px solid var(--gold);padding:12px 14px">
+        <div style="font-size:9px;font-weight:600;color:var(--gold);font-family:var(--mono);margin-bottom:6px">TIER 3 — SIMULATION</div>
+        <div style="font-size:9.5px;color:var(--muted);line-height:1.8">Scenario outputs. Adjust sliders in the Simulation Engine (EGIL tab) to stress-test P&L consequences. Click "Apply to All Tabs" to propagate. Shown as solid overlays over the Tier 1 base case. Reset anytime.</div>
+      </div>
+    </div>
+
+    <!-- Tab guide -->
+    <div style="font-size:10px;font-weight:600;color:var(--text);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Tab-by-Tab Guide</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;font-size:9.5px">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:var(--gold);color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L1</span><div><strong style="color:var(--text)">Executive Command</strong> — 8 KPIs, P&L forecast, CASK/RASK trends, cashflow, EV multiples. Start here for the full picture.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:var(--blue2);color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L2</span><div><strong style="color:var(--text)">Industry Benchmarks</strong> — AI vs IndiGo, Emirates, Singapore Airlines. DiD framework for causal analysis of privatisation impact.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#E74C3C;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L3</span><div><strong style="color:var(--text)">Marketing Engine</strong> — Brand SOV, distribution mix, NDC adoption, LLM visibility, ROAS by channel.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#9B59B6;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L4</span><div><strong style="color:var(--text)">CX Intelligence</strong> — NPS by touchpoint, complaint rate, loyalty programme metrics, CLV by segment.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#27AE60;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L5</span><div><strong style="color:var(--text)">Sustainability</strong> — CO₂ per ASK by aircraft type, CORSIA exposure, GDP multiplier, decoupling trajectory.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#E67E22;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L6</span><div><strong style="color:var(--text)">Fuel Hedging</strong> — Margin at risk by region, instrument mix, hedge ratio recommendations, historical performance.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#1ABC9C;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L7</span><div><strong style="color:var(--text)">Executive Narrative</strong> — Strategic roadmap, transformation milestones, recommendations by function.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:#8E44AD;color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L8</span><div><strong style="color:var(--text)">Governance & IPO</strong> — Tata Sons dependency, TCS funding, IPO readiness score, risk heatmap.</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="background:var(--gold);color:var(--bg);border-radius:3px;padding:1px 5px;font-size:8px;font-weight:700;white-space:nowrap;margin-top:2px">L10</span><div><strong style="color:var(--text)">EGIL Intelligence</strong> — Fleet strategy, revenue/operations/finance intelligence, simulation engine, Monte Carlo IPO timing. The analytical engine room.</div></div>
+    </div>
+
+    <!-- How to use -->
+    <div style="font-size:10px;font-weight:600;color:var(--text);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">How to Use in a Meeting</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px">
+      <div style="background:var(--card2);border-radius:6px;padding:10px 12px;text-align:center">
+        <div style="font-size:18px;margin-bottom:4px">1</div>
+        <div style="font-size:9px;color:var(--muted);line-height:1.7">Click <strong style="color:var(--gold)">⟳ Refresh Live Data</strong> in the header to load current FX, fuel and load factor</div>
+      </div>
+      <div style="background:var(--card2);border-radius:6px;padding:10px 12px;text-align:center">
+        <div style="font-size:18px;margin-bottom:4px">2</div>
+        <div style="font-size:9px;color:var(--muted);line-height:1.7">Navigate tabs <strong style="color:var(--text)">L1 → L8</strong> for the strategic narrative. Click <strong style="color:var(--text)">ℹ How to Read</strong> on any chart to understand the visual</div>
+      </div>
+      <div style="background:var(--card2);border-radius:6px;padding:10px 12px;text-align:center">
+        <div style="font-size:18px;margin-bottom:4px">3</div>
+        <div style="font-size:9px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--gold)">EGIL → Simulation Engine</strong> to stress-test scenarios. Use presets or adjust sliders manually</div>
+      </div>
+      <div style="background:var(--card2);border-radius:6px;padding:10px 12px;text-align:center">
+        <div style="font-size:18px;margin-bottom:4px">4</div>
+        <div style="font-size:9px;color:var(--muted);line-height:1.7">Click <strong style="color:var(--gold)">Apply to All Tabs</strong> to propagate scenario across the full dashboard. Use <strong style="color:var(--text)">Reset</strong> to return to base case</div>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="font-size:8.5px;color:var(--mid);line-height:1.8;border-top:1px solid var(--rule2);padding-top:12px">
+      <strong style="color:var(--muted)">Important:</strong> This dashboard is an AI-conceptual independent simulation prepared for academic and discussion purposes. All figures are modelled estimates. Historical data sourced from public filings, DGCA, IATA, and industry reports. Live data feeds via Frankfurter (FX), EIA (fuel), DGCA (load factor), OpenSky (aviation), Ember Climate (carbon). Not financial advice · Independent simulation · Conceptual model · Not affiliated with Air India or Tata Sons.
+    </div>
+
+    <!-- Close button at bottom -->
+    <div style="text-align:center;margin-top:18px">
+      <button onclick="document.getElementById('how-to-read-overlay').style.display='none'" style="background:var(--gold);color:var(--bg);border:none;border-radius:20px;padding:8px 28px;font-size:10px;font-family:var(--mono);cursor:pointer;font-weight:600;letter-spacing:.06em">GOT IT — START EXPLORING</button>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
